@@ -41,7 +41,9 @@
         "unsupported": 11,
         "converted": 5
       }
-    }
+    },
+    "control_candidates": 48,
+    "converted_control_candidates": 12
   },
   "followup_action_definition_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711931066",
   "project_context_batch": {
@@ -63,7 +65,10 @@
         "no_control_states": 17,
         "action_kind": 1
       }
-    }
+    },
+    "control_candidates": 52,
+    "converted_control_candidates": 10
   },
-  "latest_project_context_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858"
+  "latest_project_context_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858",
+  "latest_candidate_metrics_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34715818526"
 }
