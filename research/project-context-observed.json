@@ -1,0 +1,526 @@
+{
+  "pilot_commit": "801c6a881954987a9707d396d5767db1ec51d8cb",
+  "jar_sha256": "1bb02b3865e6830687f4c4f80afbfe8d670f6fb6df305f6844833543320fa989",
+  "contexts": [
+    {
+      "dataset": "gfse",
+      "status": "completed",
+      "files": 13,
+      "error_count": 306,
+      "state_roots": 1,
+      "context": "_external/gfse/models/SE_Models"
+    },
+    {
+      "dataset": "gfse",
+      "status": "completed",
+      "files": 11,
+      "error_count": 396,
+      "state_roots": 0,
+      "context": "_external/gfse/models/example_EveOnlineMiningFrigate/DomainModel"
+    },
+    {
+      "dataset": "gfse",
+      "status": "completed",
+      "files": 1,
+      "error_count": 0,
+      "state_roots": 1,
+      "context": "_external/gfse/models/example_family"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 5,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/035"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/052"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/068"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/077"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 3,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/091"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 3,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/102"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/104"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/107"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 6,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/109"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/114"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 10,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/anthropic/147"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 41,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/027"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 25,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/041"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 12,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/052"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 32,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/091"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 10,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/104"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 3,
+      "error_count": 85,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/105"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 17,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/106"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/109"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 38,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/114"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/deepseek_reasoner/134"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/027"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/028"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 17,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/034"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 3,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/035"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 4,
+      "error_count": 43,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/036"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/038"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 5,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/041"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 4,
+      "error_count": 12,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/042"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/052"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 28,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/078"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 60,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/102"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/104"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 15,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/105"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/112"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/113"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/mistral_large/114"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 24,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/018"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 3,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/035"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 3,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/037"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/041"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 3,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/042"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 2,
+      "error_count": 41,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/043"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 3,
+      "error_count": 46,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/052"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/060"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/077"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 2,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/091"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 8,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/106"
+    },
+    {
+      "dataset": "refinement_negative",
+      "status": "completed",
+      "files": 1,
+      "error_count": 12,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/439 negative artifacts/openai/113"
+    },
+    {
+      "dataset": "refinement_positive",
+      "status": "completed",
+      "files": 1,
+      "error_count": 1,
+      "state_roots": 0,
+      "context": "_external/refinement/Open-Source Dataset Release/604 positive artifacts/mistral_large/035"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 4,
+      "error_count": 17,
+      "state_roots": 0,
+      "context": "_external/benchmark/data/examples/Arrowhead Framework Example"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 6,
+      "error_count": 18,
+      "state_roots": 0,
+      "context": "_external/benchmark/data/examples/Interaction Sequencing Examples"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 33,
+      "error_count": 51,
+      "state_roots": 2,
+      "context": "_external/benchmark/data/examples/Simple Tests"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 2,
+      "error_count": 0,
+      "state_roots": 2,
+      "context": "_external/benchmark/data/training/22. State Definitions"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 3,
+      "error_count": 0,
+      "state_roots": 6,
+      "context": "_external/benchmark/data/training/23. States"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 3,
+      "error_count": 4,
+      "state_roots": 0,
+      "context": "_external/benchmark/data/training/24. Transitions"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 1,
+      "error_count": 7,
+      "state_roots": 0,
+      "context": "_external/benchmark/data/training/25. State Exhibition"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 7,
+      "error_count": 7,
+      "state_roots": 1,
+      "context": "_external/benchmark/data/training/30. Constraints"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 3,
+      "error_count": 26,
+      "state_roots": 0,
+      "context": "_external/benchmark/data/validation/05-State-based Behavior"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 1,
+      "error_count": 0,
+      "state_roots": 4,
+      "context": "_external/benchmark/data/validation/06-Individual and Snapshots"
+    },
+    {
+      "dataset": "systemp",
+      "status": "completed",
+      "files": 4,
+      "error_count": 1,
+      "state_roots": 1,
+      "context": "_external/benchmark/data/validation/10-Analysis and Trades"
+    }
+  ],
+  "summary": {
+    "contexts": 64,
+    "completed": 64,
+    "total_source_files": 162,
+    "total_validation_errors": 1500,
+    "total_state_roots": 18,
+    "zero_error_contexts": 4
+  }
+}

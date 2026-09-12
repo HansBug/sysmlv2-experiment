@@ -30,6 +30,8 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 项目级入口见 [`ExtractProject.java`](ExtractProject.java)：它会先索引整个工程目录，再按资源校验和抽取 typed 状态事实。`research/state-assets.json` 对每个状态候选保留源哈希、相对路径、上下文目录、状态节点数和基线状态。
 
+已对 64 个候选上下文目录完成一次项目级扫描：162 个源文件、18 个状态根、4 个零错误目录；逐目录诊断见 [`research/project-context-observed.json`](research/project-context-observed.json)。
+
 ## 转换范围
 
 当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、简单 guard、entry/exit 赋值和 transition effect。并行、触发/消息、任意动作、非空 do action、未定义优先级、数组和无法解析的成员会明确拒绝。数值是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出和调度语义。
