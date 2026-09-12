@@ -1,6 +1,6 @@
 # SysML v2 状态资产逐文件登记
 
-本表由官方 Pilot 的 typed AST 生成，不通过字符串搜索。每一行保留数据集、相对路径、SHA-256、语法状态节点数、完整校验状态和建议的项目上下文目录。`validated_independent_file` 只表示单文件加标准库通过，`needs_project_index` 表示应在其工程目录整体索引后复核。
+本表由官方 Pilot 的 typed AST 生成，不通过字符串搜索。每一行保留数据集、相对路径、SHA-256、语法状态节点数、完整校验状态和建议的项目上下文目录。`validated_independent_file` 只表示单文件加标准库通过，`needs_project_index` 表示应在其工程目录整体索引后复核；Apollo 11 使用完整仓库根目录作为项目上下文。
 
 共登记 **118** 个公开状态候选文件。它们不是可执行控制器清单；一个文件可包含多个状态根，状态 usage 也可能是 snapshot 或语义不完整。
 
