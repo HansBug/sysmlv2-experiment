@@ -34,7 +34,7 @@ def prepare(output, fixtures_only=False):
             'refinement_positive': Path('_external/refinement/Open-Source Dataset Release/604 positive artifacts'),
             'refinement_negative': Path('_external/refinement/Open-Source Dataset Release/439 negative artifacts'),
             'apollo11': Path('_external/apollo11'),
-            'advent': Path('_external/advent-sysmlv2'),
+            'advent': Path('_external/advent'),
         })
         if official.exists():
             roots['official_pilot'] = official
