@@ -117,6 +117,7 @@ public class ExtractStates {
             "definitions", a.getActionDefinition().stream().map(ExtractStates::elementReference).toList());
         if (a instanceof PerformActionUsage performed) {
             out.put("performed", elementReference(performed.getPerformedAction()));
+            out.put("argument_references", actionArgumentReferences(a));
             var sequence = actionSequence(a);
             if (sequence != null) out.put("sequence", sequence);
         }
@@ -127,11 +128,26 @@ public class ExtractStates {
         }
         return out;
     }
+    static List<Object> actionArgumentReferences(ActionUsage action) {
+        var result = new ArrayList<Object>();
+        var seen = new HashSet<String>();
+        var tree = action.eAllContents();
+        while (tree.hasNext()) {
+            if (tree.next() instanceof FeatureReferenceExpression reference && reference.getReferent() != null
+                && seen.add(id(reference.getReferent())))
+                result.add(expression(reference));
+        }
+        return result;
+    }
     static Set<String> referencedFeatures(Collection<? extends Membership> memberships) {
         var references = new HashSet<String>();
         for (var membership : memberships) {
             var element = membership.getMemberElement();
             if (element == null) continue;
+            // Abstract action calls retain their typed argument references in the
+            // exported action record; they are not structural dependencies of the
+            // state topology and must not block the surrounding state.
+            if (element instanceof PerformActionUsage || element instanceof SendActionUsage) continue;
             var tree = element.eAllContents();
             while (tree.hasNext()) {
                 var child = tree.next();

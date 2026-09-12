@@ -27,6 +27,25 @@ def target_identifier(value):
     return value if all(char.isalnum() or char == '_' for char in value) else None
 
 
+def action_identifier(body):
+    """Create a stable FCSTM hook name from a typed action declaration."""
+    for value in (body.get('declared_name'), (body.get('performed') or {}).get('declared_name')):
+        if target_identifier(value):
+            return value
+        if isinstance(value, str) and value:
+            pieces = []
+            for char in value:
+                pieces.append(char if char.isalnum() else '_')
+            candidate = ''.join(pieces).strip('_')
+            if candidate and (candidate[0].isalpha() or candidate[0] == '_'):
+                return candidate
+    offset = (body.get('span') or {}).get('offset')
+    if isinstance(offset, int):
+        prefix = 'send_action_' if body.get('kind') == 'SendActionUsage' else 'action_'
+        return prefix + str(offset)
+    return None
+
+
 def expression(expr, variables):
     kind = expr['kind']
     if kind in ('LiteralBoolean', 'LiteralInteger', 'LiteralRational'):
@@ -166,12 +185,7 @@ def lower(root):
         """Keep a typed action invocation as a pyfcstm abstract hook."""
         if body.get('kind') not in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
             raise Unsupported('action_kind', body.get('kind'))
-        source_name = body.get('declared_name')
-        name = target_identifier(source_name)
-        if not name and body.get('kind') == 'SendActionUsage':
-            offset = (body.get('span') or {}).get('offset')
-            if isinstance(offset, int):
-                name = 'send_action_' + str(offset)
+        name = action_identifier(body)
         if not name:
             raise Unsupported('action_name', str(body.get('id')))
         if isinstance(body.get('sequence'), dict):
@@ -200,6 +214,7 @@ def lower(root):
                                 'span': body['span'], 'target_owner': target, 'target_role': role,
                                 'representation': 'abstract_hook',
                                 'target_action': target_action,
+                                'argument_references': body.get('argument_references', []),
                                 'sequence_length': len(body.get('sequence', [])) if isinstance(body.get('sequence'), list) else None})
                 continue
             body_text = action(body)

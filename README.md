@@ -38,13 +38,13 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 随后将 `ActionDefinition` 作为事件声明处理的 [Actions 34711931066](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711931066) 也已通过；总数保持 12/71 与 10/74，因为 StopWatch 随后触发了未定义出口优先级拒绝。
 
-最新的全上下文扫描 [Actions 34720946017](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34720946017) 对 78 个上下文、309 个上下文内文件执行了项目级加载，得到 96 个状态根，其中 50 个控制状态候选，12 个 converted、84 个明确 unsupported。独立文件批次包含 1,661 个文件、49 个控制状态候选，其中 16 个 converted（含 4 个自建 fixture）。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)。
+最新的全上下文扫描 [Actions 34723914119](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34723914119) 对 78 个上下文、309 个上下文内文件执行了项目级加载，得到 96 个状态根，其中 50 个控制状态候选，15 个 converted、81 个明确 unsupported。独立文件批次包含 1,664 个文件、52 个控制状态候选，其中 19 个 converted（含 7 个自建 fixture）。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)；提交 `5e505bd` 又补充了动作参数引用的结构化记录，新的 CI 正在复核。
 
 ## 转换范围
 
 当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、已链接 library 单位的数量值、简单 guard、entry/exit 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。不同 typed 事件触发的多出口可以转换；重复事件、带 guard 的多出口、时间触发、带 payload/receiver 的消息、并行、数组和无法解析的成员会明确拒绝。
 
-生命周期中的有名字 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会保留为 pyfcstm abstract hook；无名字的 `SendActionUsage` 使用其 typed 源位置生成稳定 hook 名，同时保留 receiver/payload/sender 结构化事实。抽取器按 typed succession 图登记行为顺序、端点和源位置，转换器不会把动作静默删除。当前目标只把整个行为调用作为一个 hook 表示，不能宣称保留 SysML action 的内部时序或副作用；带赋值的 `do` action、分支或不完整的 action succession 仍拒绝。官方 States library 的 typed `done` 端点映射为 FCSTM 的 `[*]` 终止端点；名字为 `initial` 且没有自身行为的 state usage 映射为默认入口伪状态。数量单位在目标中擦除并记录假设；数值仍是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出、单位和调度语义。
+生命周期中的有名字 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会保留为 pyfcstm abstract hook；无名字或带空格的调用依据 typed 声明名和源位置生成稳定的合法 hook 名，同时保留 receiver/payload/sender 和动作参数引用。抽取器按 typed succession 图登记行为顺序、端点和源位置，转换器不会把动作静默删除。当前目标只把整个行为调用作为一个 hook 表示，不能宣称保留 SysML action 的内部时序或副作用；带赋值的 `do` action、分支或不完整的 action succession 仍拒绝。官方 States library 的 typed `done` 端点映射为 FCSTM 的 `[*]` 终止端点；名字为 `initial` 且没有自身行为的 state usage 映射为默认入口伪状态。数量单位在目标中擦除并记录假设；数值仍是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出、单位和调度语义。
 
 ## 公开资料与许可
 
