@@ -1,0 +1,16 @@
+types errors=false issues=
+app errors=false issues=
+parallel errors=false issues=
+actions errors=false issues=
+inheritance errors=false issues=
+constant errors=false issues=
+invalid-type errors=true issues=ERROR:Couldn't resolve reference to Type 'MissingController'. (7.sysml line : 1 column : 55)
+ERROR:A state must be typed by state definitions. (7.sysml line : 1 column : 37)
+
+invalid-target errors=true issues=ERROR:Couldn't resolve reference to Feature 'Missing'. (8.sysml line : 1 column : 78)
+ERROR:A transition must own a succession to its target. (8.sysml line : 1 column : 44)
+
+transition=Types::Controller::Idle -> Types::Controller::Active
+span=114:49
+inherited=[Types::Controller::entryAction, Types::Controller::Idle, Types::Controller::Active, Types::Controller::turnOn]
+PASS: official frontend accepts current constant syntax and retains linked controller facts

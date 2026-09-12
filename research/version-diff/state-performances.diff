@@ -1,0 +1,11 @@
+--- 2024-12/sysml.library/Kernel Libraries/Kernel Semantic Library/StatePerformances.kerml
++++ 2026-08/sysml.library/Kernel Libraries/Kernel Semantic Library/StatePerformances.kerml
+@@ -45,7 +45,7 @@
+ 		private succession [*] middle then [1] exit;
+ 
+ 
+-		readonly feature incomingTransitionTrigger : MessageTransfer [0..1] default null {
++		feature incomingTransitionTrigger : MessageTransfer [0..1] default null {
+ 			doc
+ 			/*
+ 			 * Transfer that triggered a transition into this state performance. 

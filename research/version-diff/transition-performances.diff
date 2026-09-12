@@ -1,0 +1,19 @@
+--- 2024-12/sysml.library/Kernel Libraries/Kernel Semantic Library/TransitionPerformances.kerml
++++ 2026-08/sysml.library/Kernel Libraries/Kernel Semantic Library/TransitionPerformances.kerml
+@@ -25,7 +25,7 @@
+ 		bool guard[*] subsets enclosedPerformances;
+ 		step effect[*] subsets enclosedPerformances;
+ 
+-		feature triggerTarget : Occurrence [1] default this;
++		feature triggerTarget : Occurrence [1] default accept.receiver ?? this;
+ 		feature transitionLink: HappensBefore[0..1];
+ 		
+ 		private binding [0..1] transitionLink.earlierOccurrence = [1] transitionLinkSource;
+@@ -41,7 +41,6 @@
+ 
+ 		feature accNum: Natural [1] = if isEmpty(trigger) ? 0 else 1;
+ 		step accept: AcceptPerformance[accNum] subsets timeEnclosedOccurrences, acceptPerformances {
+-			in feature redefines receiver = triggerTarget;
+ 			feature redefines acceptedTransfer = trigger;
+ 		}
+ 

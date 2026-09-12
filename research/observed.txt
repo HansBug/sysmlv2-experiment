@@ -1,0 +1,10 @@
+issues=
+issues=
+source=Types::Controller::Idle
+target=Types::Controller::Active
+guard=LiteralBoolean
+type=Types::Controller
+inherited=[Types::Controller::entryAction, Types::Controller::Idle, Types::Controller::Active, Types::Controller::turnOn]
+transition source offset=83 length=49
+unresolved-type-errors=2
+PASS: native linking, transition endpoints, guard, inherited state typing, source span, unresolved reference rejection

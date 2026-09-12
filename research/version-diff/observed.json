@@ -1,0 +1,98 @@
+[
+  {
+    "file": "org.omg.sysml.xtext/src/org/omg/sysml/xtext/SysML.xtext",
+    "sources": [
+      {
+        "tag": "2024-12",
+        "revision": "92e531783b7a640f5546960092f5acdbaaf1ad32",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/92e531783b7a640f5546960092f5acdbaaf1ad32/org.omg.sysml.xtext/src/org/omg/sysml/xtext/SysML.xtext",
+        "sha256": "92bad253fb1ed2fe555361086a57e6a1e40a1a7f81f8e8ebea0e7493c9e44bcf"
+      },
+      {
+        "tag": "2026-08",
+        "revision": "692170b71867353b8f90341e61556f49a5beb0e5",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/692170b71867353b8f90341e61556f49a5beb0e5/org.omg.sysml.xtext/src/org/omg/sysml/xtext/SysML.xtext",
+        "sha256": "7d9142742c454f5810fe4db61a089abef5e0b8d61ad8bf552631d9136b04f298"
+      }
+    ],
+    "equal": false,
+    "state_section_equal": true,
+    "state_section_bytes": 5989,
+    "state_section_sha256": [
+      "3a5f4ed5d351fcbf38b4005c2d5436a34ec59e5b2d93108ef498eb56246c766c",
+      "3a5f4ed5d351fcbf38b4005c2d5436a34ec59e5b2d93108ef498eb56246c766c"
+    ]
+  },
+  {
+    "file": "sysml.library/Systems Library/States.sysml",
+    "sources": [
+      {
+        "tag": "2024-12",
+        "revision": "92e531783b7a640f5546960092f5acdbaaf1ad32",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/92e531783b7a640f5546960092f5acdbaaf1ad32/sysml.library/Systems%20Library/States.sysml",
+        "sha256": "9524f4c6d4dd10550faf6692dfdef3975e9e7f8514368e92032e8a17199f4980"
+      },
+      {
+        "tag": "2026-08",
+        "revision": "692170b71867353b8f90341e61556f49a5beb0e5",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/692170b71867353b8f90341e61556f49a5beb0e5/sysml.library/Systems%20Library/States.sysml",
+        "sha256": "1a84e28d41a8d76ff1cbce81312257dac97b47bcd545c31f8a34f73098ac13bc"
+      }
+    ],
+    "equal": false
+  },
+  {
+    "file": "sysml.library/Kernel Libraries/Kernel Semantic Library/StatePerformances.kerml",
+    "sources": [
+      {
+        "tag": "2024-12",
+        "revision": "92e531783b7a640f5546960092f5acdbaaf1ad32",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/92e531783b7a640f5546960092f5acdbaaf1ad32/sysml.library/Kernel%20Libraries/Kernel%20Semantic%20Library/StatePerformances.kerml",
+        "sha256": "9705cef466a5e2ce4a50a45bc2386f56903fb858118a441ac0b3f4617efa1e88"
+      },
+      {
+        "tag": "2026-08",
+        "revision": "692170b71867353b8f90341e61556f49a5beb0e5",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/692170b71867353b8f90341e61556f49a5beb0e5/sysml.library/Kernel%20Libraries/Kernel%20Semantic%20Library/StatePerformances.kerml",
+        "sha256": "f02fb7e8de58f4304c95c575ee1bcb7d271d621ce8e336ce36ea80a4e956c3da"
+      }
+    ],
+    "equal": false
+  },
+  {
+    "file": "sysml.library/Kernel Libraries/Kernel Semantic Library/TransitionPerformances.kerml",
+    "sources": [
+      {
+        "tag": "2024-12",
+        "revision": "92e531783b7a640f5546960092f5acdbaaf1ad32",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/92e531783b7a640f5546960092f5acdbaaf1ad32/sysml.library/Kernel%20Libraries/Kernel%20Semantic%20Library/TransitionPerformances.kerml",
+        "sha256": "4478cabd982b3347baaeabe9ee808d7e0e919f6beebfdb5220e1b96e8eabf00d"
+      },
+      {
+        "tag": "2026-08",
+        "revision": "692170b71867353b8f90341e61556f49a5beb0e5",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/692170b71867353b8f90341e61556f49a5beb0e5/sysml.library/Kernel%20Libraries/Kernel%20Semantic%20Library/TransitionPerformances.kerml",
+        "sha256": "31e01baf2dadd5507a81dff436acf38cbdc66abaffc2828705fe2b67e277126a"
+      }
+    ],
+    "equal": false
+  },
+  {
+    "file": "sysml.library/Systems Library/Actions.sysml",
+    "sources": [
+      {
+        "tag": "2024-12",
+        "revision": "92e531783b7a640f5546960092f5acdbaaf1ad32",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/92e531783b7a640f5546960092f5acdbaaf1ad32/sysml.library/Systems%20Library/Actions.sysml",
+        "sha256": "deb0fb95ce170ef31af3fd8cb1282d4cbb20dc9a327aa4846df3f7547b42e01e"
+      },
+      {
+        "tag": "2026-08",
+        "revision": "692170b71867353b8f90341e61556f49a5beb0e5",
+        "url": "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Pilot-Implementation/692170b71867353b8f90341e61556f49a5beb0e5/sysml.library/Systems%20Library/Actions.sysml",
+        "sha256": "ac36c9404cac347a2c12d4a0cb067b1a9cebcba6a1a1853eaa1f5b3fdeb15693"
+      }
+    ],
+    "equal": false
+  }
+]

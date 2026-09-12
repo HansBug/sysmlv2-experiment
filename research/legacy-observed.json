@@ -1,0 +1,465 @@
+[
+  {
+    "name": "types",
+    "lexerErrors": [],
+    "parserErrors": [],
+    "diagnostics": [],
+    "elements": [
+      {
+        "kind": "StateDefinition",
+        "name": "Types::Controller",
+        "parallel": false,
+        "owner": "Types",
+        "types": [],
+        "span": {
+          "offset": 16,
+          "length": 149
+        }
+      },
+      {
+        "kind": "StateSubactionMembership",
+        "name": "",
+        "owner": "Types::Controller",
+        "subactionKind": "entry",
+        "span": {
+          "offset": 39,
+          "length": 6
+        }
+      },
+      {
+        "kind": "TransitionUsage",
+        "name": "",
+        "owner": "Types::Controller",
+        "related": [
+          "Types::Controller::entryAction",
+          "Types::Controller::Idle"
+        ],
+        "types": [],
+        "span": {
+          "offset": 46,
+          "length": 10
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "Types::Controller::Idle",
+        "parallel": false,
+        "owner": "Types::Controller",
+        "types": [],
+        "span": {
+          "offset": 57,
+          "length": 11
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "Types::Controller::Active",
+        "parallel": false,
+        "owner": "Types::Controller",
+        "types": [],
+        "span": {
+          "offset": 69,
+          "length": 44
+        }
+      },
+      {
+        "kind": "StateSubactionMembership",
+        "name": "",
+        "owner": "Types::Controller::Active",
+        "subactionKind": "entry",
+        "span": {
+          "offset": 84,
+          "length": 6
+        }
+      },
+      {
+        "kind": "TransitionUsage",
+        "name": "",
+        "owner": "Types::Controller::Active",
+        "related": [
+          "Types::Controller::Active::entryAction",
+          "Types::Controller::Active::Run"
+        ],
+        "types": [],
+        "span": {
+          "offset": 91,
+          "length": 9
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "Types::Controller::Active::Run",
+        "parallel": false,
+        "owner": "Types::Controller::Active",
+        "types": [],
+        "span": {
+          "offset": 101,
+          "length": 10
+        }
+      },
+      {
+        "kind": "TransitionUsage",
+        "name": "Types::Controller::turnOn",
+        "owner": "Types::Controller",
+        "source": "Types::Controller::Idle",
+        "related": [
+          "Types::Controller::Idle",
+          "Types::Controller::Active"
+        ],
+        "guard": "LiteralBoolean",
+        "types": [],
+        "span": {
+          "offset": 114,
+          "length": 49
+        }
+      }
+    ]
+  },
+  {
+    "name": "app",
+    "lexerErrors": [],
+    "parserErrors": [],
+    "diagnostics": [],
+    "elements": [
+      {
+        "kind": "ExhibitStateUsage",
+        "name": "App::Device::controller",
+        "parallel": false,
+        "owner": "App::Device",
+        "types": [
+          "Types::Controller"
+        ],
+        "span": {
+          "offset": 57,
+          "length": 38
+        }
+      }
+    ]
+  },
+  {
+    "name": "parallel",
+    "lexerErrors": [],
+    "parserErrors": [],
+    "diagnostics": [],
+    "elements": [
+      {
+        "kind": "StateDefinition",
+        "name": "Parallel::Regions",
+        "parallel": true,
+        "owner": "Parallel",
+        "types": [],
+        "span": {
+          "offset": 19,
+          "length": 48
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "Parallel::Regions::A",
+        "parallel": false,
+        "owner": "Parallel::Regions",
+        "types": [],
+        "span": {
+          "offset": 48,
+          "length": 8
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "Parallel::Regions::B",
+        "parallel": false,
+        "owner": "Parallel::Regions",
+        "types": [],
+        "span": {
+          "offset": 57,
+          "length": 8
+        }
+      }
+    ]
+  },
+  {
+    "name": "actions",
+    "lexerErrors": [],
+    "parserErrors": [],
+    "diagnostics": [],
+    "elements": [
+      {
+        "kind": "StateDefinition",
+        "name": "ActionsProbe::Controller",
+        "parallel": false,
+        "owner": "ActionsProbe",
+        "types": [],
+        "span": {
+          "offset": 55,
+          "length": 221
+        }
+      },
+      {
+        "kind": "StateSubactionMembership",
+        "name": "",
+        "owner": "ActionsProbe::Controller",
+        "subactionKind": "entry",
+        "span": {
+          "offset": 105,
+          "length": 6
+        }
+      },
+      {
+        "kind": "TransitionUsage",
+        "name": "",
+        "owner": "ActionsProbe::Controller",
+        "related": [
+          "ActionsProbe::Controller::entryAction",
+          "ActionsProbe::Controller::Idle"
+        ],
+        "types": [],
+        "span": {
+          "offset": 112,
+          "length": 10
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "ActionsProbe::Controller::Idle",
+        "parallel": false,
+        "owner": "ActionsProbe::Controller",
+        "types": [],
+        "span": {
+          "offset": 123,
+          "length": 73
+        }
+      },
+      {
+        "kind": "StateSubactionMembership",
+        "name": "",
+        "owner": "ActionsProbe::Controller::Idle",
+        "subactionKind": "entry",
+        "span": {
+          "offset": 136,
+          "length": 20
+        }
+      },
+      {
+        "kind": "StateSubactionMembership",
+        "name": "",
+        "owner": "ActionsProbe::Controller::Idle",
+        "subactionKind": "do",
+        "span": {
+          "offset": 157,
+          "length": 17
+        }
+      },
+      {
+        "kind": "StateSubactionMembership",
+        "name": "",
+        "owner": "ActionsProbe::Controller::Idle",
+        "subactionKind": "exit",
+        "span": {
+          "offset": 175,
+          "length": 19
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "ActionsProbe::Controller::Active",
+        "parallel": false,
+        "owner": "ActionsProbe::Controller",
+        "types": [],
+        "span": {
+          "offset": 197,
+          "length": 13
+        }
+      },
+      {
+        "kind": "TransitionUsage",
+        "name": "ActionsProbe::Controller::go",
+        "owner": "ActionsProbe::Controller",
+        "source": "ActionsProbe::Controller::Idle",
+        "related": [
+          "ActionsProbe::Controller::Idle",
+          "ActionsProbe::Controller::Active"
+        ],
+        "guard": "OperatorExpression",
+        "effect": "AssignmentActionUsage",
+        "types": [],
+        "span": {
+          "offset": 211,
+          "length": 63
+        }
+      }
+    ]
+  },
+  {
+    "name": "inheritance",
+    "lexerErrors": [],
+    "parserErrors": [],
+    "diagnostics": [],
+    "elements": [
+      {
+        "kind": "StateDefinition",
+        "name": "Inheritance::Derived",
+        "parallel": false,
+        "owner": "Inheritance",
+        "types": [
+          "Types::Controller"
+        ],
+        "span": {
+          "offset": 47,
+          "length": 32
+        }
+      },
+      {
+        "kind": "ExhibitStateUsage",
+        "name": "Inheritance::Device::controller",
+        "parallel": false,
+        "owner": "Inheritance::Device",
+        "types": [
+          "Inheritance::Derived",
+          "Types::Controller"
+        ],
+        "span": {
+          "offset": 98,
+          "length": 35
+        }
+      }
+    ]
+  },
+  {
+    "name": "invalid-type",
+    "lexerErrors": [],
+    "parserErrors": [],
+    "diagnostics": [
+      {
+        "severity": 1,
+        "message": "Could not resolve reference to Type named 'MissingController'."
+      }
+    ],
+    "elements": [
+      {
+        "kind": "ExhibitStateUsage",
+        "name": "Invalid::Device::c",
+        "parallel": false,
+        "owner": "Invalid::Device",
+        "types": [],
+        "span": {
+          "offset": 36,
+          "length": 36
+        }
+      }
+    ]
+  },
+  {
+    "name": "invalid-target",
+    "lexerErrors": [],
+    "parserErrors": [],
+    "diagnostics": [
+      {
+        "severity": 1,
+        "message": "Could not resolve reference to Feature named 'Missing'."
+      }
+    ],
+    "elements": [
+      {
+        "kind": "StateDefinition",
+        "name": "BadTarget::S",
+        "parallel": false,
+        "owner": "BadTarget",
+        "types": [],
+        "span": {
+          "offset": 20,
+          "length": 67
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "BadTarget::S::A",
+        "parallel": false,
+        "owner": "BadTarget::S",
+        "types": [],
+        "span": {
+          "offset": 34,
+          "length": 8
+        }
+      },
+      {
+        "kind": "TransitionUsage",
+        "name": "BadTarget::S::t",
+        "owner": "BadTarget::S",
+        "source": "BadTarget::S::A",
+        "related": [
+          "BadTarget::S::A"
+        ],
+        "guard": "LiteralBoolean",
+        "types": [],
+        "span": {
+          "offset": 43,
+          "length": 42
+        }
+      }
+    ]
+  },
+  {
+    "name": "constant",
+    "lexerErrors": [],
+    "parserErrors": [
+      "Expecting: one of these possible Token sequences:\n  1. [;]\n  2. [{]\nbut found: 'attribute'"
+    ],
+    "diagnostics": [
+      {
+        "severity": 1,
+        "message": "Expecting: one of these possible Token sequences:\n  1. [;]\n  2. [{]\nbut found: 'attribute'"
+      }
+    ],
+    "elements": [
+      {
+        "kind": "StateDefinition",
+        "name": "NewSyntax::S",
+        "parallel": false,
+        "owner": "NewSyntax",
+        "types": [],
+        "span": {
+          "offset": 52,
+          "length": 115
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "NewSyntax::S::A",
+        "parallel": false,
+        "owner": "NewSyntax::S",
+        "types": [],
+        "span": {
+          "offset": 106,
+          "length": 8
+        }
+      },
+      {
+        "kind": "StateUsage",
+        "name": "NewSyntax::S::B",
+        "parallel": false,
+        "owner": "NewSyntax::S",
+        "types": [],
+        "span": {
+          "offset": 115,
+          "length": 8
+        }
+      },
+      {
+        "kind": "TransitionUsage",
+        "name": "NewSyntax::S::t",
+        "owner": "NewSyntax::S",
+        "source": "NewSyntax::S::A",
+        "related": [
+          "NewSyntax::S::A",
+          "NewSyntax::S::B"
+        ],
+        "guard": "OperatorExpression",
+        "types": [],
+        "span": {
+          "offset": 124,
+          "length": 41
+        }
+      }
+    ]
+  }
+]

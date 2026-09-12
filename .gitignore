@@ -1,0 +1,4 @@
+_external/
+artifacts/
+__pycache__/
+.venv/
