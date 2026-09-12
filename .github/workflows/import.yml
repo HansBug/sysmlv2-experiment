@@ -91,6 +91,8 @@ jobs:
             --output artifacts/project-contexts
           python research/convert_project_results.py artifacts/project-contexts artifacts/project-context-conversion.json
       - run: python convert_corpus.py artifacts/corpus-source.json artifacts/converted
+      - name: 核对逐根登记与源状态树
+        run: python research/check_conversion_reports.py artifacts
       - uses: actions/upload-artifact@v4
         if: always()
         with:

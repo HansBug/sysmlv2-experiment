@@ -155,7 +155,7 @@ def run(source, output):
         if not file['states']:
             rows.append({**identity, 'status': 'no_state_machine'})
         for state in file['states']:
-            row = {**identity, 'state': state['id']}
+            row = {**identity, 'state': state['id'], 'has_control_states': bool(state['states'])}
             key = hashlib.sha256(json.dumps(row, sort_keys=True).encode()).hexdigest()[:16]
             try:
                 dsl, mapping = lower(state)
@@ -180,7 +180,7 @@ def run(source, output):
                 row.update(status='target_error', code=type(error).__name__, detail=str(error))
             rows.append(row)
     extracted_roots = [r for r in rows if 'state' in r]
-    control_candidates = [r for r in extracted_roots if r.get('code') != 'no_control_states']
+    control_candidates = [r for r in extracted_roots if r['has_control_states']]
     summary = {'source_files': len(source['models']),
                'unique_source_hashes': len({m['sha256'] for m in source['models']}),
                'extracted_state_roots': len(extracted_roots),
