@@ -1,0 +1,49 @@
+name: SysML import corpus
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '*.py'
+      - '*.java'
+      - 'requirements.txt'
+      - 'research/cases/**'
+      - 'research/corpus-pins.json'
+      - '.github/workflows/import.yml'
+permissions:
+  contents: read
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/checkout@v4
+        with:
+          repository: Systems-Modeling/SysML-v2-Pilot-Implementation
+          ref: 801c6a881954987a9707d396d5767db1ec51d8cb
+          path: _external/pilot
+          sparse-checkout: sysml.library
+          persist-credentials: false
+      - name: Download the released official frontend wrapper
+        run: |
+          curl --fail --location --retry 3 -o _external/pilot.jar https://github.com/HansBug/sysml-v2-pilot-gt/releases/download/v0.1.0/sysml-v2-pilot-gt-0.1.0-all.jar
+          echo '1bb02b3865e6830687f4c4f80afbfe8d670f6fb6df305f6844833543320fa989  _external/pilot.jar' | sha256sum --check
+      - run: pip install -r requirements.txt
+      - run: python prepare_corpus.py
+      - name: Extract linked elements with the official Pilot
+        run: java -Xmx4g -cp _external/pilot.jar ExtractStates.java _external/pilot/sysml.library artifacts/corpus-manifest.json artifacts/corpus-source.json > artifacts/extraction.log 2>&1
+      - run: python check_import.py artifacts/corpus-source.json
+      - run: python convert_corpus.py artifacts/corpus-source.json artifacts/converted
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sysml-import-evidence
+          path: artifacts/
+          if-no-files-found: error
