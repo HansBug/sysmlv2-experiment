@@ -18,6 +18,15 @@ class Unsupported(ValueError):
         super().__init__(detail)
 
 
+def target_identifier(value):
+    """Accept only names already valid in the FCSTM identifier domain."""
+    if not isinstance(value, str) or not value:
+        return None
+    if not (value[0].isalpha() or value[0] == '_'):
+        return None
+    return value if all(char.isalnum() or char == '_' for char in value) else None
+
+
 def expression(expr, variables):
     kind = expr['kind']
     if kind in ('LiteralBoolean', 'LiteralInteger', 'LiteralRational'):
@@ -157,7 +166,8 @@ def lower(root):
         """Keep a typed action invocation as a pyfcstm abstract hook."""
         if body.get('kind') not in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
             raise Unsupported('action_kind', body.get('kind'))
-        name = body.get('declared_name')
+        source_name = body.get('declared_name')
+        name = target_identifier(source_name)
         if not name and body.get('kind') == 'SendActionUsage':
             offset = (body.get('span') or {}).get('offset')
             if isinstance(offset, int):
@@ -168,7 +178,7 @@ def lower(root):
             raise Unsupported('action_sequence_shape', str(body['sequence'].get('error')))
         # The source action remains discoverable through the mapping and can be
         # implemented by the generated model's abstract hook.
-        return f'{role} abstract {name};'
+        return f'{role} abstract {name};', name
     names = {node['id']: 'S' + str(index) for index, node in enumerate(nodes)}
     def emit(node, prefix, indent):
         target = prefix + names[node['id']]
@@ -184,10 +194,12 @@ def lower(root):
             role = {'entry': 'enter', 'do': 'during', 'exit': 'exit'}[subaction['role']]
             body = subaction['action']
             if body.get('kind') in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
-                lines.append(indent + '    ' + abstract_action(body, role))
+                abstract_line, target_action = abstract_action(body, role)
+                lines.append(indent + '    ' + abstract_line)
                 mapping.append({'kind': 'state_action', 'source_id': subaction['id'],
                                 'span': body['span'], 'target_owner': target, 'target_role': role,
                                 'representation': 'abstract_hook',
+                                'target_action': target_action,
                                 'sequence_length': len(body.get('sequence', [])) if isinstance(body.get('sequence'), list) else None})
                 continue
             body_text = action(body)
