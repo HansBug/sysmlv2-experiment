@@ -8,7 +8,7 @@
 |---|---|---|
 | 官方 Pilot，`801c6a881954987a9707d396d5767db1ec51d8cb`（2026-07） | 状态层次、跨文件类型链接、继承、转移端点、guard、赋值、source span、非法引用拒绝均通过定向探针；已连接 FCSTM | 当前成本最低的完整 typed 前端入口。Java 21 + 固定 JAR + 匹配标准库 |
 | [sysml-2ls](https://github.com/sensmetry/sysml-2ls)，`a0b3ddbf783063dd7291aac0b51d4282decc789e`，0.9.1 | 用匹配的 2024 标准库时，定向状态机案例中的层次、guard、赋值、entry/do/exit 分类、跨文件 exhibit/继承、端点和 span 可提取；拒绝不存在的类型/目标 | 可作为受限旧语法方案。不能因年份旧而否定，但也不能把定向探针当完整版本兼容证明 |
-| [Spec42](https://github.com/elan8/spec42) 相关工具调查 | 实测 v0.52.0 CLI 的 model-summary 是 validation-only，成功验证的状态文件仍报告 nodes_total=0；存在更丰富的 WASM/generator API，未完成 typed state 导出验证 | 本次不接入；不能据旧版 CLI 结果推断其所有 API 都不可能提取状态 |
+| [Spec42](https://github.com/elan8/spec42) 相关工具调查 | [实测 v0.52.0](spec42-observed.json) CLI 的 model-summary 是 validation-only，成功验证的状态文件仍报告 nodes_total=0；存在更丰富的 WASM/generator API，未完成 typed state 导出验证 | 本次不接入；不能据旧版 CLI 结果推断其所有 API 都不可能提取状态 |
 
 `FrontendProbe.java` 与 `legacy_probe.cjs` 分别保留可运行的验证代码，结果为 `pilot-observed.txt`、`legacy-observed.json`。批量转换另用 `ExtractStates.java`，两种实验不要混淆：前端探针证明可链接跨文件；当前批量器为隔离语料中的重复 package/name，**逐文件加标准库加载**，没有恢复各工程上下文。
 
@@ -50,7 +50,7 @@
 
 ## 实际覆盖
 
-完整机器可读记录见 [`import-observed.json`](import-observed.json)。本地 Java 21 + 固定 JAR/标准库已执行全部 1,332 文件。
+批次摘要与逐项状态见 [`import-observed.json`](import-observed.json)。本地 Java 21 + 固定 JAR/标准库已执行全部 1,332 文件；[Actions 34703608767](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34703608767) 成功复现相同统计，并保存完整源诊断和转换产物。
 
 | 数据集 | 文件 | 源校验失败文件 | 成功解析但无状态机文件 | 接受的状态根 | 不支持的状态根 |
 |---|---:|---:|---:|---:|---:|

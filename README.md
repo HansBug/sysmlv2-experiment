@@ -51,7 +51,7 @@ with the standard library; missing project context is a recorded limitation.
 The mandatory check verifies target diagnostics, a two-cycle guard/assignment
 trace, and explicit rejection of arrays, parallel states and nonempty do actions.
 
-Local full-corpus execution: **1,332 files, 24 extracted state roots, 4 accepted
+[Successful full-corpus Actions run](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34703608767), agreeing with local execution: **1,332 files, 24 extracted state roots, 4 accepted
 roots (2 external + 2 synthetic)**. There are 20 unsupported roots, 624 parsed
 files without state machines and 691 files rejected by source validation in the
 current context. These are different counting units. The corpus does not support

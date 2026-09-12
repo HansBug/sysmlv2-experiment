@@ -1,0 +1,18 @@
+{
+  "tool": "elan8/spec42",
+  "version": "0.52.0",
+  "input": "research/cases/types.sysml",
+  "check": {
+    "document_count": 1,
+    "error_count": 0,
+    "warning_count": 0,
+    "information_count": 1
+  },
+  "model_summary": {
+    "nodes_total": 0,
+    "nodes_returned": 0,
+    "relationships_total": 0,
+    "relationships_returned": 0
+  },
+  "scope": "CLI validation/model-summary only; richer WASM API not integrated"
+}
