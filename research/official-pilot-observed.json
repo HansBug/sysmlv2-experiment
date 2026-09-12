@@ -9,11 +9,15 @@
   },
   "extracted_state_files": 16,
   "extracted_state_roots": 47,
-  "conversion": {
+  "conversion_before_event_mapping": {
     "no_state_machine": 183,
     "source_validation_error": 56,
     "unsupported": 45,
     "converted": 2
+  },
+  "conversion_after_event_mapping": {
+    "converted": 5,
+    "unsupported": 42
   },
   "state_files": [
     {
