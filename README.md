@@ -34,6 +34,8 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 最新 CI 已在 [Actions 34708595195](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34708595195) 复现 JAR 下载、语料抽取、语法清点、项目上下文步骤和 pyfcstm 检查，并上传全部中间产物。
 
+接入官方 Pilot 255 个示例后的 [Actions 34709690957](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34709690957) 也已通过：总计 1,587 个文件、71 个源状态根、6 个 converted；官方示例贡献 47 个状态根和其中 2 个 converted。
+
 ## 转换范围
 
 当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、简单 guard、entry/exit 赋值和 transition effect。并行、触发/消息、任意动作、非空 do action、未定义优先级、数组和无法解析的成员会明确拒绝。数值是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出和调度语义。
