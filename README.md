@@ -36,6 +36,8 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 接入官方 Pilot 255 个示例后的 [Actions 34709690957](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34709690957) 也已通过：总计 1,587 个文件、71 个源状态根、6 个 converted。启用 typed `accept`→FCSTM event 后，[Actions 34711113632](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711113632) 将独立批次提升到 12 个 converted、项目级批次提升到 10 个 converted；完整对照见 [`research/events-observed.json`](research/events-observed.json)。
 
+随后将 `ActionDefinition` 作为事件声明处理的 [Actions 34711931066](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711931066) 也已通过；总数保持 12/71 与 10/74，因为 StopWatch 随后触发了未定义出口优先级拒绝。
+
 最新的全上下文扫描 [Actions 34710023025](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34710023025) 对 76 个上下文、237 个上下文内文件执行了项目级加载，得到 74 个状态根，其中 4 个 converted、70 个明确 unsupported。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)。
 
 ## 转换范围
