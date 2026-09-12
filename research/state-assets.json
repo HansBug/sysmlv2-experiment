@@ -1,7 +1,43 @@
 {
-  "description": "\u9010\u4e2a\u767b\u8bb0\u8bed\u6cd5\u6811\u4e2d\u542b StateDefinition/StateUsage \u7684\u516c\u5f00\u6587\u4ef6\uff1b\u4e0d\u662f\u53ef\u6267\u884c\u63a7\u5236\u5668\u6e05\u5355\u3002",
-  "count": 115,
+  "description": "逐个登记语法树中含 StateDefinition/StateUsage 的公开文件；不是可执行控制器清单。",
+  "count": 118,
   "assets": [
+    {
+      "dataset": "apollo11",
+      "source": "CoSMA/CoSMAPackage.sysml",
+      "sha256": "0a6bf83aa68d2dc35aac0b690edb461f9409b86d0b4a8f91130b189352741304",
+      "syntax_errors": false,
+      "state_definitions": 1,
+      "state_usages": 1,
+      "state_roots": 2,
+      "context_directory": "CoSMA",
+      "context_status": "validated_project",
+      "conversion_status": "strict_profile_unsupported"
+    },
+    {
+      "dataset": "apollo11",
+      "source": "Purpose/MissionPackage.sysml",
+      "sha256": "f537a72469a6b7ce0ce35262d715e8803088e0b71f8dd19a28e1c8f5d19903fc",
+      "syntax_errors": false,
+      "state_definitions": 0,
+      "state_usages": 16,
+      "state_roots": 1,
+      "context_directory": "Purpose",
+      "context_status": "validated_project",
+      "conversion_status": "strict_profile_unsupported"
+    },
+    {
+      "dataset": "apollo11",
+      "source": "Purpose/MissionPhasesPackage.sysml",
+      "sha256": "c1e78c28194b07334a34c4d9cf26478de5168fe428b04e499a5bf677cf0faf93",
+      "syntax_errors": false,
+      "state_definitions": 15,
+      "state_usages": 0,
+      "state_roots": 15,
+      "context_directory": "Purpose",
+      "context_status": "validated_project",
+      "conversion_status": "strict_profile_unsupported"
+    },
     {
       "dataset": "gfse",
       "source": "SE_Models/DroneModelLogical.sysml",

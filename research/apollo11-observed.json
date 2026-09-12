@@ -1,0 +1,29 @@
+{
+  "dataset": "apollo11",
+  "repository": "https://github.com/airbus/apollo-11-sysml-v2",
+  "revision": "6e9c93fe7d80c5ca3534bb14b10ab374a643ef2d",
+  "license": "MPL-2.0",
+  "pilot_jar_sha256": "1bb02b3865e6830687f4c4f80afbfe8d670f6fb6df305f6844833543320fa989",
+  "project_files": 28,
+  "validated_files": 28,
+  "validation_errors": 0,
+  "state_files": 3,
+  "state_roots": 18,
+  "strict_conversion": {
+    "converted": 0,
+    "unsupported": 18,
+    "first_reasons": {
+      "no_control_states": 17,
+      "action_kind": 1
+    }
+  },
+  "task_root": {
+    "source": "Purpose/MissionPackage.sysml",
+    "qualified_name": "MissionPackage::Apollo11Mission::apollo11Phases",
+    "child_states": 15,
+    "transitions": 14,
+    "typed_trigger_count": 13,
+    "strict_status": "unsupported_due_to_inherited_perform_action"
+  },
+  "note": "Strict profile preserves do/perform behavior; no action is silently discarded."
+}
