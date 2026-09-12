@@ -72,7 +72,7 @@
       "revision": "3bb66343ec18a40f5f851b97b3a19b2a7cc1efc4",
       "model_glob": "examples/**/*.sysml",
       "license": "Apache-2.0",
-      "status": "new_corpus_source_pending_pilot_validation"
+      "status": "downloaded_1_file_pilot_source_validation_error_no_typed_state_root"
     },
     {
       "name": "SysML v2 Release",

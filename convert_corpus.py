@@ -315,6 +315,7 @@ def run(source, output):
                     'ignored_structural': state.get('ignored_structural', []),
                     'assumptions': ['Explicit periodic controller interpretation; no general SysML execution equivalence claim.',
                                     'Single active path, mathematical numeric domain, no asynchronous messages.',
+                                    'Abstract action arguments remain typed mapping metadata; hook execution is not synthesized.',
                                     'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')
             except Unsupported as error:
                 # Unsupported: lower() reports source features outside the implemented periodic subset.

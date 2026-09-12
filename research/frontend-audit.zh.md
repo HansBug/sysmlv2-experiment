@@ -41,7 +41,7 @@
 
 随后对登记表中的 64 个上下文目录逐一运行 [`ExtractProject.java`](../ExtractProject.java)。64 个目录、162 个源文件均完成项目级读取，得到 18 个状态根；4 个目录零校验错误，其余目录共 1,500 条错误（旧批次）。机器可读汇总见 [`project-context-observed.json`](project-context-observed.json)。再经过 pyfcstm 目标检查，18 个项目级状态根中 2 个 converted、16 个因目标 profile 特性拒绝，结果见 [`project-conversion-observed.json`](project-conversion-observed.json)。这说明“补全上下文”是必要条件，但对当前语料仍不足以带来全面通过；剩余错误必须按构造调用、connector、旧版本写法等类型继续处理。
 
-接入官方 Pilot 和 Apollo 11 后，CI 扫描了 78 个上下文、309 个上下文内文件，得到 96 个状态根，其中 50 个控制状态候选，12 个 converted、84 个明确 unsupported。Apollo 11 作为完整 28 文件根目录加载时为 0 条校验错误、18 个状态根；此前按子目录拆分造成的 842 条错误已确认是我们的上下文分组缺陷。该结果包含同一概念在不同公开数据集中的重复版本，不能按状态根数宣称独立系统数量；汇总见 [`project-context-ci-observed.json`](project-context-ci-observed.json)。
+接入官方 Pilot、Apollo 11、Advent 和 SysML v2 Book 示例后，CI 扫描了 78 个上下文、309 个上下文内文件，得到 96 个状态根，其中 50 个控制状态候选，15 个 converted、81 个明确 unsupported。Apollo 11 作为完整 28 文件根目录加载时为 0 条校验错误、18 个状态根；此前按子目录拆分造成的 842 条错误已确认是我们的上下文分组缺陷。Book 示例的全局校验错误使其没有进入 typed 状态根项目扫描。该结果包含同一概念在不同公开数据集中的重复版本，不能按状态根数宣称独立系统数量；汇总见 [`project-context-ci-observed.json`](project-context-ci-observed.json)。
 
 公开旧例 `training/24. Transitions/Transition Actions.sysml` 与当前官方 Pilot `sysml/src/training/25. Transitions/Transition Actions.sysml` 还实际展示了 `send ControllerStartSignal()` → `send new ControllerStartSignal()`、`entry; then off` → `first start then off` 的变化。核心 state grammar 相同，不代表共享动作规则和标准库没变化。不能承诺 2024 前端无条件覆盖 2026 状态模型。
 
@@ -53,7 +53,7 @@
 
 单独裸调 Xtext `IParser` 的早期诊断脚本曾缺少 EPackage/setting delegate 初始化，导致代理或 NPE 错误；换成官方完整 workspace 初始化后消失，这是我们的探针接法问题。已有 wrapper 的泛化 JSON 序列化异常也不能直接归到官方语法解析器，本导入路径不使用那个 serializer。
 
-历史独立文件转换结果（事件映射后的 CI）为 **71 个抽取状态根中 12 个 converted**；最新项目级上下文扫描为 **96 个状态根中 50 个控制状态候选、12 个 converted**。[Actions 34720946017](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34720946017) 进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点和带 library 单位的数量值；总计独立文件批次为 1,661 个文件、49 个控制候选、16 个 converted（其中 4 个为自建 fixture）。member kind、消息 payload/receiver、no control states、parallel、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
+最新独立文件转换结果为 **82 个抽取状态根中 19 个 converted**；最新项目级上下文扫描为 **96 个状态根中 50 个控制状态候选、15 个 converted**。[Actions 34725067445](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34725067445) 进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点、带 library 单位的数量值和动作参数引用登记；总计独立文件批次为 1,665 个文件、52 个控制候选、19 个 converted（其中 7 个为自建 fixture）。member kind、消息 payload/receiver、no control states、parallel、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
 
 工程上下文补全已经覆盖登记的公开项目；当前 `PerformActionUsage`/`SendActionUsage` 的有名字调用已能保留为 abstract hook，`initial` usage 也能映射为默认入口。Apollo 11 的完整项目上下文因此从 18 个全部拒绝变为 1 个控制状态根通过目标 AST/语义检查；这只是结构化 hook 表示，不是 action 内部执行等价。剩余拒绝主要是带赋值的 do action、并行、结构成员、时间/消息语义、分支 succession 和未定义优先级。带 library 单位的数量值和可证明互斥的简单 guard 已加入受限映射。下一步仍应逐类建立 typed 最小复现，不通过删除行为来提高数字。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 
