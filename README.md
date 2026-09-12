@@ -40,7 +40,7 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 ## 转换范围
 
-当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、简单 guard、entry/exit 赋值和 transition effect。并行、触发/消息、任意动作、非空 do action、未定义优先级、数组和无法解析的成员会明确拒绝。数值是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出和调度语义。
+当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、简单 guard、entry/exit 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。带 payload/receiver 的消息、时间触发、并行、任意动作、非空 do action、未定义优先级、数组和无法解析的成员会明确拒绝。数值是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出和调度语义。
 
 ## 公开资料与许可
 

@@ -51,6 +51,13 @@ def lower(root):
     if not root['states']:
         raise Unsupported('no_control_states', root['id'])
     variables, declarations, mapping, constants = {}, [], [], set()
+    event_ids = []
+    for node in nodes:
+        for edge in node['transitions']:
+            for event in edge.get('triggers', []):
+                if event not in event_ids:
+                    event_ids.append(event)
+    events = {event: 'E' + str(index) for index, event in enumerate(event_ids)}
     for node in nodes:
         for data in node['data']:
             if data['id'] in variables:
@@ -86,6 +93,8 @@ def lower(root):
         target = prefix + names[node['id']]
         mapping.append({'kind': 'state', 'source_id': node['id'], 'span': node['span'], 'target': target})
         lines = [indent + 'state ' + names[node['id']] + ' {']
+        if prefix == '':
+            lines.extend(indent + '    event ' + events[event] + ';' for event in event_ids)
         entry_ids = {a['id'] for a in node['actions'] if a['role'] == 'entry'}
         for subaction in node['actions']:
             body = action(subaction['action'])
@@ -102,7 +111,8 @@ def lower(root):
         initial = 0
         outgoing = Counter()
         for index, edge in enumerate(node['transitions']):
-            if edge['trigger_count']:
+            triggers = edge.get('triggers', [])
+            if edge['trigger_count'] and not triggers:
                 raise Unsupported('trigger_event', edge['id'])
             if edge['target'] not in child_ids:
                 raise Unsupported('transition_target', str(edge['target']))
@@ -116,10 +126,13 @@ def lower(root):
                     raise Unsupported('transition_priority_unspecified', edge['source'])
             else:
                 raise Unsupported('transition_source', str(edge['source']))
-            guard = '' if not edge['guards'] else ' : if [' + ' and '.join(expression(g, variables) for g in edge['guards']) + ']'
+            terms = [events[event] for event in triggers]
+            if edge['guards']:
+                terms.append('[' + ' and '.join(expression(g, variables) for g in edge['guards']) + ']')
+            trigger = '' if not terms else ' : ' + ' + '.join(terms)
             effects = ' '.join(action(a) for a in edge['effects'])
             effect = ' effect { ' + effects + ' }' if effects else ''
-            lines.append(indent + f'    {src} -> {names[edge["target"]]}{guard}{effect};')
+            lines.append(indent + f'    {src} -> {names[edge["target"]]}{trigger}{effect};')
             mapping.append({'kind': 'transition', 'source_id': edge['id'], 'span': edge['span'],
                             'target_owner': target, 'target_declaration_index': index})
         if child_ids and initial != 1:

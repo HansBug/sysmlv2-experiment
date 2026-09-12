@@ -70,10 +70,12 @@ public class ExtractStates {
                     "action", action(a)));
             }
             else if (e instanceof TransitionUsage t) {
+                var triggers = t.getTriggerAction().stream().flatMap(a -> a.getPayloadParameter().getType().stream())
+                    .map(ExtractStates::id).filter(Objects::nonNull).toList();
                 transitions.add(object("id", id(t), "source", id(t.getSource()), "target", id(t.getTarget()),
                     "guards", t.getGuardExpression().stream().map(ExtractStates::expression).toList(),
                     "effects", t.getEffectAction().stream().map(ExtractStates::action).toList(),
-                    "trigger_count", t.getTriggerAction().size(), "span", span(t)));
+                    "triggers", triggers, "trigger_count", t.getTriggerAction().size(), "span", span(t)));
             } else if (e instanceof SuccessionAsUsage t) {
                 transitions.add(object("id", id(t), "source", id(t.getSourceFeature()),
                     "target", t.getTargetFeature().size() == 1 ? id(t.getTargetFeature().get(0)) : null,
