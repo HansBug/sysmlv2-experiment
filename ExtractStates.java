@@ -148,6 +148,10 @@ public class ExtractStates {
             // exported action record; they are not structural dependencies of the
             // state topology and must not block the surrounding state.
             if (element instanceof PerformActionUsage || element instanceof SendActionUsage) continue;
+            // A child state owns its own behavior references. Walking its complete
+            // subtree here would incorrectly make an ancestor's structural alias
+            // look behaviorally referenced.
+            if (element instanceof StateUsage || element instanceof StateDefinition) continue;
             var tree = element.eAllContents();
             while (tree.hasNext()) {
                 var child = tree.next();
