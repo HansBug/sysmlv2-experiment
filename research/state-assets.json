@@ -1,7 +1,55 @@
 {
   "description": "逐个登记语法树中含 StateDefinition/StateUsage 的公开文件；不是可执行控制器清单。",
-  "count": 118,
+  "count": 122,
   "assets": [
+    {
+      "dataset": "advent",
+      "source": "lesson18/models/L18_SantaSleighCruiseControl_Challenge.sysml",
+      "sha256": "2da5fa9040df1895e014c8f616405e0e53aa6d4990b84214bfcbc8eed9675e29",
+      "syntax_errors": false,
+      "state_definitions": 1,
+      "state_usages": 0,
+      "state_roots": 1,
+      "context_directory": "lesson18/models",
+      "context_status": "validated_project",
+      "conversion_status": "strict_profile_unsupported"
+    },
+    {
+      "dataset": "advent",
+      "source": "lesson18/models/L18_SantaSleighCruiseControl_Solution.sysml",
+      "sha256": "f0d24263dd10b87fa14071ec9afac8c01ae963695c3533f2b5ec2eaca44e651a",
+      "syntax_errors": false,
+      "state_definitions": 1,
+      "state_usages": 13,
+      "state_roots": 1,
+      "context_directory": "lesson18/models",
+      "context_status": "validated_project",
+      "conversion_status": "strict_profile_unsupported"
+    },
+    {
+      "dataset": "advent",
+      "source": "lesson18/models/L18_States.sysml",
+      "sha256": "e020b385e6d9a3d00ced73d0d998c268cdb6583a065d9da0b68d8c9c60424c0c",
+      "syntax_errors": false,
+      "state_definitions": 1,
+      "state_usages": 10,
+      "state_roots": 1,
+      "context_directory": "lesson18/models",
+      "context_status": "validated_project",
+      "conversion_status": "strict_profile_unsupported"
+    },
+    {
+      "dataset": "advent",
+      "source": "lesson19/models/L19_State_Simulation.sysml",
+      "sha256": "ef8be64c076caa184264ac7079fe018f0919c03ad5071ddcd0c5706f1565f8f8",
+      "syntax_errors": false,
+      "state_definitions": 1,
+      "state_usages": 7,
+      "state_roots": 1,
+      "context_directory": "lesson19/models",
+      "context_status": "validated_project",
+      "conversion_status": "strict_profile_unsupported"
+    },
     {
       "dataset": "apollo11",
       "source": "CoSMA/CoSMAPackage.sysml",

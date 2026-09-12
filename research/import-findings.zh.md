@@ -45,6 +45,7 @@
 | [SysTemp benchmark](https://github.com/yasminebouamra/SysMLv2-Benchmark) | `dd41357921f23020aacdaaa063e0a4b31fc0b2b4` | data 下 243 个 .sysml |
 | [Conformance-Driven Refinement dataset](https://github.com/cmuchancel/NL-to-SysMLv2-via-Conformance-Driven-Refinement) | `96c0e104f82a8da7a5edccca9b67040785b53bd3` | 604 positive artifacts + 439 negative artifacts |
 | [Airbus Apollo 11 SysML v2](https://github.com/airbus/apollo-11-sysml-v2) | `6e9c93fe7d80c5ca3534bb14b10ab374a643ef2d` | 28 个跨文件工程模型文件，MPL-2.0 |
+| [Sensmetry Advent of SysML v2](https://github.com/sensmetry/advent-of-sysml-v2) | `83ba1f692072c9dffd7cdf873e11ae1e4a4f833f` | 44 个教学模型文件，4 个含状态元素，MIT |
 | 自建最小源模型 | 本实验仓库版本 | 10 个 .sysml |
 
 [SysTemp 论文](https://arxiv.org/abs/2506.21608) 直接链接前两者；[Refinement 论文](https://arxiv.org/abs/2607.14162) 链接第三者。Refinement 仓库还含 151 个 SysMBench prompts 和 trajectory corpus，本批次没有把 trajectory 中同一模型的副本再重复加入。正负标签来自作者的合规评价，不等于当前 Pilot 独立文件加载会给出相同结论。[SysMBench 论文](https://arxiv.org/abs/2508.03215) 本身不能替代实际可下载模型证据。
@@ -70,6 +71,8 @@
 公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。独立全量批次最新结果为 12 个 converted，项目级上下文批次为 92 个状态根、52 个控制状态候选，其中 10 个 converted；逐项结果和假设见 [`events-observed.json`](events-observed.json)。这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
 
 Apollo 11 的完整工程上下文已在 [Actions 34714862858](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858) 中验证：28 个文件、0 条官方校验错误、18 个状态根。若按 `CoSMA`/`Purpose` 子目录分别加载会产生 842 条错误，这已由 `--project-root apollo11=_external/apollo11` 修复；这项差异说明上下文边界本身必须作为实验变量记录。严格转换仍拒绝 18 个根，其中任务阶段控制根的首因是继承的 `PerformActionUsage`。
+
+Sensmetry Advent 仓库的 44 个文件中有 4 个含状态元素；完整仓库上下文识别 4 个状态根，其中巡航控制解答模型为并行状态，状态定义和仿真模型分别触发结构成员/数据类型限制。该结果适合做教学级语义边界对照，不应与 Apollo 11 等真实工程复杂度混为一谈。
 
 ## 对后续学术工作的含义
 

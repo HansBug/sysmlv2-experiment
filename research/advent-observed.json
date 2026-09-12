@@ -1,0 +1,42 @@
+{
+  "dataset": "advent",
+  "repository": "https://github.com/sensmetry/advent-of-sysml-v2",
+  "revision": "83ba1f692072c9dffd7cdf873e11ae1e4a4f833f",
+  "license": "MIT",
+  "files": 44,
+  "syntax_state_files": 4,
+  "state_roots": 4,
+  "full_project_validation": {
+    "files": 44,
+    "errors": 2
+  },
+  "strict_conversion": {
+    "control_candidates": 3,
+    "converted": 0,
+    "first_reasons": {
+      "data_type": 1,
+      "member_kind": 1,
+      "parallel": 1,
+      "no_control_states": 1
+    }
+  },
+  "models": [
+    {
+      "source": "lesson18/models/L18_SantaSleighCruiseControl_Challenge.sysml",
+      "status": "no_control_states"
+    },
+    {
+      "source": "lesson18/models/L18_SantaSleighCruiseControl_Solution.sysml",
+      "status": "parallel"
+    },
+    {
+      "source": "lesson18/models/L18_States.sysml",
+      "status": "member_kind"
+    },
+    {
+      "source": "lesson19/models/L19_State_Simulation.sysml",
+      "status": "data_type"
+    }
+  ],
+  "note": "教学仓库用于覆盖边界验证；不把删去并行或动作后的骨架视为等价转换。"
+}
