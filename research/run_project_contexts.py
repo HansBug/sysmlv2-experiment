@@ -8,12 +8,14 @@ import subprocess
 def run(args):
     assets = json.loads(args.assets.read_text(encoding='utf-8'))['assets']
     roots = {name: path for name, path in (item.split('=', 1) for item in args.root)}
+    project_roots = {name: path for name, path in (item.split('=', 1) for item in args.project_root)}
     contexts = {}
     for asset in assets:
         root = roots.get(asset['dataset'])
         if root is None:
             continue
-        context = (Path(root) / asset['context_directory']).resolve()
+        context = (Path(project_roots[asset['dataset']]) if asset['dataset'] in project_roots
+                   else Path(root) / asset['context_directory']).resolve()
         contexts[(asset['dataset'], str(context))] = context
     output = args.output
     output.mkdir(parents=True, exist_ok=True)
@@ -42,6 +44,7 @@ if __name__ == '__main__':
     parser.add_argument('--assets', type=Path, default=Path('research/state-assets.json'))
     parser.add_argument('--root', action='append', required=True, help='dataset=directory containing asset paths')
     parser.add_argument('--library', type=Path, required=True)
+    parser.add_argument('--project-root', action='append', default=[], help='dataset=complete project root to index as one context')
     parser.add_argument('--jar', type=Path, required=True)
     parser.add_argument('--classes', type=Path, default=Path('artifacts/audit-classes'))
     parser.add_argument('--output', type=Path, default=Path('artifacts/project-contexts'))
