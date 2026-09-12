@@ -38,7 +38,7 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 随后将 `ActionDefinition` 作为事件声明处理的 [Actions 34711931066](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711931066) 也已通过；总数保持 12/71 与 10/74，因为 StopWatch 随后触发了未定义出口优先级拒绝。
 
-最新的全上下文扫描 [Actions 34710023025](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34710023025) 对 76 个上下文、237 个上下文内文件执行了项目级加载，得到 74 个状态根，其中 4 个 converted、70 个明确 unsupported。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)。
+最新的全上下文扫描 [Actions 34714862858](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858) 对 77 个上下文、265 个上下文内文件执行了项目级加载，得到 92 个状态根，其中 10 个 converted、82 个明确 unsupported。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)。
 
 ## 转换范围
 
@@ -48,4 +48,4 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 数据集和论文链接、可下载模型文件类型、固定版本及本次状态覆盖见[学术资产盘点](research/academic-assets.zh.md)。第三方模型与工具保留原许可；本仓库只提交清单、哈希、统计和自写实验代码。实验代码采用 MIT。
 
-Apollo 11 工程资产已固定到 `6e9c93fe7d80c5ca3534bb14b10ab374a643ef2d`，本地用同一官方 Pilot JAR 加载 28/28 文件并识别 18 个状态根；下一次 CI 会把它纳入全量批次。任务阶段根包含 15 个子状态和 14 条 typed 事件转移。严格 FCSTM profile 暂因继承的 `PerformActionUsage` 保留拒绝，不把删掉 do 行为后的骨架当作等价转换。 逐项证据见 [`research/apollo11-observed.json`](research/apollo11-observed.json) 和 [`research/state-assets.json`](research/state-assets.json)。
+Apollo 11 工程资产已固定到 `6e9c93fe7d80c5ca3534bb14b10ab374a643ef2d`，本地及 [Actions 34714862858](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858) 均用同一官方 Pilot JAR 加载 28/28 文件并识别 18 个状态根。任务阶段根包含 15 个子状态和 14 条 typed 事件转移。严格 FCSTM profile 暂因继承的 `PerformActionUsage` 保留拒绝，不把删掉 do 行为后的骨架当作等价转换。 逐项证据见 [`research/apollo11-observed.json`](research/apollo11-observed.json) 和 [`research/state-assets.json`](research/state-assets.json)。

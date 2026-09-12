@@ -69,6 +69,8 @@
 
 公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。独立全量批次最新结果为 12 个 converted，项目级上下文批次为 10 个 converted；逐项结果和假设见 [`events-observed.json`](events-observed.json)。这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
 
+Apollo 11 的完整工程上下文已在 [Actions 34714862858](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858) 中验证：28 个文件、0 条官方校验错误、18 个状态根。若按 `CoSMA`/`Purpose` 子目录分别加载会产生 842 条错误，这已由 `--project-root apollo11=_external/apollo11` 修复；这项差异说明上下文边界本身必须作为实验变量记录。严格转换仍拒绝 18 个根，其中任务阶段控制根的首因是继承的 `PerformActionUsage`。
+
 ## 对后续学术工作的含义
 
 该入口足以建立源定位、环境假设与 FCSTM 诊断之间的映射实验。现有通用 SysML 语料中控制状态机密度低，继续扩大下载量的收益可能低于先恢复工程依赖、按 typed state 元素筛选、以及收集专门的行为模型。论文应分别报告语料可加载性、状态机候选数、规则覆盖率、目标有效性、与源语义的一致性证据；其中最后一项还需要进一步建立，不能用“能 parse”替代。

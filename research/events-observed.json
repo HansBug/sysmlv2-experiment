@@ -45,10 +45,25 @@
   },
   "followup_action_definition_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711931066",
   "project_context_batch": {
-    "contexts": 76,
-    "context_files": 237,
-    "state_roots": 74,
+    "contexts": 77,
+    "context_files": 265,
+    "validation_errors": 1549,
+    "zero_error_contexts": 14,
+    "state_roots": 92,
     "converted": 10,
-    "unsupported": 64
-  }
+    "unsupported": 82,
+    "apollo11": {
+      "contexts": 1,
+      "context_files": 28,
+      "validation_errors": 0,
+      "state_roots": 18,
+      "converted": 0,
+      "unsupported": 18,
+      "first_reasons": {
+        "no_control_states": 17,
+        "action_kind": 1
+      }
+    }
+  },
+  "latest_project_context_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858"
 }
