@@ -47,13 +47,13 @@
   },
   "followup_action_definition_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711931066",
   "project_context_batch": {
-    "contexts": 77,
-    "context_files": 265,
-    "validation_errors": 1549,
+    "contexts": 78,
+    "context_files": 309,
+    "validation_errors": 1551,
     "zero_error_contexts": 14,
-    "state_roots": 92,
+    "state_roots": 96,
     "converted": 10,
-    "unsupported": 82,
+    "unsupported": 86,
     "apollo11": {
       "contexts": 1,
       "context_files": 28,
@@ -66,9 +66,34 @@
         "action_kind": 1
       }
     },
-    "control_candidates": 52,
+    "control_candidates": 55,
     "converted_control_candidates": 10
   },
   "latest_project_context_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858",
-  "latest_candidate_metrics_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34715818526"
+  "latest_candidate_metrics_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34715818526",
+  "latest_full_batch": {
+    "workflow_run": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34717206119",
+    "source_files": 1659,
+    "unique_source_hashes": 1492,
+    "extracted_state_roots": 75,
+    "control_candidates": 51,
+    "converted_control_candidates": 12,
+    "results": {
+      "converted": 12,
+      "unsupported": 63,
+      "source_validation_error": 773,
+      "no_state_machine": 849
+    },
+    "unsupported_first_reason": {
+      "do_action_execution": 1,
+      "data_multiplicity": 1,
+      "initial_transition_count": 2,
+      "parallel": 8,
+      "transition_priority_unspecified": 2,
+      "action_kind": 7,
+      "member_kind": 17,
+      "no_control_states": 24,
+      "data_type": 1
+    }
+  }
 }
