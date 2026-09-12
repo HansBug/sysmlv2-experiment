@@ -2,7 +2,7 @@
 
 本表由官方 Pilot 的 typed AST 生成，不通过字符串搜索。每一行保留数据集、相对路径、SHA-256、语法状态节点数、完整校验状态和建议的项目上下文目录。`validated_independent_file` 只表示单文件加标准库通过，`needs_project_index` 表示应在其工程目录整体索引后复核。
 
-共登记 **92** 个公开状态候选文件。它们不是可执行控制器清单；一个文件可包含多个状态根，状态 usage 也可能是 snapshot 或语义不完整。
+共登记 **115** 个公开状态候选文件。它们不是可执行控制器清单；一个文件可包含多个状态根，状态 usage 也可能是 snapshot 或语义不完整。
 
 | 数据集 | 文件 | SHA-256（前 12 位） | 定义/使用/根 | 语法 | 基线校验 | 上下文目录 |
 |---|---|---|---:|---|---|---|
@@ -12,6 +12,29 @@
 | gfse | `example_EveOnlineMiningFrigate/DomainModel/Domain.sysml` | `93917c38b8b7` | 0/1/1 | 有效 | source_validation_error | `example_EveOnlineMiningFrigate/DomainModel` |
 | gfse | `example_EveOnlineMiningFrigate/DomainModel/MiningFrigate.sysml` | `ddabb4c84edc` | 0/6/1 | 有效 | source_validation_error | `example_EveOnlineMiningFrigate/DomainModel` |
 | gfse | `example_family/family.sysml` | `12ef0a89e951` | 0/3/1 | 有效 | extracted | `example_family` |
+| official_pilot | `examples/Arrowhead Framework Example/AHFNorwayTopics.sysml` | `a7b02539744d` | 0/10/4 | 有效 | source_validation_error | `examples/Arrowhead Framework Example` |
+| official_pilot | `examples/Interaction Sequencing Examples/ServerSequenceOutsideRealization-2.sysml` | `1c66e402fab3` | 0/3/1 | 有效 | source_validation_error | `examples/Interaction Sequencing Examples` |
+| official_pilot | `examples/Interaction Sequencing Examples/ServerSequenceRealization-2.sysml` | `791b64162fb0` | 0/3/1 | 有效 | source_validation_error | `examples/Interaction Sequencing Examples` |
+| official_pilot | `examples/Simple Tests/AssignmentTest.sysml` | `7d4b3e646028` | 1/4/2 | 有效 | extracted | `examples/Simple Tests` |
+| official_pilot | `examples/Simple Tests/PartTest.sysml` | `488b1646e023` | 0/2/2 | 有效 | extracted | `examples/Simple Tests` |
+| official_pilot | `examples/Simple Tests/StateTest.sysml` | `c1e55572d836` | 1/15/5 | 有效 | extracted | `examples/Simple Tests` |
+| official_pilot | `examples/Vehicle Example/Annex_A_VehicleViews.sysml` | `c1561aa67531` | 0/11/3 | 有效 | source_validation_error | `examples/Vehicle Example` |
+| official_pilot | `examples/Vehicle Example/SysML v2 Spec Annex A SimpleVehicleModel.sysml` | `77d7ee54951e` | 3/25/12 | 有效 | extracted | `examples/Vehicle Example` |
+| official_pilot | `training/23. State Definitions/State Definition Example-1.sysml` | `bb96a947ac4f` | 1/3/1 | 有效 | extracted | `training/23. State Definitions` |
+| official_pilot | `training/23. State Definitions/State Definition Example-2.sysml` | `52c1ac545553` | 1/3/1 | 有效 | extracted | `training/23. State Definitions` |
+| official_pilot | `training/24. States/State Actions.sysml` | `38d8c51cde9c` | 1/4/2 | 有效 | extracted | `training/24. States` |
+| official_pilot | `training/24. States/State Decomposition-1.sysml` | `ee8f049bfd5b` | 1/4/2 | 有效 | extracted | `training/24. States` |
+| official_pilot | `training/24. States/State Decomposition-2.sysml` | `197be1fb0cc1` | 1/6/2 | 有效 | extracted | `training/24. States` |
+| official_pilot | `training/25. Transitions/Change and Time Triggers.sysml` | `3633b959ba8b` | 0/4/1 | 有效 | extracted | `training/25. Transitions` |
+| official_pilot | `training/25. Transitions/Local Clock Example.sysml` | `7c4652c10bae` | 0/4/1 | 有效 | extracted | `training/25. Transitions` |
+| official_pilot | `training/25. Transitions/Transition Actions.sysml` | `0c2e7db0d37c` | 1/4/2 | 有效 | extracted | `training/25. Transitions` |
+| official_pilot | `training/26. State Exhibition/State Exhibition Example.sysml` | `c37cca840710` | 0/1/1 | 有效 | source_validation_error | `training/26. State Exhibition` |
+| official_pilot | `training/31. Constraints/Time Constraints.sysml` | `3acc92ed706c` | 0/3/1 | 有效 | extracted | `training/31. Constraints` |
+| official_pilot | `validation/05-State-based Behavior/5-State-based Behavior-1.sysml` | `09d33ca09f91` | 2/17/8 | 有效 | source_validation_error | `validation/05-State-based Behavior` |
+| official_pilot | `validation/05-State-based Behavior/5-State-based Behavior-1a.sysml` | `22bfc1ae2dbc` | 2/17/8 | 有效 | extracted | `validation/05-State-based Behavior` |
+| official_pilot | `validation/05-State-based Behavior/5-State-based Behavior-2.sysml` | `218835c9dbef` | 2/17/8 | 有效 | source_validation_error | `validation/05-State-based Behavior` |
+| official_pilot | `validation/06-Individual and Snapshots/6-Individual and Snapshots.sysml` | `31efc993fd2e` | 0/6/4 | 有效 | extracted | `validation/06-Individual and Snapshots` |
+| official_pilot | `validation/10-Analysis and Trades/10c-Fuel Economy Analysis.sysml` | `3bea4bbe7b04` | 0/5/1 | 有效 | extracted | `validation/10-Analysis and Trades` |
 | refinement_negative | `anthropic/035/iteration_00.sysml` | `565337c0d1e6` | 0/1/1 | 错误 | source_validation_error | `anthropic/035` |
 | refinement_negative | `anthropic/052/iteration_00.sysml` | `5210d5a0448b` | 0/1/1 | 错误 | source_validation_error | `anthropic/052` |
 | refinement_negative | `anthropic/068/iteration_00.sysml` | `eb66c4f8c5a7` | 0/1/1 | 错误 | source_validation_error | `anthropic/068` |

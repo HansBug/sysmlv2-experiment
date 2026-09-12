@@ -30,7 +30,7 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 项目级入口见 [`ExtractProject.java`](ExtractProject.java)：它会先索引整个工程目录，再按资源校验和抽取 typed 状态事实。`research/state-assets.json` 对每个状态候选保留源哈希、相对路径、上下文目录、状态节点数和基线状态。
 
-已对 64 个候选上下文目录完成一次项目级扫描：162 个源文件、18 个状态根、4 个零错误目录；逐目录诊断见 [`research/project-context-observed.json`](research/project-context-observed.json)。将这 18 个已校验状态根接入目标检查后，得到 2 个 converted、16 个 unsupported，见 [`research/project-conversion-observed.json`](research/project-conversion-observed.json)。
+已对 64 个公开语料上下文目录完成一次项目级扫描：162 个源文件、18 个状态根、4 个零错误目录；逐目录诊断见 [`research/project-context-observed.json`](research/project-context-observed.json)。将这 18 个已校验状态根接入目标检查后，得到 2 个 converted、16 个 unsupported。另已抽取官方 Pilot 的 255 个示例，其中 47 个状态根进入下一轮转换，证据见 [`research/official-pilot-observed.json`](research/official-pilot-observed.json)。
 
 最新 CI 已在 [Actions 34708595195](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34708595195) 复现 JAR 下载、语料抽取、语法清点、项目上下文步骤和 pyfcstm 检查，并上传全部中间产物。
 

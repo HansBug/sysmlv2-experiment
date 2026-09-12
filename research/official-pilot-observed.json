@@ -1,0 +1,100 @@
+{
+  "dataset": "official_pilot",
+  "pilot_commit": "801c6a881954987a9707d396d5767db1ec51d8cb",
+  "jar_sha256": "1bb02b3865e6830687f4c4f80afbfe8d670f6fb6df305f6844833543320fa989",
+  "files": 255,
+  "source_status": {
+    "extracted": 199,
+    "source_validation_error": 56
+  },
+  "extracted_state_files": 16,
+  "extracted_state_roots": 47,
+  "conversion": {
+    "no_state_machine": 183,
+    "source_validation_error": 56,
+    "unsupported": 45,
+    "converted": 2
+  },
+  "state_files": [
+    {
+      "source": "examples/Simple Tests/AssignmentTest.sysml",
+      "sha256": "7d4b3e64602856f6e7f9ce142f2e15535e1ae3d6e96852a50f86d838877e8976",
+      "state_roots": 2
+    },
+    {
+      "source": "examples/Simple Tests/PartTest.sysml",
+      "sha256": "488b1646e0233a93a41147c7b3ecfd7f73f377517c86c71c8a005b5615230904",
+      "state_roots": 2
+    },
+    {
+      "source": "examples/Simple Tests/StateTest.sysml",
+      "sha256": "c1e55572d8366b744c14cc66dba8e484f0037369d975fc4e675ccfdc7709bfd4",
+      "state_roots": 5
+    },
+    {
+      "source": "examples/Vehicle Example/SysML v2 Spec Annex A SimpleVehicleModel.sysml",
+      "sha256": "77d7ee54951e01c885d69d19d7359242baf22c69dcfe2d4088b0b59d56ea578d",
+      "state_roots": 12
+    },
+    {
+      "source": "training/23. State Definitions/State Definition Example-1.sysml",
+      "sha256": "bb96a947ac4f3648c75cb74ee36d3bf3b120ce80a833ae9791a877051d6c2dd0",
+      "state_roots": 1
+    },
+    {
+      "source": "training/23. State Definitions/State Definition Example-2.sysml",
+      "sha256": "52c1ac545553470358affce66a40de21a51876ae10718a1a086419c2b0e6ef40",
+      "state_roots": 1
+    },
+    {
+      "source": "training/24. States/State Actions.sysml",
+      "sha256": "38d8c51cde9cdf0aa774864e6dcc65d98aeb89e23ebe097704dfe8896bb36dd6",
+      "state_roots": 2
+    },
+    {
+      "source": "training/24. States/State Decomposition-1.sysml",
+      "sha256": "ee8f049bfd5bb23e324f7f08faead640419122b7f909e36ce281ce8342557f58",
+      "state_roots": 2
+    },
+    {
+      "source": "training/24. States/State Decomposition-2.sysml",
+      "sha256": "197be1fb0cc100b13c9daa41e25450076779fb6edcb2b54cd09c93bbe7b78cc6",
+      "state_roots": 2
+    },
+    {
+      "source": "training/25. Transitions/Change and Time Triggers.sysml",
+      "sha256": "3633b959ba8b0c39f7bf22ff0bfcd8f5afdb133f444bf693423bbc6f30a708c6",
+      "state_roots": 1
+    },
+    {
+      "source": "training/25. Transitions/Local Clock Example.sysml",
+      "sha256": "7c4652c10baeeeeea932071346b5297aed4cb09b1073d01d1a0f78f13586e3dc",
+      "state_roots": 1
+    },
+    {
+      "source": "training/25. Transitions/Transition Actions.sysml",
+      "sha256": "0c2e7db0d37ca8489f911b567e1a41ed8a7a21216b4b5646db99d370562742ba",
+      "state_roots": 2
+    },
+    {
+      "source": "training/31. Constraints/Time Constraints.sysml",
+      "sha256": "3acc92ed706c8c1a352929df9b2eee27b7bb2459a49a19838121dade80bc1108",
+      "state_roots": 1
+    },
+    {
+      "source": "validation/05-State-based Behavior/5-State-based Behavior-1a.sysml",
+      "sha256": "22bfc1ae2dbcb94db9844eddc16dda325645d2b0eb622bbfcfefe93bd6433ef8",
+      "state_roots": 8
+    },
+    {
+      "source": "validation/06-Individual and Snapshots/6-Individual and Snapshots.sysml",
+      "sha256": "31efc993fd2ead88e2edb0130fde4051c64a86dce7c31c1057b4131de507a848",
+      "state_roots": 4
+    },
+    {
+      "source": "validation/10-Analysis and Trades/10c-Fuel Economy Analysis.sysml",
+      "sha256": "3bea4bbe7b04ba3572b3f7ccebd211897ad0521ef73009f31c32eed7296d3749",
+      "state_roots": 1
+    }
+  ]
+}

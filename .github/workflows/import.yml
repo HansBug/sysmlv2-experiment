@@ -31,6 +31,13 @@ jobs:
           path: _external/pilot
           sparse-checkout: sysml.library
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Systems-Modeling/SysML-v2-Pilot-Implementation
+          ref: 801c6a881954987a9707d396d5767db1ec51d8cb
+          path: _external/pilot-src
+          sparse-checkout: sysml/src
+          persist-credentials: false
       - name: Download the released official frontend wrapper
         run: |
           curl --fail --location --retry 3 -o _external/pilot.jar https://github.com/HansBug/sysml-v2-pilot-gt/releases/download/v0.1.0/sysml-v2-pilot-gt-0.1.0-all.jar

@@ -15,6 +15,7 @@ REPOSITORIES = {
 def prepare(output, fixtures_only=False):
     pins = json.loads(Path('research/corpus-pins.json').read_text())
     roots = {'synthetic': Path('research/cases')}
+    official = Path('_external/pilot-src/sysml/src')
     if not fixtures_only:
         for name, repository in REPOSITORIES.items():
             pin = pins['systemp' if name == 'benchmark' else name]
@@ -31,6 +32,8 @@ def prepare(output, fixtures_only=False):
             'refinement_positive': Path('_external/refinement/Open-Source Dataset Release/604 positive artifacts'),
             'refinement_negative': Path('_external/refinement/Open-Source Dataset Release/439 negative artifacts'),
         })
+        if official.exists():
+            roots['official_pilot'] = official
     files = []
     for dataset, root in roots.items():
         paths = sorted(root.rglob('*.sysml'))
