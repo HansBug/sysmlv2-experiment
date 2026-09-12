@@ -34,7 +34,7 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 最新 CI 已在 [Actions 34708595195](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34708595195) 复现 JAR 下载、语料抽取、语法清点、项目上下文步骤和 pyfcstm 检查，并上传全部中间产物。
 
-接入官方 Pilot 255 个示例后的 [Actions 34709690957](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34709690957) 也已通过：总计 1,587 个文件、71 个源状态根、6 个 converted；官方示例贡献 47 个状态根和其中 2 个 converted。
+接入官方 Pilot 255 个示例后的 [Actions 34709690957](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34709690957) 也已通过：总计 1,587 个文件、71 个源状态根、6 个 converted。启用 typed `accept`→FCSTM event 后，[Actions 34711113632](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711113632) 将独立批次提升到 12 个 converted、项目级批次提升到 10 个 converted；完整对照见 [`research/events-observed.json`](research/events-observed.json)。
 
 最新的全上下文扫描 [Actions 34710023025](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34710023025) 对 76 个上下文、237 个上下文内文件执行了项目级加载，得到 74 个状态根，其中 4 个 converted、70 个明确 unsupported。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)。
 

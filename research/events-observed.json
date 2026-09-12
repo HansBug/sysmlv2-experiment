@@ -1,0 +1,53 @@
+{
+  "workflow_run": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711113632",
+  "pilot_commit": "801c6a881954987a9707d396d5767db1ec51d8cb",
+  "jar_sha256": "1bb02b3865e6830687f4c4f80afbfe8d670f6fb6df305f6844833543320fa989",
+  "event_mapping": "SysML AcceptActionUsage payload type -> FCSTM event declaration/trigger",
+  "independent_batch": {
+    "source_files": 1587,
+    "extracted_state_roots": 71,
+    "converted": 12,
+    "unsupported": 59,
+    "source_validation_error": 747,
+    "no_state_machine": 807,
+    "by_dataset": {
+      "gfse": {
+        "source_validation_error": 28,
+        "no_state_machine": 6,
+        "unsupported": 2
+      },
+      "official_pilot": {
+        "no_state_machine": 183,
+        "source_validation_error": 56,
+        "unsupported": 42,
+        "converted": 5
+      },
+      "refinement_negative": {
+        "source_validation_error": 438,
+        "no_state_machine": 1
+      },
+      "refinement_positive": {
+        "no_state_machine": 477,
+        "source_validation_error": 127
+      },
+      "synthetic": {
+        "unsupported": 4,
+        "source_validation_error": 4,
+        "converted": 2
+      },
+      "systemp": {
+        "no_state_machine": 140,
+        "source_validation_error": 94,
+        "unsupported": 11,
+        "converted": 5
+      }
+    }
+  },
+  "project_context_batch": {
+    "contexts": 76,
+    "context_files": 237,
+    "state_roots": 74,
+    "converted": 10,
+    "unsupported": 64
+  }
+}
