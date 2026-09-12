@@ -297,6 +297,7 @@ def run(source, output):
                            artifact=key, ast_type=type(ast).__name__, model_type=type(model).__name__)
                 (folder / 'inspect.json').write_text(json.dumps(report, indent=2) + '\n')
                 (folder / 'mapping.json').write_text(json.dumps({'source': identity, 'root': state['id'], 'elements': mapping,
+                    'ignored_structural': state.get('ignored_structural', []),
                     'assumptions': ['Explicit periodic controller interpretation; no general SysML execution equivalence claim.',
                                     'Single active path, mathematical numeric domain, no asynchronous messages.',
                                     'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')
