@@ -14,6 +14,7 @@
 | [The SysML v2 Book examples](https://github.com/MBSE4U/the-sysmlv2-book-examples)；书籍页面 [Leanpub](https://leanpub.com/sysmlv2) | 面向工程实践的公开书籍示例，含无人机系统及 use case 行为模型 | 固定提交 `3bb66343ec18a40f5f851b97b3a19b2a7cc1efc4`，`examples/**/*.sysml`；Apache-2.0 | 已下载 1 个模型并加入 CI；当前 Pilot 报告全局校验错误，未产生 typed 状态根，因此不能进入严格转换分母；这条结果本身作为版本/约束兼容性证据保留 |
 | [SysML v2 Release](https://github.com/Systems-Modeling/SysML-v2-Release) | 官方规范、语法和示例发布 | release 中的 `sysml.library`、示例和测试模型 | 已核对 2026-07 版本差异；待纳入项目级批处理 |
 | [sysml-2ls](https://github.com/sensmetry/sysml-2ls) | 2024 年前后的语言服务器/解析器 | 仓库 tests/examples 中的 `.sysml` | 已做定向状态/继承对照；作为旧前端比较，不作为主导入器 |
+| [FlyingCpp/sysmlv2-learning-all-in-one](https://github.com/FlyingCpp/sysmlv2-learning-all-in-one) | 教学课程与 EV 示例集合 | 固定提交 `e4be7c222bf1daa22526290a3134d7c388d12177`，共 71 个 `.sysml`；EPL-2.0 | 已完成资产盘点；包含 EV 状态模型和官方车辆模型副本，因重复风险暂作为 surveyed asset，不计入转换分母 |
 | [SysML v2 Textual Notation Specification](https://www.omg.org/spec/)。 | 语法/语义规范 | 规范附带示例片段，不一定是独立可执行工程 | 用于解释版本变化和构造调用规则；不计入模型覆盖 |
 
 ## 论文资产的登记规则

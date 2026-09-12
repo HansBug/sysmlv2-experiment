@@ -91,6 +91,16 @@
       "revision": "a0b3ddbf783063dd7291aac0b51d4282decc789e",
       "model_glob": "tests/**/*.sysml",
       "status": "targeted_frontend_comparison"
+    },
+    {
+      "name": "FlyingCpp/sysmlv2-learning-all-in-one",
+      "kind": "teaching_dataset",
+      "paper": "",
+      "url": "https://github.com/FlyingCpp/sysmlv2-learning-all-in-one",
+      "revision": "e4be7c222bf1daa22526290a3134d7c388d12177",
+      "model_glob": "**/*.sysml",
+      "license": "EPL-2.0",
+      "status": "surveyed_71_files_ev_state_and_official_vehicle_duplicates_not_in_conversion_denominator"
     }
   ]
 }
