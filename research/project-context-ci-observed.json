@@ -1,0 +1,15 @@
+{
+  "workflow_run": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34710023025",
+  "contexts": 76,
+  "source_files": 237,
+  "validation_errors": 1549,
+  "state_roots": 74,
+  "zero_error_contexts": 13,
+  "conversion": {
+    "state_roots": 74,
+    "results": {
+      "unsupported": 70,
+      "converted": 4
+    }
+  }
+}

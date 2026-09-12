@@ -36,6 +36,8 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 接入官方 Pilot 255 个示例后的 [Actions 34709690957](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34709690957) 也已通过：总计 1,587 个文件、71 个源状态根、6 个 converted；官方示例贡献 47 个状态根和其中 2 个 converted。
 
+最新的全上下文扫描 [Actions 34710023025](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34710023025) 对 76 个上下文、237 个上下文内文件执行了项目级加载，得到 74 个状态根，其中 4 个 converted、70 个明确 unsupported。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)。
+
 ## 转换范围
 
 当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、简单 guard、entry/exit 赋值和 transition effect。并行、触发/消息、任意动作、非空 do action、未定义优先级、数组和无法解析的成员会明确拒绝。数值是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出和调度语义。

@@ -41,6 +41,8 @@
 
 随后对登记表中的 64 个上下文目录逐一运行 [`ExtractProject.java`](../ExtractProject.java)。64 个目录、162 个源文件均完成项目级读取，得到 18 个状态根；4 个目录零校验错误，其余目录共 1,500 条错误。机器可读汇总见 [`project-context-observed.json`](project-context-observed.json)。再经过 pyfcstm 目标检查，18 个项目级状态根中 2 个 converted、16 个因目标 profile 特性拒绝，结果见 [`project-conversion-observed.json`](project-conversion-observed.json)。这说明“补全上下文”是必要条件，但对当前语料仍不足以带来全面通过；剩余错误必须按构造调用、connector、旧版本写法等类型继续处理。
 
+接入官方 Pilot 示例后，CI 又扫描了 76 个上下文、237 个上下文内文件，得到 74 个状态根，其中 4 个 converted、70 个明确 unsupported。该结果包含同一概念在不同公开数据集中的重复版本，不能按状态根数宣称独立系统数量；汇总见 [`project-context-ci-observed.json`](project-context-ci-observed.json)。
+
 公开旧例 `training/24. Transitions/Transition Actions.sysml` 与当前官方 Pilot `sysml/src/training/25. Transitions/Transition Actions.sysml` 还实际展示了 `send ControllerStartSignal()` → `send new ControllerStartSignal()`、`entry; then off` → `first start then off` 的变化。核心 state grammar 相同，不代表共享动作规则和标准库没变化。不能承诺 2024 前端无条件覆盖 2026 状态模型。
 
 跨文件导出不能只删掉那一行过滤：还要区分项目输入与标准库资源，并为继承元素保留它实际所属文件的 URI/哈希/span，否则当前根文件的 provenance 会被错误套在别的文件上。官方已有 `readAll(..., true, ".sysml")`、资源索引及 `isInputResource()` 等接口可复用，不需要重写 parser 或重新设计服务。
