@@ -179,11 +179,15 @@ def run(source, output):
                 # GrammarParseError: generated grammar failure; ModelValidationError: target semantic rejection.
                 row.update(status='target_error', code=type(error).__name__, detail=str(error))
             rows.append(row)
+    extracted_roots = [r for r in rows if 'state' in r]
+    control_candidates = [r for r in extracted_roots if r.get('code') != 'no_control_states']
     summary = {'source_files': len(source['models']),
                'unique_source_hashes': len({m['sha256'] for m in source['models']}),
-               'extracted_state_roots': sum(len(m['states']) for m in source['models'] if m['status'] == 'extracted'),
+               'extracted_state_roots': len(extracted_roots),
+               'control_candidates': len(control_candidates),
                'files_with_converted_root': len({(r['dataset'], r['source']) for r in rows if r['status'] == 'converted'}),
                'results': dict(Counter(r['status'] for r in rows)),
+               'converted_control_candidates': sum(r['status'] == 'converted' for r in control_candidates),
                'unsupported_first_reason': dict(Counter(r['code'] for r in rows if r['status'] == 'unsupported')),
                'by_dataset': {name: dict(Counter(r['status'] for r in rows if r['dataset'] == name)) for name in sorted({r['dataset'] for r in rows})}}
     (output / 'results.json').write_text(json.dumps({'summary': summary, 'records': rows}, indent=2) + '\n')

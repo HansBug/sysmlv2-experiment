@@ -33,7 +33,12 @@ def convert(input_dir, output):
                     # Unsupported: the validated source uses a construct outside the target profile.
                     row.update(status='unsupported', code=error.code, detail=str(error))
                 rows.append(row)
-    result = {'summary': {'state_roots': len(rows), 'results': dict(Counter(row['status'] for row in rows))}, 'records': rows}
+    counts = Counter(row['status'] for row in rows)
+    candidates = [row for row in rows if row.get('code') != 'no_control_states']
+    result = {'summary': {'state_roots': len(rows), 'control_candidates': len(candidates),
+                          'results': dict(counts),
+                          'converted_control_candidates': sum(row['status'] == 'converted' for row in candidates)},
+              'records': rows}
     output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(result['summary'], indent=2))
 
