@@ -10,7 +10,7 @@ from pyfcstm.simulate import SimulationRuntime
 
 source = json.loads(Path(sys.argv[1]).read_text())
 cases = {m['source']: m for m in source['models'] if m['dataset'] == 'synthetic'}
-for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml'):
+for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'quantity-events.sysml'):
     assert cases[filename]['status'] == 'extracted', cases[filename]
     root = cases[filename]['states'][0]
     dsl, mapping = lower(root)
@@ -27,6 +27,8 @@ for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml'):
         assert runtime.current_state.path == ('S0', 'S2') and runtime.vars['v0'] == 4
     if filename == 'terminal-events.sysml':
         assert '-> [*]' in dsl
+    if filename == 'quantity-events.sysml':
+        assert 'def float ' in dsl and ' >= 10' in dsl
 for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_action_execution'),
                        ('array.sysml', 'data_multiplicity')]:
     assert cases[filename]['status'] == 'extracted', cases[filename]

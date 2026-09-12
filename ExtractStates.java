@@ -42,10 +42,15 @@ public class ExtractStates {
         if (e instanceof LiteralBoolean v) out.put("value", v.isValue());
         else if (e instanceof LiteralInteger v) out.put("value", v.getValue());
         else if (e instanceof LiteralRational v) out.put("value", v.getValue());
-        else if (e instanceof FeatureReferenceExpression v) out.put("referent", id(v.getReferent()));
+        else if (e instanceof FeatureReferenceExpression v) {
+            out.put("referent", id(v.getReferent()));
+            out.put("referent_element", elementReference(v.getReferent()));
+        }
         else if (e instanceof OperatorExpression v) {
             out.put("operator", v.getOperator());
             out.put("operands", v.getArgument().stream().map(ExtractStates::expression).toList());
+            if ("[".equals(v.getOperator()) && v.getArgument().size() == 2)
+                out.put("unit", expression(v.getArgument().get(1)));
         }
         return out;
     }
@@ -110,6 +115,7 @@ public class ExtractStates {
                 for (var relation : v.getOwnedRelationship())
                     if (relation instanceof FeatureValue fv) values.add(expression(fv.getValue()));
                 data.add(object("id", id(v), "types", v.getAttributeDefinition().stream().map(ExtractStates::id).toList(),
+                    "type_elements", v.getAttributeDefinition().stream().map(ExtractStates::elementReference).toList(),
                     "values", values, "constant", v.isConstant(), "scalar", scalar(v), "span", span(v)));
             } else if (!(e instanceof Comment) && !(e instanceof Documentation)) {
                 unsupported.add(e.eClass().getName());

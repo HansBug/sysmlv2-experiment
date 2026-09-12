@@ -27,6 +27,14 @@ def expression(expr, variables):
             raise Unsupported('external_variable', str(expr['referent']))
         return variables[expr['referent']]
     if kind == 'OperatorExpression':
+        if expr['operator'] == '[':
+            operands = expr.get('operands', [])
+            unit = expr.get('unit')
+            if len(operands) != 2 or unit is None or not unit_expression(unit):
+                raise Unsupported('quantity_unit', str(expr.get('span')))
+            # FCSTM has no quantity type in this profile. The linked unit is
+            # checked structurally, then the magnitude is kept as a real value.
+            return expression(operands[0], variables)
         operator = {'=': '==', '<>': '!=', '&': 'and', '|': 'or'}.get(expr['operator'], expr['operator'])
         operands = [expression(e, variables) for e in expr['operands']]
         if operator in ('+', '-', 'not') and len(operands) == 1:
@@ -35,6 +43,55 @@ def expression(expr, variables):
             return '(' + operands[0] + ' ' + operator + ' ' + operands[1] + ')'
         raise Unsupported('operator', expr['operator'])
     raise Unsupported('expression_kind', kind)
+
+
+def unit_expression(expr):
+    """Return whether a typed expression contains only library unit elements."""
+    kind = expr.get('kind')
+    if kind == 'FeatureReferenceExpression':
+        element = expr.get('referent_element') or {}
+        return element.get('library') is True
+    if kind == 'OperatorExpression':
+        return all(unit_expression(operand) for operand in expr.get('operands', []))
+    return False
+
+
+def numeric_literal(expr):
+    """Return a numeric literal from a typed scalar or quantity expression."""
+    if expr['kind'] in ('LiteralInteger', 'LiteralRational'):
+        return float(expr['value'])
+    if expr['kind'] == 'OperatorExpression' and expr.get('operator') == '[':
+        operands = expr.get('operands', [])
+        if len(operands) == 2 and unit_expression(expr.get('unit', {})):
+            return numeric_literal(operands[0])
+    return None
+
+
+def simple_guard(guard):
+    """Extract a scalar comparison whose left side is one typed variable."""
+    if guard.get('kind') != 'OperatorExpression' or guard.get('operator') not in {'<', '<=', '>', '>='}:
+        return None
+    operands = guard.get('operands', [])
+    if len(operands) != 2 or operands[0].get('kind') != 'FeatureReferenceExpression':
+        return None
+    value = numeric_literal(operands[1])
+    if value is None:
+        return None
+    return operands[0].get('referent'), guard['operator'], value
+
+
+def guards_disjoint(left, right):
+    """Prove disjointness for two one-variable interval comparisons."""
+    a, b = simple_guard(left), simple_guard(right)
+    if a is None or b is None or a[0] != b[0]:
+        return False
+    _, op_a, value_a = a
+    _, op_b, value_b = b
+    if op_a in {'<', '<='} and op_b in {'>', '>='}:
+        return value_a <= value_b if op_a == '<' or op_b == '>' else value_a < value_b
+    if op_b in {'<', '<='} and op_a in {'>', '>='}:
+        return value_b <= value_a if op_b == '<' or op_a == '>' else value_b < value_a
+    return False
 
 
 def lower(root):
@@ -72,14 +129,20 @@ def lower(root):
             if not data['scalar']:
                 raise Unsupported('data_multiplicity', data['id'])
             types = set(data['types'])
-            if not types or not types <= {'ScalarValues::Integer', 'ScalarValues::Real', 'ScalarValues::Boolean', 'ScalarValues::Natural'}:
+            scalar_types = {'ScalarValues::Integer', 'ScalarValues::Real', 'ScalarValues::Boolean', 'ScalarValues::Natural'}
+            quantity_type = (all(item.get('kind') == 'AttributeDefinition' and item.get('library') is True
+                                 for item in data.get('type_elements', []))
+                             and bool(data.get('type_elements'))
+                             and all(value.get('kind') == 'OperatorExpression' and value.get('operator') == '['
+                                     for value in data.get('values', [])))
+            if not types or (not types <= scalar_types and not quantity_type):
                 raise Unsupported('data_type', str(data['types']))
             if len(data['values']) != 1:
                 raise Unsupported('data_initializer', data['id'])
             value = expression(data['values'][0], variables)
             if 'ScalarValues::Boolean' in types:
                 value = {'true': '1', 'false': '0'}.get(value, value)
-            target_type = 'float' if 'ScalarValues::Real' in types else 'int'
+            target_type = 'float' if quantity_type or 'ScalarValues::Real' in types else 'int'
             declarations.append(f'def {target_type} {variables[data["id"]]} = {value};')
             mapping.append({'source_id': data['id'], 'span': data['span'], 'kind': 'variable', 'target': variables[data['id']]})
     def action(body):
@@ -131,12 +194,17 @@ def lower(root):
                 outgoing[src] += 1
                 # Distinct single typed events are mutually exclusive. Repeated
                 # events, guards, and compound triggers still need an explicit
-                # priority model and remain outside this profile.
+                # priority model and remain outside this profile unless two
+                # simple typed interval guards are provably disjoint.
                 signature = tuple(triggers)
-                previous = outgoing_events.setdefault(src, set())
-                if outgoing[src] > 1 and (edge['guards'] or len(signature) != 1 or signature in previous):
+                previous = outgoing_events.setdefault(src, [])
+                conflict = any(old_signature == signature and not (
+                    len(edge['guards']) == len(old_guards) == 1
+                    and guards_disjoint(edge['guards'][0], old_guards[0]))
+                    for old_signature, old_guards in previous)
+                if outgoing[src] > 1 and (len(signature) != 1 or conflict):
                     raise Unsupported('transition_priority_unspecified', edge['source'])
-                previous.add(signature)
+                previous.append((signature, edge['guards']))
             else:
                 raise Unsupported('transition_source', str(edge['source']))
             terms = [events[event] for event in triggers]
@@ -183,7 +251,8 @@ def run(source, output):
                 (folder / 'inspect.json').write_text(json.dumps(report, indent=2) + '\n')
                 (folder / 'mapping.json').write_text(json.dumps({'source': identity, 'root': state['id'], 'elements': mapping,
                     'assumptions': ['Explicit periodic controller interpretation; no general SysML execution equivalence claim.',
-                                    'Single active path, mathematical numeric domain, no asynchronous messages.']}, indent=2) + '\n')
+                                    'Single active path, mathematical numeric domain, no asynchronous messages.',
+                                    'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')
             except Unsupported as error:
                 # Unsupported: lower() reports source features outside the implemented periodic subset.
                 row.update(status='unsupported', code=error.code, detail=str(error))
