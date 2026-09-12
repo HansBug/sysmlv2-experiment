@@ -32,6 +32,8 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 已对 64 个候选上下文目录完成一次项目级扫描：162 个源文件、18 个状态根、4 个零错误目录；逐目录诊断见 [`research/project-context-observed.json`](research/project-context-observed.json)。将这 18 个已校验状态根接入目标检查后，得到 2 个 converted、16 个 unsupported，见 [`research/project-conversion-observed.json`](research/project-conversion-observed.json)。
 
+最新 CI 已在 [Actions 34708595195](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34708595195) 复现 JAR 下载、语料抽取、语法清点、项目上下文步骤和 pyfcstm 检查，并上传全部中间产物。
+
 ## 转换范围
 
 当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、简单 guard、entry/exit 赋值和 transition effect。并行、触发/消息、任意动作、非空 do action、未定义优先级、数组和无法解析的成员会明确拒绝。数值是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出和调度语义。
