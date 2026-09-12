@@ -1,4 +1,5 @@
 import java.nio.file.*;
+import java.security.MessageDigest;
 import java.util.*;
 import com.google.gson.*;
 import org.eclipse.emf.ecore.EObject;
@@ -12,6 +13,8 @@ public class ExtractStates {
     static final Gson JSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
     /** Input resources are project files; all other resources are libraries. */
     static Set<Resource> inputResources = Set.of();
+    /** Hashes let inherited elements retain the file that actually defines them. */
+    static Map<Resource, String> inputHashes = Map.of();
     static Map<String, Object> object(Object... pairs) {
         var out = new LinkedHashMap<String, Object>();
         for (int i = 0; i < pairs.length; i += 2) out.put((String)pairs[i], pairs[i + 1]);
@@ -24,7 +27,14 @@ public class ExtractStates {
     }
     static Object span(Element e) {
         var n = NodeModelUtils.getNode(e);
-        return n == null ? null : object("offset", n.getOffset(), "length", n.getLength(), "line", n.getStartLine());
+        if (n == null) return null;
+        var resource = e.eResource();
+        return object("offset", n.getOffset(), "length", n.getLength(), "line", n.getStartLine(),
+            "source_uri", resource == null || resource.getURI() == null ? null : resource.getURI().toString(),
+            "source_sha256", resource == null ? null : inputHashes.get(resource));
+    }
+    static String sha256(Path path) throws Exception {
+        return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(path)));
     }
     static Object expression(Expression e) {
         if (e == null) return null;
@@ -136,6 +146,7 @@ public class ExtractStates {
             } else {
                 var roots = new ArrayList<Object>();
                 inputResources = Set.of(workspace.getResource());
+                inputHashes = Map.of(workspace.getResource(), sha256(Path.of(source.get("path").getAsString())));
                 var tree = workspace.getRootElement().eAllContents();
                 while (tree.hasNext()) {
                     var element = tree.next();
@@ -146,6 +157,7 @@ public class ExtractStates {
                 record.put("detail", result.formatIssues());
                 workspace.removeResource();
                 inputResources = Set.of();
+                inputHashes = Map.of();
             }
             results.add(record);
         }

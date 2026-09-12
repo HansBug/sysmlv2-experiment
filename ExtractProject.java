@@ -33,6 +33,10 @@ public class ExtractProject {
         for (Resource resource : workspace.getResourceSet().getResources())
             if (workspace.isInputResource(resource)) inputs.add(resource);
         ExtractStates.inputResources = inputs;
+        var hashes = new LinkedHashMap<Resource, String>();
+        for (Resource resource : inputs)
+            hashes.put(resource, ExtractStates.sha256(Path.of(resource.getURI().toFileString())));
+        ExtractStates.inputHashes = hashes;
         var files = new ArrayList<Object>();
         for (Resource resource : inputs) {
             var provider = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(resource.getURI());
