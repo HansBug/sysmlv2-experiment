@@ -12,16 +12,135 @@
         "length": 38,
         "line": 1
       },
-      "states": [],
-      "transitions": [],
-      "actions": [],
+      "states": [
+        {
+          "id": "Types::Controller::Idle",
+          "parallel": false,
+          "span": {
+            "offset": 57,
+            "length": 11,
+            "line": 1
+          },
+          "states": [],
+          "transitions": [],
+          "actions": [],
+          "data": [],
+          "unsupported": []
+        },
+        {
+          "id": "Types::Controller::Active",
+          "parallel": false,
+          "span": {
+            "offset": 69,
+            "length": 44,
+            "line": 1
+          },
+          "states": [
+            {
+              "id": "Types::Controller::Active::Run",
+              "parallel": false,
+              "span": {
+                "offset": 101,
+                "length": 10,
+                "line": 1
+              },
+              "states": [],
+              "transitions": [],
+              "actions": [],
+              "data": [],
+              "unsupported": []
+            }
+          ],
+          "transitions": [
+            {
+              "id": "@96",
+              "source": "Types::Controller::Active::entryAction",
+              "target": "Types::Controller::Active::Run",
+              "guards": [],
+              "effects": [],
+              "trigger_count": 0,
+              "span": {
+                "offset": 96,
+                "length": 3,
+                "line": 1
+              }
+            }
+          ],
+          "actions": [
+            {
+              "id": "Types::Controller::Active::entryAction",
+              "role": "entry",
+              "action": {
+                "kind": "empty",
+                "span": {
+                  "offset": 89,
+                  "length": 0,
+                  "line": 1
+                }
+              }
+            }
+          ],
+          "data": [],
+          "unsupported": []
+        }
+      ],
+      "transitions": [
+        {
+          "id": "@51",
+          "source": "Types::Controller::entryAction",
+          "target": "Types::Controller::Idle",
+          "guards": [],
+          "effects": [],
+          "trigger_count": 0,
+          "span": {
+            "offset": 51,
+            "length": 4,
+            "line": 1
+          }
+        },
+        {
+          "id": "Types::Controller::turnOn",
+          "source": "Types::Controller::Idle",
+          "target": "Types::Controller::Active",
+          "guards": [
+            {
+              "kind": "LiteralBoolean",
+              "span": {
+                "offset": 146,
+                "length": 4,
+                "line": 1
+              },
+              "value": true
+            }
+          ],
+          "effects": [],
+          "trigger_count": 0,
+          "span": {
+            "offset": 114,
+            "length": 49,
+            "line": 1
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "Types::Controller::entryAction",
+          "role": "entry",
+          "action": {
+            "kind": "empty",
+            "span": {
+              "offset": 44,
+              "length": 0,
+              "line": 1
+            }
+          }
+        }
+      ],
       "data": [],
       "unsupported": []
     },
     "conversion": {
-      "status": "unsupported",
-      "code": "no_control_states",
-      "detail": "App::Device::controller"
+      "status": "exported_two_linked_states"
     }
   },
   "modern_start": {
@@ -112,9 +231,98 @@
       }
     ],
     "conversion": {
-      "status": "unsupported",
-      "code": "transition_source",
-      "detail": "States::StateAction::start"
+      "status": "converted",
+      "diagnostics": [
+        {
+          "code": "W_GUARD_CONST_TRUE",
+          "severity": "warning",
+          "message": "Transition 'S1' -> 'S2' has a guard that is statically true.",
+          "span": {
+            "line": 7,
+            "column": 5,
+            "end_line": 7,
+            "end_column": 26
+          },
+          "refs": {
+            "transition_span": {
+              "line": 7,
+              "column": 5,
+              "end_line": 7,
+              "end_column": 26
+            },
+            "folded_value": true,
+            "from_path": "S0.S1",
+            "to_path": "S0.S2",
+            "guard_text": "true",
+            "transition_index": 1
+          }
+        },
+        {
+          "code": "W_DEADLOCK_LEAF",
+          "severity": "warning",
+          "message": "Leaf state 'S0.S2' has no outgoing transition.",
+          "span": {
+            "line": 4,
+            "column": 5,
+            "end_line": 5,
+            "end_column": 6
+          },
+          "refs": {
+            "state_path": "S0.S2",
+            "reason": "no_outgoing_transition",
+            "parent_path": "S0",
+            "suggested_fix": {
+              "kind": "insert",
+              "target": "deadlock_leaf_exit_transition",
+              "anchor": {
+                "type": "ref",
+                "ref": "refs.parent_path"
+              },
+              "text": "S2 -> [*];\n",
+              "rationale": "Add an exit transition so the leaf can finish its parent state."
+            }
+          }
+        },
+        {
+          "code": "W_TOPOLOGICAL_NOEXIT",
+          "severity": "warning",
+          "message": "A root-reachable leaf or cycle has no guard-agnostic route to the root exit sink.",
+          "span": {
+            "line": 4,
+            "column": 5,
+            "end_line": 5,
+            "end_column": 6
+          },
+          "refs": {
+            "algorithm_name": "topological_finite",
+            "verification_scope": "topological_only",
+            "representative_state_path": "S0.S2",
+            "counterexample_kind": "deadlock",
+            "scc": [
+              "S0.S2"
+            ]
+          }
+        },
+        {
+          "code": "I_TOPOLOGICAL_NON_TERMINATING",
+          "severity": "info",
+          "message": "The topology does not force all root-reachable executions to eventually reach the root terminator.",
+          "span": {
+            "line": 4,
+            "column": 5,
+            "end_line": 5,
+            "end_column": 6
+          },
+          "refs": {
+            "algorithm_name": "topological_inevitable_terminator",
+            "verification_scope": "topological_only",
+            "representative_state_path": "S0.S2",
+            "counterexample_path": [
+              "S0.S2"
+            ]
+          }
+        }
+      ]
     }
   },
   "constructor": {

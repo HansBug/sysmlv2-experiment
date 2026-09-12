@@ -32,8 +32,8 @@
 
 | 对照 | 实测 | 归因 |
 |---|---|---|
-| 同时加载 `types.sysml` 与 `app.sysml` | 官方链接后，controller 的 inherited membership 含 Idle、Active；我们的 `ExtractStates.state()` 却输出空 children | 我们用“不是当前资源”过滤 library，也误过滤了另一用户文件中的定义 |
-| 当前默认入口 `first start then A` | 官方校验通过，导出边 source 为 `States::StateAction::start`；Python `lower()` 报 `transition_source` | 我们只识别显式 entry 子动作，缺少合法 start 入口映射 |
+| 同时加载 `types.sysml` 与 `app.sysml` | 官方链接后，controller 的 inherited membership 含 Idle、Active；修复后的项目模式能输出 Idle、Active 两个 children；旧独立模式曾输出空 children | 原实现把跨文件用户定义误当成 library；项目模式现已按 input resource 区分 |
+| 当前默认入口 `first start then A` | 官方校验通过，导出边 source 为 `States::StateAction::start`；修复后的 Python `lower()` 已将该边转换为 FCSTM 默认入口 | 原实现只识别显式 entry；现在识别 `States::StateAction::start` |
 | `send Signal()` 与 `send new Signal()`，Signal 是 attribute definition | 旧写法被当前官方校验拒绝：Must invoke a behavior or a behavioral feature；新写法通过 | 具体的旧构造调用与当前规则不匹配，不是官方无法解析状态机 |
 | SysTemp 的 6 个 Interaction Sequencing 文件，逐文件与一起索引加载 | 错误总数从 338 降到 18；失败文件从 5 个降到 4 个 | 我们缺工程上下文是实际原因之一，但不能解释全部剩余错误 |
 
@@ -51,7 +51,7 @@
 
 历史公开转换仍是 **18 个通过源校验的状态根中接受 2 个**，两个都是 SysTemp 简单的无 guard/赋值状态链。其余 16 个首先被 member kind 6、trigger event 3、no control states 5、parallel 1、action kind 1 拒绝。这些是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
 
-下一步应优先补上述三个已定位的接入缺口，以真实工程为单位恢复那 14 个语法有效候选的上下文，然后在有效状态根上评价转换规则。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
+下一步应优先补剩余的工程上下文与语义规则缺口，以真实工程为单位恢复那 14 个语法有效候选的上下文，然后在有效状态根上评价转换规则。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 
 ## 复现
 
@@ -70,4 +70,4 @@ python research/check_frontend_audit.py artifacts/frontend-audit.json artifacts/
 python check_import.py artifacts/corpus-source.json
 ```
 
-上述 classpath 使用 Linux/macOS 分隔符；Windows 使用 `;`。缺陷复现断言固定了当前明确的 exporter/lower 边界，后续修复这些边界时应同步更新断言与报告。审计没有改动生产转换规则，因此没有宣称新增转换成功数。
+上述 classpath 使用 Linux/macOS 分隔符；Windows 使用 `;`。回归断言固定了项目级抽取和 modern start 转换；后续扩展语义规则时应同步更新报告。审计同时修复了两个已确认的转换缺口；历史全量统计尚未重跑，因此不把这两个探针转换计入公开语料成功率。

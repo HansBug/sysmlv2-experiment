@@ -106,7 +106,7 @@ def lower(root):
                 raise Unsupported('trigger_event', edge['id'])
             if edge['target'] not in child_ids:
                 raise Unsupported('transition_target', str(edge['target']))
-            if edge['source'] in entry_ids:
+            if edge['source'] in entry_ids or edge['source'] == 'States::StateAction::start':
                 src = '[*]'
                 initial += 1
             elif edge['source'] in child_ids:

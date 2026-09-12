@@ -40,6 +40,19 @@ jobs:
       - name: Extract linked elements with the official Pilot
         run: java -Xmx4g -cp _external/pilot.jar ExtractStates.java _external/pilot/sysml.library artifacts/corpus-manifest.json artifacts/corpus-source.json > artifacts/extraction.log 2>&1
       - run: python check_import.py artifacts/corpus-source.json
+      - name: Compile project-context and inventory probes
+        run: |
+          mkdir -p artifacts/audit-classes
+          javac -cp _external/pilot.jar -d artifacts/audit-classes ExtractStates.java ExtractProject.java research/SysmlStateInventory.java
+      - name: Count typed states before validation filtering
+        run: |
+          java -Xmx3g -cp _external/pilot.jar:artifacts/audit-classes SysmlStateInventory \
+            artifacts/corpus-manifest.json artifacts/syntax-state-inventory.json artifacts/corpus-source.json
+          python research/register_state_assets.py artifacts/syntax-state-inventory.json artifacts/state-assets.json artifacts/state-assets.zh.md
+      - name: Index and extract one public project with companion files
+        run: |
+          java -Xmx3g -cp _external/pilot.jar:artifacts/audit-classes ExtractProject \
+            _external/pilot/sysml.library '_external/benchmark/data/examples/Interaction Sequencing Examples' artifacts/project-context.json
       - run: python convert_corpus.py artifacts/corpus-source.json artifacts/converted
       - uses: actions/upload-artifact@v4
         if: always()

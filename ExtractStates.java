@@ -2,6 +2,7 @@ import java.nio.file.*;
 import java.util.*;
 import com.google.gson.*;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.omg.sysml.interactive.SysMLInteractive;
 import org.omg.sysml.lang.sysml.*;
@@ -9,6 +10,8 @@ import org.omg.sysml.lang.sysml.*;
 /** Export linked state facts for independently parsed corpus files. No execution semantics are invented here. */
 public class ExtractStates {
     static final Gson JSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+    /** Input resources are project files; all other resources are libraries. */
+    static Set<Resource> inputResources = Set.of();
     static Map<String, Object> object(Object... pairs) {
         var out = new LinkedHashMap<String, Object>();
         for (int i = 0; i < pairs.length; i += 2) out.put((String)pairs[i], pairs[i + 1]);
@@ -58,7 +61,8 @@ public class ExtractStates {
         memberships.addAll(s.getInheritedMembership());
         for (Membership member : memberships) {
             // Library feature inheritance is not a user control-state declaration.
-            if (member.eResource() != s.eResource()) continue;
+            // Project mode keeps inherited members from every input resource.
+            if (!inputResources.contains(member.eResource())) continue;
             Element e = member.getMemberElement();
             if (e instanceof StateUsage child) children.add(state(child, new HashSet<>(ancestors)));
             else if (member instanceof StateSubactionMembership sub && e instanceof ActionUsage a) {
@@ -129,6 +133,7 @@ public class ExtractStates {
                 record.put("detail", result.formatIssues());
             } else {
                 var roots = new ArrayList<Object>();
+                inputResources = Set.of(workspace.getResource());
                 var tree = workspace.getRootElement().eAllContents();
                 while (tree.hasNext()) {
                     var element = tree.next();
@@ -138,6 +143,7 @@ public class ExtractStates {
                 record.put("states", roots);
                 record.put("detail", result.formatIssues());
                 workspace.removeResource();
+                inputResources = Set.of();
             }
             results.add(record);
         }

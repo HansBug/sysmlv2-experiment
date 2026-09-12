@@ -51,7 +51,9 @@ public class AuditFrontend {
         workspace.loadLibrary(Path.of(args[0]).toAbsolutePath().normalize().toString());
         var observations = new LinkedHashMap<String, Object>();
         var definitions = workspace.process(Files.readString(Path.of("research/cases/types.sysml")));
+        var definitionsResource = workspace.getResource();
         var application = workspace.process(Files.readString(Path.of("research/cases/app.sysml")));
+        var applicationResource = workspace.getResource();
         if (definitions.getException() != null) throw new AssertionError(definitions.getException());
         if (application.getException() != null) throw new AssertionError(application.getException());
         if (definitions.hasErrors() || application.hasErrors()) throw new AssertionError("Official project context failed");
@@ -60,14 +62,16 @@ public class AuditFrontend {
         var inherited = usage.getInheritedMembership().stream()
             .filter(m -> m.eResource() == definition.eResource() && m.getMemberElement() instanceof StateUsage)
             .map(m -> m.getMemberElement().getQualifiedName()).toList();
+        ExtractStates.inputResources = Set.of(definitionsResource, applicationResource);
         var exported = ExtractStates.state(usage, new HashSet<>());
         observations.put("cross_file", Map.of("official_inherited_states", inherited, "exported", exported));
         if (inherited.size() != 2) throw new AssertionError("Expected two linked inherited states");
-        if (!((List<?>)exported.get("states")).isEmpty()) throw new AssertionError("Revisit the measured same-resource filter");
+        if (((List<?>)exported.get("states")).size() != 2) throw new AssertionError("Cross-file state export did not include both linked states");
 
         var modern = workspace.process("package Modern { state def Controller { first start then A; state A; state B; transition first A if true then B; } }");
         if (modern.getException() != null) throw new AssertionError(modern.getException());
         if (modern.hasErrors()) throw new AssertionError(modern.formatIssues());
+        ExtractStates.inputResources = Set.of(definitionsResource, applicationResource, workspace.getResource());
         var root = (StateDefinition)workspace.resolve("Modern::Controller");
         var sources = new ArrayList<Object>();
         for (var member : root.getOwnedMembership()) {

@@ -1,0 +1,12 @@
+{
+  "updated": "2026-09-13",
+  "assets": [
+    {"name":"GfSE/SysML-v2-Models","kind":"dataset","paper":"","url":"https://github.com/GfSE/SysML-v2-Models","revision":"ebbb0c39f4813b059e0bf14270ec58618aa012ca","model_glob":"models/**/*.sysml","status":"downloaded_36_files_4_syntax_valid_state_files"},
+    {"name":"SysTemp","kind":"dataset","paper":"https://arxiv.org/abs/2506.21608","url":"https://github.com/yasminebouamra/SysMLv2-Benchmark","revision":"dd41357921f23020aacdaaa063e0a4b31fc0b2b4","model_glob":"data/**/*.sysml","status":"downloaded_243_files_20_syntax_valid_state_files"},
+    {"name":"Conformance-Driven Refinement","kind":"dataset","paper":"https://arxiv.org/abs/2607.14162","url":"https://github.com/cmuchancel/NL-to-SysMLv2-via-Conformance-Driven-Refinement","revision":"96c0e104f82a8da7a5edccca9b67040785b53bd3","model_glob":"Open-Source Dataset Release/**/*.sysml","status":"downloaded_1043_files_1_state_file"},
+    {"name":"SysMBench","kind":"paper_index","paper":"https://arxiv.org/abs/2508.03215","url":"https://arxiv.org/abs/2508.03215","revision":"","model_glob":"author_link_required","status":"prompt_index_only"},
+    {"name":"OMG SysML v2 Pilot Implementation","kind":"official_reference","paper":"","url":"https://github.com/Systems-Modeling/SysML-v2-Pilot-Implementation","revision":"801c6a881954987a9707d396d5767db1ec51d8cb","model_glob":"sysml/src/**/*.sysml","status":"library_used_examples_pending_project_index"},
+    {"name":"SysML v2 Release","kind":"official_reference","paper":"","url":"https://github.com/Systems-Modeling/SysML-v2-Release","revision":"2026-07","model_glob":"**/*.sysml","status":"version_audited_project_import_pending"},
+    {"name":"sysml-2ls","kind":"parser_reference","paper":"","url":"https://github.com/sensmetry/sysml-2ls","revision":"a0b3ddbf783063dd7291aac0b51d4282decc789e","model_glob":"tests/**/*.sysml","status":"targeted_frontend_comparison"}
+  ]
+}

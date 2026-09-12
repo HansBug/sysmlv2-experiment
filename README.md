@@ -1,68 +1,39 @@
-# SysML v2 → FCSTM experiments
+# SysML v2 → FCSTM 实验
 
-Independent public research repository for one-way SysML v2 import into
-[pyfcstm](https://github.com/HansBug/pyfcstm). Stateflow experiments live in
-[their own repository](https://github.com/HansBug/stateflow-experiments).
+这是独立的公开研究仓库，用于把 SysML v2 单向导入 [pyfcstm](https://github.com/HansBug/pyfcstm)。Stateflow 实验位于[另一个仓库](https://github.com/HansBug/stateflow-experiments)。
 
-The current frontend probes compare the official Pilot with legacy sysml-2ls
-using linked states, transitions, source spans, inheritance and rejection cases.
-The pinned 2024-12/2026-08 state grammar and dependency comparison is under
-`research/version-diff/`. A current-syntax constant declaration is accepted by
-the official frontend and rejected by the legacy frontend; core state syntax
-alone is not enough to claim full cross-version compatibility.
+当前主线使用官方 Pilot 的 Java/EMF typed 元素接口，保留状态、转移、继承、表达式、源位置和结构化映射；不在 Python 中重写 SysML parser，也不做反向转换。无法支持的构造会记录源文件、哈希、上下文、首个原因和目标诊断。
 
-The import corpus work connects source extraction to pyfcstm AST construction,
-model validation and structured diagnostics. Unsupported constructs are reported
-with source identity and counted separately. This repository does not implement
-reverse conversion or claim unrestricted SysML execution equivalence.
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Original experiment code is MIT licensed. Third-party tools and corpora retain
-their own licences; model sources are obtained from pinned upstream checkouts.
-
-## Reproduce the importer
-
-[Parser choice, public datasets, actual coverage and limitations (中文)](research/import-findings.zh.md)
-
-[Failure attribution and corrected state-file inventory (中文)](research/frontend-audit.zh.md)
+## 安装与运行
 
 ```bash
 python -m pip install -r requirements.txt
 python prepare_corpus.py
-# Java 21; use the released v0.1.0 JAR and its matching 2026-07 standard library.
 java -Xmx4g -cp /path/to/sysml-v2-pilot-gt-0.1.0-all.jar ExtractStates.java \
   /path/to/sysml.library artifacts/corpus-manifest.json artifacts/corpus-source.json
 python check_import.py artifacts/corpus-source.json
 python convert_corpus.py artifacts/corpus-source.json artifacts/converted
 ```
 
-For the fully scripted download/checksum/library setup, run the
-[GitHub workflow](.github/workflows/import.yml):
+完整的 GitHub Actions 流程会固定公开数据集、Pilot JAR 与标准库版本，并上传源诊断、状态资产登记、FCSTM、映射和语义报告：
 
 ```bash
 gh workflow run import.yml --repo HansBug/sysmlv2-experiment
 gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 ```
 
-The workflow uploads source manifests, linked facts, per-file failures, accepted
-FCSTM models, mappings and semantic reports. It parses corpus files independently
-with the standard library; missing project context is a recorded limitation.
-The mandatory check verifies target diagnostics, a two-cycle guard/assignment
-trace, and explicit rejection of arrays, parallel states and nonempty do actions.
+[解析器选择、公开数据集和历史覆盖](research/import-findings.zh.md) · [失败归因与修正后的状态清点](research/frontend-audit.zh.md) · [状态资产逐文件登记](research/state-assets.zh.md) · [学术公开资产盘点](research/academic-assets.zh.md)
 
-[Successful full-corpus Actions run](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34703608767), agreeing with local execution: **1,332 files, 24 extracted state roots, 4 accepted
-roots (2 external + 2 synthetic)**. There are 20 unsupported roots, 624 parsed
-files without state machines and 691 files rejected by source validation in the
-current context. These are different counting units. The corpus does not support
-a claim that most public SysML models currently convert.
+## 当前证据
 
-A separate official syntax-AST inventory found **25 syntax-valid external files
-with state elements, 928 syntax-valid external files without them, and 369 files
-with syntax errors**. Only 11 of the 25 state-containing files passed the baseline
-full validation; the remaining 14 require further context/version/constraint
-diagnosis. The audit reproduces missing project context, dropped cross-file
-inheritance in our exporter, and a missing modern start-edge mapping in our
-converter. No official core parser defect has been established by these probes.
+历史独立文件批次包含 1,332 个文件、24 个状态根、4 个通过根（2 个公开、2 个自建）。后续语法树清点确认公开文件中有 25 个语法有效且含状态元素、928 个语法有效且无状态元素、369 个有语法错误。完整上下文、跨文件继承和现代默认入口的对照审计见上述报告；目前没有确认官方核心 parser 缺陷。
+
+项目级入口见 [`ExtractProject.java`](ExtractProject.java)：它会先索引整个工程目录，再按资源校验和抽取 typed 状态事实。`research/state-assets.json` 对每个状态候选保留源哈希、相对路径、上下文目录、状态节点数和基线状态。
+
+## 转换范围
+
+当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、简单 guard、entry/exit 赋值和 transition effect。并行、触发/消息、任意动作、非空 do action、未定义优先级、数组和无法解析的成员会明确拒绝。数值是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出和调度语义。
+
+## 公开资料与许可
+
+数据集和论文链接、可下载模型文件类型、固定版本及本次状态覆盖见[学术资产盘点](research/academic-assets.zh.md)。第三方模型与工具保留原许可；本仓库只提交清单、哈希、统计和自写实验代码。实验代码采用 MIT。
