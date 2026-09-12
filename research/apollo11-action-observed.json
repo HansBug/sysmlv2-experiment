@@ -1,0 +1,29 @@
+{
+  "dataset": "apollo11",
+  "repository": "https://github.com/airbus/apollo-11-sysml-v2",
+  "revision": "6e9c93fe7d80c5ca3534bb14b10ab374a643ef2d",
+  "pilot_commit": "801c6a881954987a9707d396d5767db1ec51d8cb",
+  "pilot_jar_sha256": "1bb02b3865e6830687f4c4f80afbfe8d670f6fb6df305f6844833543320fa989",
+  "project_files": 28,
+  "validated_files": 28,
+  "validation_errors": 0,
+  "state_roots": 18,
+  "control_candidates": 1,
+  "conversion": {
+    "converted": 1,
+    "unsupported": 17,
+    "converted_root": "MissionPackage::Apollo11Mission::apollo11Phases",
+    "converted_root_reason": "typed initial usage plus named PerformActionUsage retained as abstract hook"
+  },
+  "extraction": {
+    "action_sequence_source": "typed SuccessionAsUsage graph",
+    "sequence_members": "ActionUsage",
+    "source_locations": true
+  },
+  "target_assumptions": [
+    "The complete PerformActionUsage sequence is represented by one pyfcstm abstract hook.",
+    "The hook preserves the invocation and source mapping but does not claim internal action timing or side-effect equivalence.",
+    "A state usage declared as initial with no own behavior is mapped to the FCSTM default entry pseudo-state."
+  ],
+  "strict_profile_note": "This is a structural conversion through pyfcstm AST/model validation; it is not an execution-equivalence result."
+}

@@ -153,6 +153,18 @@ def lower(root):
         if body['target'] not in variables or body['target'] in constants:
             raise Unsupported('assignment_target', str(body['target']))
         return variables[body['target']] + ' = ' + expression(body['value'], variables) + ';'
+    def abstract_action(body, role):
+        """Keep a typed action invocation as a pyfcstm abstract hook."""
+        if body.get('kind') not in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
+            raise Unsupported('action_kind', body.get('kind'))
+        name = body.get('declared_name')
+        if not name:
+            raise Unsupported('action_name', str(body.get('id')))
+        if isinstance(body.get('sequence'), dict):
+            raise Unsupported('action_sequence_shape', str(body['sequence'].get('error')))
+        # The source action remains discoverable through the mapping and can be
+        # implemented by the generated model's abstract hook.
+        return f'{role} abstract {name};'
     names = {node['id']: 'S' + str(index) for index, node in enumerate(nodes)}
     def emit(node, prefix, indent):
         target = prefix + names[node['id']]
@@ -161,17 +173,32 @@ def lower(root):
         if prefix == '':
             lines.extend(indent + '    event ' + events[event] + ';' for event in event_ids)
         entry_ids = {a['id'] for a in node['actions'] if a['role'] == 'entry'}
+        pseudo_initial_ids = {child['id'] for child in node['states']
+                              if child.get('declared_name') == 'initial'
+                              and not child['states'] and not child['transitions']}
         for subaction in node['actions']:
-            body = action(subaction['action'])
-            if body:
-                role = {'entry': 'enter', 'do': 'during', 'exit': 'exit'}[subaction['role']]
+            role = {'entry': 'enter', 'do': 'during', 'exit': 'exit'}[subaction['role']]
+            body = subaction['action']
+            if body.get('kind') in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
+                lines.append(indent + '    ' + abstract_action(body, role))
+                mapping.append({'kind': 'state_action', 'source_id': subaction['id'],
+                                'span': body['span'], 'target_owner': target, 'target_role': role,
+                                'representation': 'abstract_hook',
+                                'sequence_length': len(body.get('sequence', [])) if isinstance(body.get('sequence'), list) else None})
+                continue
+            body_text = action(body)
+            if body_text:
                 if role == 'during':
                     raise Unsupported('do_action_execution', node['id'])
-                lines.append(indent + '    ' + role + ' { ' + body + ' }')
+                lines.append(indent + '    ' + role + ' { ' + body_text + ' }')
                 mapping.append({'kind': 'state_action', 'source_id': subaction['id'],
-                                'span': subaction['action']['span'], 'target_owner': target, 'target_role': role})
+                                'span': body['span'], 'target_owner': target, 'target_role': role})
         child_ids = {c['id'] for c in node['states']}
         for child in node['states']:
+            if child['id'] in pseudo_initial_ids:
+                mapping.append({'kind': 'pseudo_state', 'source_id': child['id'],
+                                'span': child['span'], 'target': '[*]', 'reason': 'typed_initial_usage'})
+                continue
             lines.extend(emit(child, target + '.', indent + '    '))
         initial = 0
         outgoing = Counter()
@@ -186,7 +213,10 @@ def lower(root):
                                and target_element.get('library') is True)
             if edge['target'] not in child_ids and not terminal_target:
                 raise Unsupported('transition_target', str(edge['target']))
-            if edge['source'] in entry_ids or edge['source'] == 'States::StateAction::start':
+            if edge['source'] in pseudo_initial_ids:
+                src = '[*]'
+                initial += 1
+            elif edge['source'] in entry_ids or edge['source'] == 'States::StateAction::start':
                 src = '[*]'
                 initial += 1
             elif edge['source'] in child_ids:
@@ -217,7 +247,8 @@ def lower(root):
             lines.append(indent + f'    {src} -> {destination}{trigger}{effect};')
             mapping.append({'kind': 'transition', 'source_id': edge['id'], 'span': edge['span'],
                             'target_owner': target, 'target_declaration_index': index})
-        if child_ids and initial != 1:
+        effective_child_ids = child_ids - pseudo_initial_ids
+        if effective_child_ids and initial != 1:
             raise Unsupported('initial_transition_count', node['id'])
         lines.append(indent + '}')
         return lines

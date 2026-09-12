@@ -10,9 +10,10 @@ from pyfcstm.simulate import SimulationRuntime
 
 source = json.loads(Path(sys.argv[1]).read_text())
 cases = {m['source']: m for m in source['models'] if m['dataset'] == 'synthetic'}
-for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'quantity-events.sysml'):
+for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'quantity-events.sysml', 'perform-sequence.sysml'):
     assert cases[filename]['status'] == 'extracted', cases[filename]
-    root = cases[filename]['states'][0]
+    roots = cases[filename]['states']
+    root = next((item for item in roots if item['states']), roots[0])
     dsl, mapping = lower(root)
     ast = parse_with_grammar_entry(dsl, 'state_machine_dsl')
     model = parse_dsl_node_to_state_machine(ast)
@@ -29,6 +30,9 @@ for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'qu
         assert '-> [*]' in dsl
     if filename == 'quantity-events.sysml':
         assert 'def float ' in dsl and ' >= 10' in dsl
+    if filename == 'perform-sequence.sysml':
+        assert 'during abstract workflow;' in dsl
+        assert any(item.get('representation') == 'abstract_hook' and item.get('sequence_length') == 2 for item in mapping)
 for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_action_execution'),
                        ('array.sysml', 'data_multiplicity')]:
     assert cases[filename]['status'] == 'extracted', cases[filename]

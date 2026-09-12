@@ -25,5 +25,6 @@
     "typed_trigger_count": 13,
     "strict_status": "unsupported_due_to_inherited_perform_action"
   },
-  "note": "Strict profile preserves do/perform behavior; no action is silently discarded."
+  "note": "Historical strict-profile result before typed PerformActionUsage and initial-usage mapping; no action was silently discarded.",
+  "superseded_by": "apollo11-action-observed.json"
 }

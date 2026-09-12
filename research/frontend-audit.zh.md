@@ -55,7 +55,7 @@
 
 历史独立文件转换结果（事件映射后的 CI）为 **71 个抽取状态根中 12 个 converted**；最新项目级上下文扫描为 **96 个状态根中 50 个控制状态候选、12 个 converted**。[Actions 34720946017](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34720946017) 进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点和带 library 单位的数量值；总计独立文件批次为 1,661 个文件、49 个控制候选、16 个 converted（其中 4 个为自建 fixture）。member kind、消息 payload/receiver、no control states、parallel、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
 
-工程上下文补全已经覆盖登记的公开项目；当前剩余拒绝主要是 `PerformActionUsage`/`SendActionUsage`、parallel、结构成员、时间/消息语义和未定义优先级。带 library 单位的数量值和可证明互斥的简单 guard 已加入受限映射。下一步应在这些语义边界上逐类建立 typed 最小复现，不通过删除行为来提高数字。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
+工程上下文补全已经覆盖登记的公开项目；当前 `PerformActionUsage`/`SendActionUsage` 的有名字调用已能保留为 abstract hook，`initial` usage 也能映射为默认入口。Apollo 11 的完整项目上下文因此从 18 个全部拒绝变为 1 个控制状态根通过目标 AST/语义检查；这只是结构化 hook 表示，不是 action 内部执行等价。剩余拒绝主要是带赋值的 do action、并行、结构成员、时间/消息语义、分支 succession 和未定义优先级。带 library 单位的数量值和可证明互斥的简单 guard 已加入受限映射。下一步仍应逐类建立 typed 最小复现，不通过删除行为来提高数字。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 
 ## 复现
 
@@ -75,3 +75,5 @@ python check_import.py artifacts/corpus-source.json
 ```
 
 上述 classpath 使用 Linux/macOS 分隔符；Windows 使用 `;`。回归断言固定了项目级抽取和 modern start 转换；后续扩展语义规则时应同步更新报告。审计同时修复了两个已确认的转换缺口；历史全量统计尚未重跑，因此不把这两个探针转换计入公开语料成功率。
+
+`research/cases/perform-sequence.sysml` 是新增的 typed 回归例：它用 `first start`、两个有类型的 `ActionUsage` 和 `done` 构成线性 succession。`check_import.py` 会验证官方抽取出的 `sequence`、abstract hook 映射、FCSTM AST 解析和目标语义检查；Apollo 11 的项目级结果摘要保存在 [`apollo11-action-observed.json`](apollo11-action-observed.json)。

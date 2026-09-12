@@ -29,7 +29,9 @@
 
 源元素依靠类型和链接映射；输出 DSL 是目标 AST 的规范序列化入口，不是用文本搜索改写源语言。依赖固定 `pyfcstm==0.6.0`，成功要求能构建 `StateMachineDSLProgram` 和 `StateMachine`，并且 inspect 无 error。warning/info 全部保留。
 
-当前接受 exclusive hierarchy、同层转移、单一默认入口、基本 scalar 数值及显式初始化、简单表达式、entry/exit 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。被 accept 引用的 `ActionDefinition` 仅作为事件声明处理，不再把声明本身当作状态机成员；同一源状态存在多个未定义优先级的 outgoing 仍拒绝。没有显式 multiplicity 时，在本控制器 profile 下解释为一个实例；显式数组拒绝。带 payload/receiver 的消息、时间触发、并行、任意动作、非空 do action、缺失默认入口、无法处理的成员类型明确拒绝。do action 没有直接映射为 during。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
+当前接受 exclusive hierarchy、同层转移、单一默认入口、基本 scalar 数值及显式初始化、简单表达式、entry/exit 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。被 accept 引用的 `ActionDefinition` 仅作为事件声明处理，不再把声明本身当作状态机成员；同一源状态存在多个未定义优先级的 outgoing 仍拒绝。没有显式 multiplicity 时，在本控制器 profile 下解释为一个实例；显式数组拒绝。带 payload/receiver 的消息、时间触发、并行、数组、缺失默认入口、无法处理的成员类型明确拒绝。
+
+生命周期中有名字的 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会转换成 pyfcstm abstract hook。对于 `PerformActionUsage`，官方 typed succession 图会被导出为结构化的 `sequence`，并记录每个动作的定义和源位置；当前目标把整个 sequence 作为一个 hook 调用，因此保留调用点和扩展接口，但不宣称保留内部 action 的时序或副作用。带赋值的 `do` action、分支或不完整 succession 仍拒绝，不能通过删除行为伪造等价。名字为 `initial` 且无自身行为的 state usage 会按 typed 端点映射为默认入口；标准库 `done` 映射为 FCSTM 的 `[*]`。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
 
 现在对优先级规则做了更细的 typed 映射：同一状态发出的多个转移，只有在每条转移恰好有一个由官方 `AcceptActionUsage.payloadParameter.type` 链接得到的事件、且事件互不相同、且没有 guard 时才视为互斥并接受；重复事件、复合事件或带 guard 的多出口仍拒绝。官方 States library 中 typed 的 `done` 状态动作被映射为 FCSTM 的 `[*]` 终止端点。抽取结果同时保留触发元素和目标元素的 eClass、限定名、声明名、library 标记，转换器不通过源文本匹配判断这些情况。
 

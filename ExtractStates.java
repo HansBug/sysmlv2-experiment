@@ -59,6 +59,51 @@ public class ExtractStates {
         return object("id", id(e), "kind", e.eClass().getName(),
             "declared_name", e.getDeclaredName(), "library", e.isLibraryElement());
     }
+    /** Export a linear typed action succession; branching remains explicit as an error. */
+    static Object actionSequence(ActionUsage action) {
+        var members = action.getOwnedMembership().stream()
+            .filter(m -> m instanceof FeatureMembership)
+            .map(m -> ((FeatureMembership)m).getMemberElement())
+            .filter(e -> e instanceof ActionUsage)
+            .map(e -> (ActionUsage)e).toList();
+        if (members.isEmpty()) return null;
+        var byId = new LinkedHashMap<String, ActionUsage>();
+        for (var member : members) byId.put(id(member), member);
+        var next = new LinkedHashMap<String, String>();
+        var starts = new ArrayList<String>();
+        var ends = new ArrayList<String>();
+        for (var membership : action.getOwnedMembership()) {
+            if (!(membership instanceof FeatureMembership fm)
+                || !(fm.getMemberElement() instanceof SuccessionAsUsage succession)) continue;
+            var source = succession.getSourceFeature();
+            var targets = succession.getTargetFeature();
+            if (targets.size() != 1) return object("error", "non_single_target");
+            var sourceId = source == null ? null : id(source);
+            var targetId = id(targets.get(0));
+            if (!byId.containsKey(targetId)) {
+                if (sourceId != null && byId.containsKey(sourceId)) ends.add(sourceId);
+            } else if (sourceId == null || !byId.containsKey(sourceId)) {
+                starts.add(targetId);
+            } else if (next.put(sourceId, targetId) != null) {
+                return object("error", "branching_source");
+            }
+        }
+        if (starts.size() != 1 || ends.size() != 1) return object("error", "sequence_boundary");
+        var ordered = new ArrayList<Object>();
+        var seen = new HashSet<String>();
+        var current = starts.get(0);
+        while (current != null && seen.add(current)) {
+            var member = byId.get(current);
+            if (member == null) return object("error", "unresolved_member");
+            ordered.add(object("id", id(member), "kind", member.eClass().getName(),
+                "declared_name", member.getDeclaredName(), "library", member.isLibraryElement(),
+                "definitions", member.getActionDefinition().stream()
+                    .map(ExtractStates::elementReference).toList()));
+            current = next.get(current);
+        }
+        if (seen.size() != members.size() || !seen.contains(ends.get(0))) return object("error", "non_linear");
+        return ordered;
+    }
     static Object action(ActionUsage a) {
         if (a instanceof AssignmentActionUsage v)
             return object("kind", "assign", "target", id(v.getReferent()), "value", expression(v.getValueExpression()), "span", span(a));
@@ -67,7 +112,15 @@ public class ExtractStates {
         // ActionUsage node. Named/typed/performed actions remain unsupported.
         boolean empty = a.eClass() == SysMLPackage.Literals.ACTION_USAGE && a.getOwnedMembership().isEmpty()
             && node != null && node.getLength() == 0;
-        return object("kind", empty ? "empty" : a.eClass().getName(), "span", span(a));
+        var out = object("kind", empty ? "empty" : a.eClass().getName(), "id", id(a),
+            "declared_name", a.getDeclaredName(), "span", span(a),
+            "definitions", a.getActionDefinition().stream().map(ExtractStates::elementReference).toList());
+        if (a instanceof PerformActionUsage performed) {
+            out.put("performed", elementReference(performed.getPerformedAction()));
+            var sequence = actionSequence(a);
+            if (sequence != null) out.put("sequence", sequence);
+        }
+        return out;
     }
     static Map<String, Object> state(Type s, Set<Type> ancestors) {
         if (!ancestors.add(s)) return object("id", id(s), "unsupported", List.of("recursive_state_typing"));
@@ -97,7 +150,8 @@ public class ExtractStates {
                 var triggers = triggerElements.stream().map(v -> ((Map<?, ?>)v).get("id"))
                     .filter(Objects::nonNull).toList();
                 var target = t.getTarget();
-                transitions.add(object("id", id(t), "source", id(t.getSource()), "target", id(t.getTarget()),
+                transitions.add(object("id", id(t), "source", id(t.getSource()), "source_element", elementReference(t.getSource()),
+                    "target", id(t.getTarget()),
                     "guards", t.getGuardExpression().stream().map(ExtractStates::expression).toList(),
                     "effects", t.getEffectAction().stream().map(ExtractStates::action).toList(),
                     "triggers", triggers, "trigger_elements", triggerElements,
@@ -105,6 +159,7 @@ public class ExtractStates {
                     "span", span(t)));
             } else if (e instanceof SuccessionAsUsage t) {
                 transitions.add(object("id", id(t), "source", id(t.getSourceFeature()),
+                    "source_element", elementReference(t.getSourceFeature()),
                     "target", t.getTargetFeature().size() == 1 ? id(t.getTargetFeature().get(0)) : null,
                     "guards", List.of(), "effects", List.of(), "trigger_count", 0,
                     "target_element", t.getTargetFeature().size() == 1
@@ -122,7 +177,8 @@ public class ExtractStates {
             }
         }
         boolean parallel = s instanceof StateDefinition d ? d.isParallel() : ((StateUsage)s).isParallel();
-        return object("id", id(s), "parallel", parallel, "span", span(s), "states", children,
+        return object("id", id(s), "kind", s.eClass().getName(), "declared_name", s.getDeclaredName(),
+            "parallel", parallel, "span", span(s), "states", children,
             "transitions", transitions, "actions", actions, "data", data, "unsupported", unsupported);
     }
     static boolean scalar(Type type) {
