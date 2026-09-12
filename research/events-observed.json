@@ -66,17 +66,18 @@
         "action_kind": 1
       }
     },
-    "control_candidates": 55,
-    "converted_control_candidates": 10
+    "control_candidates": 50,
+    "converted_control_candidates": 10,
+    "latest_workflow_run": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34718653124"
   },
   "latest_project_context_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34714862858",
-  "latest_candidate_metrics_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34715818526",
+  "latest_candidate_metrics_ci": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34718653124",
   "latest_full_batch": {
     "workflow_run": "https://github.com/HansBug/sysmlv2-experiment/actions/runs/34717206119",
     "source_files": 1659,
     "unique_source_hashes": 1492,
     "extracted_state_roots": 75,
-    "control_candidates": 51,
+    "control_candidates": 47,
     "converted_control_candidates": 12,
     "results": {
       "converted": 12,

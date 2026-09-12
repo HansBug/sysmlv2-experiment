@@ -39,9 +39,9 @@
 
 最后一项使用同一批原文件、同一解析器/标准库，无源文本修补。`ServerSequenceModelOutside.sysml` 从 24 条错误变成完全通过；两个含状态的 `*-2.sysml` 分别从 46、52 条错误降到各 6 条，仍未通过。剩余 18 条是 12 条构造调用相关约束、6 条 connector related features 约束，不能把这 4 个文件算作已恢复的有效模型。
 
-随后对登记表中的 64 个上下文目录逐一运行 [`ExtractProject.java`](../ExtractProject.java)。64 个目录、162 个源文件均完成项目级读取，得到 18 个状态根；4 个目录零校验错误，其余目录共 1,500 条错误。机器可读汇总见 [`project-context-observed.json`](project-context-observed.json)。再经过 pyfcstm 目标检查，18 个项目级状态根中 2 个 converted、16 个因目标 profile 特性拒绝，结果见 [`project-conversion-observed.json`](project-conversion-observed.json)。这说明“补全上下文”是必要条件，但对当前语料仍不足以带来全面通过；剩余错误必须按构造调用、connector、旧版本写法等类型继续处理。
+随后对登记表中的 64 个上下文目录逐一运行 [`ExtractProject.java`](../ExtractProject.java)。64 个目录、162 个源文件均完成项目级读取，得到 18 个状态根；4 个目录零校验错误，其余目录共 1,500 条错误（旧批次）。机器可读汇总见 [`project-context-observed.json`](project-context-observed.json)。再经过 pyfcstm 目标检查，18 个项目级状态根中 2 个 converted、16 个因目标 profile 特性拒绝，结果见 [`project-conversion-observed.json`](project-conversion-observed.json)。这说明“补全上下文”是必要条件，但对当前语料仍不足以带来全面通过；剩余错误必须按构造调用、connector、旧版本写法等类型继续处理。
 
-接入官方 Pilot 和 Apollo 11 后，CI 扫描了 78 个上下文、309 个上下文内文件，得到 96 个状态根，其中 55 个控制状态候选，10 个 converted、86 个明确 unsupported。Apollo 11 作为完整 28 文件根目录加载时为 0 条校验错误、18 个状态根；此前按子目录拆分造成的 842 条错误已确认是我们的上下文分组缺陷。该结果包含同一概念在不同公开数据集中的重复版本，不能按状态根数宣称独立系统数量；汇总见 [`project-context-ci-observed.json`](project-context-ci-observed.json)。
+接入官方 Pilot 和 Apollo 11 后，CI 扫描了 78 个上下文、309 个上下文内文件，得到 96 个状态根，其中 50 个控制状态候选，10 个 converted、86 个明确 unsupported。Apollo 11 作为完整 28 文件根目录加载时为 0 条校验错误、18 个状态根；此前按子目录拆分造成的 842 条错误已确认是我们的上下文分组缺陷。该结果包含同一概念在不同公开数据集中的重复版本，不能按状态根数宣称独立系统数量；汇总见 [`project-context-ci-observed.json`](project-context-ci-observed.json)。
 
 公开旧例 `training/24. Transitions/Transition Actions.sysml` 与当前官方 Pilot `sysml/src/training/25. Transitions/Transition Actions.sysml` 还实际展示了 `send ControllerStartSignal()` → `send new ControllerStartSignal()`、`entry; then off` → `first start then off` 的变化。核心 state grammar 相同，不代表共享动作规则和标准库没变化。不能承诺 2024 前端无条件覆盖 2026 状态模型。
 
@@ -53,7 +53,7 @@
 
 单独裸调 Xtext `IParser` 的早期诊断脚本曾缺少 EPackage/setting delegate 初始化，导致代理或 NPE 错误；换成官方完整 workspace 初始化后消失，这是我们的探针接法问题。已有 wrapper 的泛化 JSON 序列化异常也不能直接归到官方语法解析器，本导入路径不使用那个 serializer。
 
-历史独立文件转换结果（事件映射后的 CI）为 **71 个抽取状态根中 12 个 converted**；最新项目级上下文扫描为 **96 个状态根中 55 个控制状态候选、10 个 converted**。[Actions 34717206119](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34717206119) 验证了将被 accept 引用的 `ActionDefinition` 降为事件声明；总数未增加，因为 StopWatch 随后触发了未定义出口优先级拒绝。member kind、消息 payload/receiver、no control states、parallel、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
+历史独立文件转换结果（事件映射后的 CI）为 **71 个抽取状态根中 12 个 converted**；最新项目级上下文扫描为 **96 个状态根中 50 个控制状态候选、10 个 converted**。[Actions 34718653124](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34718653124) 验证了将被 accept 引用的 `ActionDefinition` 降为事件声明；总数未增加，因为 StopWatch 随后触发了未定义出口优先级拒绝。member kind、消息 payload/receiver、no control states、parallel、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
 
 下一步应优先补剩余的工程上下文与语义规则缺口，以真实工程为单位恢复那 14 个语法有效候选的上下文，然后在有效状态根上评价转换规则。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 
