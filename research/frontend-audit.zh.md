@@ -59,6 +59,8 @@
 
 当前对未参与控制表达式的 `ReferenceUsage`、`PartUsage`、`PortUsage` 采用显式 `ignored_structural` 登记；一旦 typed 引用可达 guard、effect 或 action，就继续拒绝，避免把结构成员的行为依赖误当成可忽略元数据。
 
+本轮还复现并修复了一个纯转换器问题：父状态的引用收集曾递归扫描子状态整棵子树，子状态动作参数因此被错误地报告为父状态的 `member_kind` 缺口。提交 [`4d3f8af`](https://github.com/HansBug/sysmlv2-experiment/commit/4d3f8af) 将引用范围限制在当前状态的直接行为；官方 Pilot 训练项目 `23. States` 的本地对照从 1/3 个控制候选转换成功提升到 2/3，剩余失败分别是并行语义和无状态子根。这一变化属于我们自己的抽取器修正，不是官方前端修复。
+
 ## 复现
 
 先按主 README 准备 requirements、固定语料、v0.1.0 JAR 和匹配标准库。使用历史完整批次或重新抽取的 `artifacts/corpus-source.json` 交叉检查状态清点：
