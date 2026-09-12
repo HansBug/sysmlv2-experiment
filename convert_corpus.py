@@ -94,6 +94,8 @@ def lower(root):
                 if role == 'during':
                     raise Unsupported('do_action_execution', node['id'])
                 lines.append(indent + '    ' + role + ' { ' + body + ' }')
+                mapping.append({'kind': 'state_action', 'source_id': subaction['id'],
+                                'span': subaction['action']['span'], 'target_owner': target, 'target_role': role})
         child_ids = {c['id'] for c in node['states']}
         for child in node['states']:
             lines.extend(emit(child, target + '.', indent + '    '))
@@ -131,7 +133,7 @@ def run(source, output):
     output.mkdir(parents=True, exist_ok=True)
     rows = []
     for file in source['models']:
-        identity = {k: file[k] for k in ('dataset', 'source', 'sha256')}
+        identity = {k: file[k] for k in ('dataset', 'source', 'sha256', 'context')}
         if file['status'] != 'extracted':
             rows.append({**identity, 'status': file['status'], 'detail': file['detail']})
             continue
@@ -163,6 +165,7 @@ def run(source, output):
                 row.update(status='target_error', code=type(error).__name__, detail=str(error))
             rows.append(row)
     summary = {'source_files': len(source['models']),
+               'unique_source_hashes': len({m['sha256'] for m in source['models']}),
                'extracted_state_roots': sum(len(m['states']) for m in source['models'] if m['status'] == 'extracted'),
                'files_with_converted_root': len({(r['dataset'], r['source']) for r in rows if r['status'] == 'converted'}),
                'results': dict(Counter(r['status'] for r in rows)),

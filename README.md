@@ -22,3 +22,37 @@ python -m pip install -r requirements.txt
 
 Original experiment code is MIT licensed. Third-party tools and corpora retain
 their own licences; model sources are obtained from pinned upstream checkouts.
+
+## Reproduce the importer
+
+[Parser choice, public datasets, actual coverage and limitations (中文)](research/import-findings.zh.md)
+
+```bash
+python -m pip install -r requirements.txt
+python prepare_corpus.py
+# Java 21; use the released v0.1.0 JAR and its matching 2026-07 standard library.
+java -Xmx4g -cp /path/to/sysml-v2-pilot-gt-0.1.0-all.jar ExtractStates.java \
+  /path/to/sysml.library artifacts/corpus-manifest.json artifacts/corpus-source.json
+python check_import.py artifacts/corpus-source.json
+python convert_corpus.py artifacts/corpus-source.json artifacts/converted
+```
+
+For the fully scripted download/checksum/library setup, run the
+[GitHub workflow](.github/workflows/import.yml):
+
+```bash
+gh workflow run import.yml --repo HansBug/sysmlv2-experiment
+gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
+```
+
+The workflow uploads source manifests, linked facts, per-file failures, accepted
+FCSTM models, mappings and semantic reports. It parses corpus files independently
+with the standard library; missing project context is a recorded limitation.
+The mandatory check verifies target diagnostics, a two-cycle guard/assignment
+trace, and explicit rejection of arrays, parallel states and nonempty do actions.
+
+Local full-corpus execution: **1,332 files, 24 extracted state roots, 4 accepted
+roots (2 external + 2 synthetic)**. There are 20 unsupported roots, 624 parsed
+files without state machines and 691 files rejected by source validation in the
+current context. These are different counting units. The corpus does not support
+a claim that most public SysML models currently convert.

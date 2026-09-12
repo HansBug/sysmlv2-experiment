@@ -2,7 +2,7 @@
 
 This local, executable probe reuses the official Pilot workspace API already
 bundled by [sysml-v2-pilot-gt](https://github.com/HansBug/sysml-v2-pilot-gt).
-It does not change that repository or implement an importer.
+The probe does not change that repository. The independent importer and corpus results are documented in [import-findings.zh.md](import-findings.zh.md).
 
 Observed on OpenJDK 21, wrapper commit
 `f4ae9fe96de5c27bb6d2088e245762562b7006f8`, official Pilot
@@ -11,7 +11,7 @@ The checked-in `observed.txt` is the actual successful local output.
 
 ```bash
 java -Xmx3g -cp /path/to/sysml-v2-pilot-gt-0.1.0-SNAPSHOT-all.jar \
-  research/sysml/LinkedStateProbe.java \
+  research/LinkedStateProbe.java \
   '/path/to/SysML-v2-Pilot-Implementation/sysml.library'
 ```
 

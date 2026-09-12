@@ -109,7 +109,9 @@ public class ExtractStates {
     public static void main(String[] args) throws Exception {
         var workspace = SysMLInteractive.createInstance();
         workspace.setVerbose(false);
-        workspace.loadLibrary(args[0]);
+        // Pilot's EMF loader misinterprets escaped spaces in relative library
+        // paths. Resolve the library root before it constructs resource URIs.
+        workspace.loadLibrary(Path.of(args[0]).toAbsolutePath().normalize().toString());
         var manifest = JsonParser.parseString(Files.readString(Path.of(args[1]))).getAsJsonObject();
         var results = new ArrayList<Object>();
         for (var entry : manifest.getAsJsonArray("files")) {
