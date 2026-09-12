@@ -47,3 +47,5 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 ## 公开资料与许可
 
 数据集和论文链接、可下载模型文件类型、固定版本及本次状态覆盖见[学术资产盘点](research/academic-assets.zh.md)。第三方模型与工具保留原许可；本仓库只提交清单、哈希、统计和自写实验代码。实验代码采用 MIT。
+
+Apollo 11 工程资产已固定到 `6e9c93fe7d80c5ca3534bb14b10ab374a643ef2d`，本地用同一官方 Pilot JAR 加载 28/28 文件并识别 18 个状态根；下一次 CI 会把它纳入全量批次。任务阶段根包含 15 个子状态和 14 条 typed 事件转移。严格 FCSTM profile 暂因继承的 `PerformActionUsage` 保留拒绝，不把删掉 do 行为后的骨架当作等价转换。

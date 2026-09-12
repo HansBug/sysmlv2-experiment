@@ -9,6 +9,7 @@ REPOSITORIES = {
     'gfse': 'GfSE/SysML-v2-Models',
     'benchmark': 'yasminebouamra/SysMLv2-Benchmark',
     'refinement': 'cmuchancel/NL-to-SysMLv2-via-Conformance-Driven-Refinement',
+    'apollo11': 'airbus/apollo-11-sysml-v2',
 }
 
 
@@ -31,6 +32,7 @@ def prepare(output, fixtures_only=False):
             'systemp': Path('_external/benchmark/data'),
             'refinement_positive': Path('_external/refinement/Open-Source Dataset Release/604 positive artifacts'),
             'refinement_negative': Path('_external/refinement/Open-Source Dataset Release/439 negative artifacts'),
+            'apollo11': Path('_external/apollo11'),
         })
         if official.exists():
             roots['official_pilot'] = official

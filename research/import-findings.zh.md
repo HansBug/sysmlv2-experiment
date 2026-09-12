@@ -44,6 +44,7 @@
 | [GfSE/SysML-v2-Models](https://github.com/GfSE/SysML-v2-Models) | `ebbb0c39f4813b059e0bf14270ec58618aa012ca` | models 下 36 个 .sysml |
 | [SysTemp benchmark](https://github.com/yasminebouamra/SysMLv2-Benchmark) | `dd41357921f23020aacdaaa063e0a4b31fc0b2b4` | data 下 243 个 .sysml |
 | [Conformance-Driven Refinement dataset](https://github.com/cmuchancel/NL-to-SysMLv2-via-Conformance-Driven-Refinement) | `96c0e104f82a8da7a5edccca9b67040785b53bd3` | 604 positive artifacts + 439 negative artifacts |
+| [Airbus Apollo 11 SysML v2](https://github.com/airbus/apollo-11-sysml-v2) | `6e9c93fe7d80c5ca3534bb14b10ab374a643ef2d` | 28 个跨文件工程模型文件，MPL-2.0 |
 | 自建最小源模型 | 本实验仓库版本 | 10 个 .sysml |
 
 [SysTemp 论文](https://arxiv.org/abs/2506.21608) 直接链接前两者；[Refinement 论文](https://arxiv.org/abs/2607.14162) 链接第三者。Refinement 仓库还含 151 个 SysMBench prompts 和 trajectory corpus，本批次没有把 trajectory 中同一模型的副本再重复加入。正负标签来自作者的合规评价，不等于当前 Pilot 独立文件加载会给出相同结论。[SysMBench 论文](https://arxiv.org/abs/2508.03215) 本身不能替代实际可下载模型证据。

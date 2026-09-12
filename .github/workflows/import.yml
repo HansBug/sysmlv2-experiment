@@ -38,6 +38,12 @@ jobs:
           path: _external/pilot-src
           sparse-checkout: sysml/src
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: airbus/apollo-11-sysml-v2
+          ref: 6e9c93fe7d80c5ca3534bb14b10ab374a643ef2d
+          path: _external/apollo11
+          persist-credentials: false
       - name: Download the released official frontend wrapper
         run: |
           curl --fail --location --retry 3 -o _external/pilot.jar https://github.com/HansBug/sysml-v2-pilot-gt/releases/download/v0.1.0/sysml-v2-pilot-gt-0.1.0-all.jar
@@ -71,6 +77,7 @@ jobs:
             --root refinement_positive='_external/refinement/Open-Source Dataset Release/604 positive artifacts' \
             --root refinement_negative='_external/refinement/Open-Source Dataset Release/439 negative artifacts' \
             --root official_pilot=_external/pilot-src/sysml/src \
+            --root apollo11=_external/apollo11 \
             --library _external/pilot/sysml.library --jar _external/pilot.jar \
             --output artifacts/project-contexts
           python research/convert_project_results.py artifacts/project-contexts artifacts/project-context-conversion.json
