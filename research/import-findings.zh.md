@@ -62,7 +62,7 @@
 
 状态根与文件不在同一个计数层级，不能横向简单相加。总计 24 个成功解析的状态根中通过 4 个；去掉自建例，公开数据的 18 个候选通过 2 个。**本轮不能声称大部分公开模型可转换。** 也不能把 624 个没有状态机的文件算成转换失败，或把 691 个源校验失败全部说成原数据错误：包括旧语法、工具约束差异及我们尚未加载的跨文件工程上下文。
 
-公开 accepted roots 来自 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates，以及 `10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState。其他候选的 first-blocker 包括不支持的成员、触发动作、空状态定义、并行和无默认入口。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。当前没有 source frontend exception 或 target AST/model error 被伪装成 unsupported。
+公开 accepted roots 来自 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates，以及 `10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState。这两个公开 accepted root 都是简单的无 guard/赋值状态链；带 guard 和赋值的转换证据目前来自自建例，不能写成复杂公开行为模型已经得到验证。其他候选的 first-blocker 包括不支持的成员、触发动作、空状态定义、并行和无默认入口。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。当前没有 source frontend exception 或 target AST/model error 被伪装成 unsupported。
 
 ## 对后续学术工作的含义
 
