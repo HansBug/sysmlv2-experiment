@@ -40,8 +40,10 @@ def expression(expr, variables):
 def lower(root):
     nodes = []
     def collect(state):
-        if state['unsupported']:
-            raise Unsupported('member_kind', ','.join(state['unsupported']))
+        declaration_only = {'ActionDefinition'}
+        unsupported = [kind for kind in state['unsupported'] if kind not in declaration_only]
+        if unsupported:
+            raise Unsupported('member_kind', ','.join(unsupported))
         if state['parallel']:
             raise Unsupported('parallel', state['id'])
         nodes.append(state)

@@ -53,7 +53,7 @@
 
 单独裸调 Xtext `IParser` 的早期诊断脚本曾缺少 EPackage/setting delegate 初始化，导致代理或 NPE 错误；换成官方完整 workspace 初始化后消失，这是我们的探针接法问题。已有 wrapper 的泛化 JSON 序列化异常也不能直接归到官方语法解析器，本导入路径不使用那个 serializer。
 
-历史独立文件转换结果已更新为 **71 个抽取状态根中 12 个 converted**；项目级上下文扫描在支持 typed `accept` event 后为 **74 个状态根中 10 个 converted**。member kind、消息 payload/receiver、no control states、parallel、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
+历史独立文件转换结果（事件映射后的 CI）为 **71 个抽取状态根中 12 个 converted**；项目级上下文扫描为 **74 个状态根中 10 个 converted**。被 accept 引用的 `ActionDefinition` 已降为事件声明；member kind、消息 payload/receiver、no control states、parallel、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
 
 下一步应优先补剩余的工程上下文与语义规则缺口，以真实工程为单位恢复那 14 个语法有效候选的上下文，然后在有效状态根上评价转换规则。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 

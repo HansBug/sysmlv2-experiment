@@ -29,7 +29,7 @@
 
 源元素依靠类型和链接映射；输出 DSL 是目标 AST 的规范序列化入口，不是用文本搜索改写源语言。依赖固定 `pyfcstm==0.6.0`，成功要求能构建 `StateMachineDSLProgram` 和 `StateMachine`，并且 inspect 无 error。warning/info 全部保留。
 
-当前接受 exclusive hierarchy、同层转移、单一默认入口、基本 scalar 数值及显式初始化、简单表达式、entry/exit 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。没有显式 multiplicity 时，在本控制器 profile 下解释为一个实例；显式数组拒绝。带 payload/receiver 的消息、时间触发、并行、任意动作、非空 do action、多个未定义优先级的 outgoing、缺失默认入口、无法处理的成员类型明确拒绝。do action 没有直接映射为 during。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
+当前接受 exclusive hierarchy、同层转移、单一默认入口、基本 scalar 数值及显式初始化、简单表达式、entry/exit 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。被 accept 引用的 `ActionDefinition` 仅作为事件声明处理，不再把声明本身当作状态机成员；同一源状态存在多个未定义优先级的 outgoing 仍拒绝。没有显式 multiplicity 时，在本控制器 profile 下解释为一个实例；显式数组拒绝。带 payload/receiver 的消息、时间触发、并行、任意动作、非空 do action、缺失默认入口、无法处理的成员类型明确拒绝。do action 没有直接映射为 during。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
 
 每个 accepted root 输出 `model.fcstm`、`inspect.json`、`mapping.json`；映射含源 SHA256、限定名、源 offset/length/line、目标状态/变量/动作/转移索引、上下文和假设。只做单向导入；此阶段不实现回写或修复算法。
 
