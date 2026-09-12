@@ -11,6 +11,7 @@ REPOSITORIES = {
     'refinement': 'cmuchancel/NL-to-SysMLv2-via-Conformance-Driven-Refinement',
     'apollo11': 'airbus/apollo-11-sysml-v2',
     'advent': 'sensmetry/advent-of-sysml-v2',
+    'book_examples': 'MBSE4U/the-sysmlv2-book-examples',
 }
 
 
@@ -35,6 +36,7 @@ def prepare(output, fixtures_only=False):
             'refinement_negative': Path('_external/refinement/Open-Source Dataset Release/439 negative artifacts'),
             'apollo11': Path('_external/apollo11'),
             'advent': Path('_external/advent'),
+            'book_examples': Path('_external/book_examples'),
         })
         if official.exists():
             roots['official_pilot'] = official

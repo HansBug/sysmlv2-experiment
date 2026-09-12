@@ -65,6 +65,16 @@
       "status": "downloaded_44_files_4_syntax_state_files_MIT"
     },
     {
+      "name": "The SysML v2 Book examples",
+      "kind": "book_model_asset",
+      "paper": "https://leanpub.com/sysmlv2",
+      "url": "https://github.com/MBSE4U/the-sysmlv2-book-examples",
+      "revision": "3bb66343ec18a40f5f851b97b3a19b2a7cc1efc4",
+      "model_glob": "examples/**/*.sysml",
+      "license": "Apache-2.0",
+      "status": "new_corpus_source_pending_pilot_validation"
+    },
+    {
       "name": "SysML v2 Release",
       "kind": "official_reference",
       "paper": "",

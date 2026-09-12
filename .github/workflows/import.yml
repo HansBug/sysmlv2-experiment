@@ -85,8 +85,10 @@ jobs:
             --root official_pilot=_external/pilot-src/sysml/src \
             --root apollo11=_external/apollo11 \
             --root advent=_external/advent \
+            --root book_examples=_external/book_examples \
             --project-root advent=_external/advent \
             --project-root apollo11=_external/apollo11 \
+            --project-root book_examples=_external/book_examples \
             --library _external/pilot/sysml.library --jar _external/pilot.jar \
             --output artifacts/project-contexts
           python research/convert_project_results.py artifacts/project-contexts artifacts/project-context-conversion.json
