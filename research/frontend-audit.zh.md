@@ -55,7 +55,7 @@
 
 历史独立文件转换结果（事件映射后的 CI）为 **71 个抽取状态根中 12 个 converted**；最新项目级上下文扫描为 **96 个状态根中 50 个控制状态候选、12 个 converted**。[Actions 34720946017](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34720946017) 进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点和带 library 单位的数量值；总计独立文件批次为 1,661 个文件、49 个控制候选、16 个 converted（其中 4 个为自建 fixture）。member kind、消息 payload/receiver、no control states、parallel、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
 
-下一步应优先补剩余的工程上下文与语义规则缺口，以真实工程为单位恢复那 14 个语法有效候选的上下文，然后在有效状态根上评价转换规则。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
+工程上下文补全已经覆盖登记的公开项目；当前剩余拒绝主要是 `PerformActionUsage`/`SendActionUsage`、parallel、结构成员、时间/消息语义和未定义优先级。带 library 单位的数量值和可证明互斥的简单 guard 已加入受限映射。下一步应在这些语义边界上逐类建立 typed 最小复现，不通过删除行为来提高数字。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 
 ## 复现
 
