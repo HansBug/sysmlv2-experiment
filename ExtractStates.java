@@ -120,6 +120,11 @@ public class ExtractStates {
             var sequence = actionSequence(a);
             if (sequence != null) out.put("sequence", sequence);
         }
+        if (a instanceof SendActionUsage send) {
+            out.put("receiver", expression(send.getReceiverArgument()));
+            out.put("payload", expression(send.getPayloadArgument()));
+            out.put("sender", expression(send.getSenderArgument()));
+        }
         return out;
     }
     static Map<String, Object> state(Type s, Set<Type> ancestors) {

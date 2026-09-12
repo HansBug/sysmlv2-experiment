@@ -158,6 +158,10 @@ def lower(root):
         if body.get('kind') not in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
             raise Unsupported('action_kind', body.get('kind'))
         name = body.get('declared_name')
+        if not name and body.get('kind') == 'SendActionUsage':
+            offset = (body.get('span') or {}).get('offset')
+            if isinstance(offset, int):
+                name = 'send_action_' + str(offset)
         if not name:
             raise Unsupported('action_name', str(body.get('id')))
         if isinstance(body.get('sequence'), dict):
