@@ -33,6 +33,8 @@
 
 每个 accepted root 输出 `model.fcstm`、`inspect.json`、`mapping.json`；映射含源 SHA256、限定名、源 offset/length/line、目标状态/变量/动作/转移索引、上下文和假设。只做单向导入；此阶段不实现回写或修复算法。
 
+[后续审计](frontend-audit.zh.md) 进一步限定上述入口支持：当前转换器只识别显式 entry 默认边，尚未映射官方已接受的 `first start then A`；抽取器也会过滤来自另一用户文件的继承状态。两者都是我们的实现缺口，不是官方前端限制。
+
 `check_import.py` 验证官方源元素经过这条完整链路后的层次与赋值行为：Idle entry 将 x 置 1，下一拍 guard 成立、effect 将 x 置 4 并到 Active；另检查并行、数组、do action、无效引用拒绝。这个 FCSTM 轨迹检查是映射 profile 的回归门，不是独立 SysML execution oracle。
 
 ## 含模型文件的公开研究语料
@@ -49,6 +51,8 @@
 这些集合多用于语言建模、生成或 conformance；不都是可执行控制器，更不是等量独立系统。文件级 SHA256 用于复查重复，当前 1,332 文件包含 1,329 种内容。
 
 ## 实际覆盖
+
+以下是历史的“先完整校验、再抽取”批次结果。[后续失败归因复核](frontend-audit.zh.md) 已补做独立语法树清点：公开的 1,322 个文件中，25 个语法有效且含状态元素、928 个语法有效且无状态元素、369 个有语法错误。原批次只进入了其中 11 个含状态元素的文件（18 个状态根），另 14 个语法有效候选被完整校验筛掉。不能用下表的状态根数代替语料中所有含状态元素的文件数。
 
 批次摘要与逐项状态见 [`import-observed.json`](import-observed.json)。本地 Java 21 + 固定 JAR/标准库已执行全部 1,332 文件；[Actions 34703608767](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34703608767) 成功复现相同统计，并保存完整源诊断和转换产物。
 

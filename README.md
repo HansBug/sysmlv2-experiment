@@ -27,6 +27,8 @@ their own licences; model sources are obtained from pinned upstream checkouts.
 
 [Parser choice, public datasets, actual coverage and limitations (中文)](research/import-findings.zh.md)
 
+[Failure attribution and corrected state-file inventory (中文)](research/frontend-audit.zh.md)
+
 ```bash
 python -m pip install -r requirements.txt
 python prepare_corpus.py
@@ -56,3 +58,11 @@ roots (2 external + 2 synthetic)**. There are 20 unsupported roots, 624 parsed
 files without state machines and 691 files rejected by source validation in the
 current context. These are different counting units. The corpus does not support
 a claim that most public SysML models currently convert.
+
+A separate official syntax-AST inventory found **25 syntax-valid external files
+with state elements, 928 syntax-valid external files without them, and 369 files
+with syntax errors**. Only 11 of the 25 state-containing files passed the baseline
+full validation; the remaining 14 require further context/version/constraint
+diagnosis. The audit reproduces missing project context, dropped cross-file
+inheritance in our exporter, and a missing modern start-edge mapping in our
+converter. No official core parser defect has been established by these probes.

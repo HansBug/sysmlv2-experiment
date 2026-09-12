@@ -1,0 +1,316 @@
+{
+  "cross_file": {
+    "official_inherited_states": [
+      "Types::Controller::Idle",
+      "Types::Controller::Active"
+    ],
+    "exported": {
+      "id": "App::Device::controller",
+      "parallel": false,
+      "span": {
+        "offset": 57,
+        "length": 38,
+        "line": 1
+      },
+      "states": [],
+      "transitions": [],
+      "actions": [],
+      "data": [],
+      "unsupported": []
+    },
+    "conversion": {
+      "status": "unsupported",
+      "code": "no_control_states",
+      "detail": "App::Device::controller"
+    }
+  },
+  "modern_start": {
+    "exported": {
+      "id": "Modern::Controller",
+      "parallel": false,
+      "span": {
+        "offset": 17,
+        "length": 97,
+        "line": 1
+      },
+      "states": [
+        {
+          "id": "Modern::Controller::A",
+          "parallel": false,
+          "span": {
+            "offset": 60,
+            "length": 8,
+            "line": 1
+          },
+          "states": [],
+          "transitions": [],
+          "actions": [],
+          "data": [],
+          "unsupported": []
+        },
+        {
+          "id": "Modern::Controller::B",
+          "parallel": false,
+          "span": {
+            "offset": 69,
+            "length": 8,
+            "line": 1
+          },
+          "states": [],
+          "transitions": [],
+          "actions": [],
+          "data": [],
+          "unsupported": []
+        }
+      ],
+      "transitions": [
+        {
+          "id": "@40",
+          "source": "States::StateAction::start",
+          "target": "Modern::Controller::A",
+          "guards": [],
+          "effects": [],
+          "trigger_count": 0,
+          "span": {
+            "offset": 40,
+            "length": 19,
+            "line": 1
+          }
+        },
+        {
+          "id": "@78",
+          "source": "Modern::Controller::A",
+          "target": "Modern::Controller::B",
+          "guards": [
+            {
+              "kind": "LiteralBoolean",
+              "span": {
+                "offset": 100,
+                "length": 4,
+                "line": 1
+              },
+              "value": true
+            }
+          ],
+          "effects": [],
+          "trigger_count": 0,
+          "span": {
+            "offset": 78,
+            "length": 34,
+            "line": 1
+          }
+        }
+      ],
+      "actions": [],
+      "data": [],
+      "unsupported": []
+    },
+    "sources": [
+      {
+        "source_id": "Modern::Controller::A",
+        "source_kind": "StateUsage"
+      }
+    ],
+    "conversion": {
+      "status": "unsupported",
+      "code": "transition_source",
+      "detail": "States::StateAction::start"
+    }
+  },
+  "constructor": {
+    "old_errors": true,
+    "new_errors": false,
+    "new_issues": "",
+    "old_issues": "ERROR:Must invoke a behavior or a behavioral feature (4.sysml line : 1 column : 82)\n"
+  },
+  "project_context": [
+    {
+      "source": "ServerSequenceModel.sysml",
+      "sha256": "32d2847af1ee7eae4e1eba8431673e54e469cd893f9b9a7d8fcb56cdb404ff88",
+      "isolated_errors": false,
+      "isolated_error_count": 0,
+      "isolated_issues": "",
+      "project_errors": false,
+      "project_error_count": 0,
+      "project_issues": []
+    },
+    {
+      "source": "ServerSequenceModelOutside.sysml",
+      "sha256": "9e77acbd7479aabaf309f0f5e01cada6859b38b582dec5335fd6d707f1a9e6bd",
+      "isolated_errors": true,
+      "isolated_error_count": 24,
+      "isolated_issues": "ERROR:Couldn't resolve reference to Namespace 'ServerSequenceModel'. (7.sysml line : 2 column : 16)\nERROR:Couldn't resolve reference to Classifier 'PubSubSequence'. (7.sysml line : 4 column : 36)\nERROR:Couldn't resolve reference to Feature 'producer'. (7.sysml line : 5 column : 12)\nERROR:Couldn't resolve reference to Feature 'server'. (7.sysml line : 9 column : 12)\nERROR:Couldn't resolve reference to Feature 'consumer'. (7.sysml line : 15 column : 12)\nERROR:Couldn't resolve reference to Feature 'publish_source_event'. (7.sysml line : 6 column : 10)\nERROR:Couldn't resolve reference to Element 'publish_message'. (7.sysml line : 6 column : 33)\nERROR:Couldn't resolve reference to Element 'start'. (7.sysml line : 6 column : 49)\nERROR:Couldn't resolve reference to Feature 'subscribe_target_event'. (7.sysml line : 10 column : 25)\nERROR:Couldn't resolve reference to Feature 'publish_target_event'. (7.sysml line : 11 column : 30)\nERROR:Couldn't resolve reference to Feature 'deliver_source_event'. (7.sysml line : 12 column : 30)\nERROR:Couldn't resolve reference to Element 'subscribe_message'. (7.sysml line : 10 column : 50)\nERROR:Couldn't resolve reference to Element 'done'. (7.sysml line : 10 column : 68)\nERROR:Couldn't resolve reference to Element 'publish_message'. (7.sysml line : 11 column : 53)\nERROR:Couldn't resolve reference to Element 'done'. (7.sysml line : 11 column : 69)\nERROR:Couldn't resolve reference to Element 'deliver_message'. (7.sysml line : 12 column : 53)\nERROR:Couldn't resolve reference to Element 'start'. (7.sysml line : 12 column : 69)\nERROR:Couldn't resolve reference to Feature 'subscribe_source_event'. (7.sysml line : 16 column : 25)\nERROR:Couldn't resolve reference to Feature 'deliver_target_event'. (7.sysml line : 17 column : 30)\nERROR:Couldn't resolve reference to Element 'subscribe_message'. (7.sysml line : 16 column : 50)\nERROR:Couldn't resolve reference to Element 'start'. (7.sysml line : 16 column : 68)\nERROR:Couldn't resolve reference to Element 'deliver_message'. (7.sysml line : 17 column : 53)\nERROR:Couldn't resolve reference to Element 'done'. (7.sysml line : 17 column : 69)\nERROR:Must reference an occurrence. (7.sysml line : 6 column : 10)\nWARNING:Bound features should have conforming types (7.sysml line : 6 column : 33)\nWARNING:Bound features should have conforming types (7.sysml line : 10 column : 50)\nWARNING:Bound features should have conforming types (7.sysml line : 11 column : 53)\nWARNING:Bound features should have conforming types (7.sysml line : 12 column : 53)\nWARNING:Bound features should have conforming types (7.sysml line : 16 column : 50)\nWARNING:Bound features should have conforming types (7.sysml line : 17 column : 53)\n",
+      "project_errors": false,
+      "project_error_count": 0,
+      "project_issues": []
+    },
+    {
+      "source": "ServerSequenceOutsideRealization-2.sysml",
+      "sha256": "2121a06f2ee7267b1d67b1b91c9b33cc19b479238a9bc16a48a94ad923670719",
+      "isolated_errors": true,
+      "isolated_error_count": 46,
+      "isolated_issues": "ERROR:Couldn't resolve reference to Namespace 'ServerSequenceModelOutside'. (8.sysml line : 3 column : 17)\nERROR:Couldn't resolve reference to Element 'Publish'. (8.sysml line : 23 column : 25)\nERROR:Couldn't resolve reference to Type 'Subscribe'. (8.sysml line : 42 column : 19)\nERROR:Couldn't resolve reference to Type 'Publish'. (8.sysml line : 48 column : 19)\nERROR:Couldn't resolve reference to Element 'topic'. (8.sysml line : 49 column : 13)\nERROR:Couldn't resolve reference to Element 'Deliver'. (8.sysml line : 50 column : 14)\nERROR:Couldn't resolve reference to Element 'publication'. (8.sysml line : 50 column : 26)\nERROR:Couldn't resolve reference to Element 'Subscribe'. (8.sysml line : 66 column : 27)\nERROR:Couldn't resolve reference to Type 'Deliver'. (8.sysml line : 67 column : 33)\nERROR:Couldn't resolve reference to Type 'PubSubSequence'. (8.sysml line : 73 column : 23)\nERROR:Couldn't resolve reference to Feature 'producer'. (8.sysml line : 74 column : 12)\nERROR:Couldn't resolve reference to Feature 'server'. (8.sysml line : 75 column : 12)\nERROR:Couldn't resolve reference to Feature 'consumer'. (8.sysml line : 76 column : 12)\nERROR:Couldn't resolve reference to Feature 'publish_message'. (8.sysml line : 78 column : 15)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (8.sysml line : 82 column : 15)\nERROR:Couldn't resolve reference to Feature 'deliver_message'. (8.sysml line : 86 column : 15)\nERROR:Couldn't resolve reference to Element 'producer'. (8.sysml line : 79 column : 22)\nERROR:Couldn't resolve reference to Element 'publicationPort'. (8.sysml line : 79 column : 31)\nERROR:Couldn't resolve reference to Element 'server'. (8.sysml line : 80 column : 22)\nERROR:Couldn't resolve reference to Element 'publicationPort'. (8.sysml line : 80 column : 29)\nERROR:Couldn't resolve reference to Element 'consumer'. (8.sysml line : 83 column : 22)\nERROR:Couldn't resolve reference to Element 'subscriptionPort'. (8.sysml line : 83 column : 31)\nERROR:Couldn't resolve reference to Element 'server'. (8.sysml line : 84 column : 22)\nERROR:Couldn't resolve reference to Element 'subscriptionPort'. (8.sysml line : 84 column : 29)\nERROR:Couldn't resolve reference to Element 'server'. (8.sysml line : 87 column : 22)\nERROR:Couldn't resolve reference to Element 'consumer'. (8.sysml line : 88 column : 22)\nERROR:Couldn't resolve reference to Feature 'publish_message'. (8.sysml line : 93 column : 59)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (8.sysml line : 94 column : 61)\nERROR:Couldn't resolve reference to Feature 'deliver_message'. (8.sysml line : 95 column : 65)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (8.sysml line : 97 column : 64)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (8.sysml line : 98 column : 72)\nERROR:Couldn't resolve reference to Feature 'publish_message'. (8.sysml line : 99 column : 71)\nERROR:Couldn't resolve reference to Feature 'topic'. (8.sysml line : 49 column : 38)\nERROR:Couldn't resolve reference to Feature 'subscriber'. (8.sysml line : 50 column : 58)\nERROR:Must invoke a behavior or a behavioral feature (8.sysml line : 23 column : 25)\nERROR:A usage must be typed by definitions. (8.sysml line : 41 column : 31)\nERROR:A usage must be typed by definitions. (8.sysml line : 42 column : 13)\nERROR:A usage must be typed by definitions. (8.sysml line : 47 column : 30)\nERROR:A usage must be typed by definitions. (8.sysml line : 48 column : 13)\nERROR:Must invoke a behavior or a behavioral feature (8.sysml line : 50 column : 14)\nERROR:Must invoke a behavior or a behavioral feature (8.sysml line : 66 column : 27)\nERROR:A usage must be typed by definitions. (8.sysml line : 67 column : 33)\nERROR:An occurrence, item or part must be typed by occurrence definitions. (8.sysml line : 73 column : 2)\nERROR:Must have at least two related elements (8.sysml line : 78 column : 3)\nWARNING:Bound features should have conforming types (8.sysml line : 79 column : 22)\nWARNING:Bound features should have conforming types (8.sysml line : 80 column : 22)\nERROR:Must have at least two related elements (8.sysml line : 82 column : 3)\nWARNING:Bound features should have conforming types (8.sysml line : 83 column : 22)\nWARNING:Bound features should have conforming types (8.sysml line : 84 column : 22)\nERROR:Must have at least two related elements (8.sysml line : 86 column : 3)\nWARNING:Bound features should have conforming types (8.sysml line : 87 column : 22)\nWARNING:Bound features should have conforming types (8.sysml line : 88 column : 22)\nWARNING:Bound features should have conforming types (8.sysml line : 93 column : 4)\nWARNING:Bound features should have conforming types (8.sysml line : 94 column : 4)\nWARNING:Bound features should have conforming types (8.sysml line : 95 column : 4)\nWARNING:Bound features should have conforming types (8.sysml line : 97 column : 4)\nWARNING:Bound features should have conforming types (8.sysml line : 98 column : 4)\nWARNING:Bound features should have conforming types (8.sysml line : 99 column : 4)\n",
+      "project_errors": true,
+      "project_error_count": 6,
+      "project_issues": [
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 23
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 50
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 66
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must have at least two related elements",
+          "code": "validateConnectorRelatedFeatures",
+          "line": 78
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must have at least two related elements",
+          "code": "validateConnectorRelatedFeatures",
+          "line": 82
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must have at least two related elements",
+          "code": "validateConnectorRelatedFeatures",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "source": "ServerSequenceOutsideRealization-3.sysml",
+      "sha256": "05227c6e40dae46668e93dbb941fb3f7a940091543f466799871c04a7f1bdfad",
+      "isolated_errors": true,
+      "isolated_error_count": 108,
+      "isolated_issues": "ERROR:Couldn't resolve reference to Namespace 'ServerSequenceModelOutside'. (9.sysml line : 3 column : 17)\nERROR:Couldn't resolve reference to Type 'Publish'. (9.sysml line : 9 column : 21)\nERROR:Couldn't resolve reference to Type 'Subscribe'. (9.sysml line : 13 column : 23)\nERROR:Couldn't resolve reference to Type 'Deliver'. (9.sysml line : 14 column : 22)\nERROR:Couldn't resolve reference to Type 'Publish'. (9.sysml line : 37 column : 24)\nERROR:Couldn't resolve reference to Element 'Publish'. (9.sysml line : 37 column : 37)\nERROR:Couldn't resolve reference to Type 'Subscribe'. (9.sysml line : 70 column : 23)\nERROR:Couldn't resolve reference to Type 'Publish'. (9.sysml line : 76 column : 23)\nERROR:Couldn't resolve reference to Type 'Deliver'. (9.sysml line : 88 column : 25)\nERROR:Couldn't resolve reference to Element 'Deliver'. (9.sysml line : 88 column : 35)\nERROR:Couldn't resolve reference to Element 'topic'. (9.sysml line : 71 column : 48)\nERROR:Couldn't resolve reference to Element 'topic'. (9.sysml line : 77 column : 39)\nERROR:Couldn't resolve reference to Element 'publication'. (9.sysml line : 78 column : 39)\nERROR:Couldn't resolve reference to Type 'Subscribe'. (9.sysml line : 115 column : 24)\nERROR:Couldn't resolve reference to Element 'Subscribe'. (9.sysml line : 115 column : 36)\nERROR:Couldn't resolve reference to Type 'Deliver'. (9.sysml line : 118 column : 24)\nERROR:Couldn't resolve reference to Type 'PubSubSequence'. (9.sysml line : 125 column : 23)\nERROR:Couldn't resolve reference to Feature 'producer'. (9.sysml line : 126 column : 12)\nERROR:Couldn't resolve reference to Feature 'server'. (9.sysml line : 130 column : 12)\nERROR:Couldn't resolve reference to Feature 'consumer'. (9.sysml line : 136 column : 12)\nERROR:Couldn't resolve reference to Feature 'publish_message'. (9.sysml line : 141 column : 12)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (9.sysml line : 147 column : 12)\nERROR:Couldn't resolve reference to Feature 'deliver_message'. (9.sysml line : 153 column : 12)\nERROR:Couldn't resolve reference to Feature 'publish_source_event'. (9.sysml line : 127 column : 42)\nERROR:Couldn't resolve reference to Feature 'subscribe_target_event'. (9.sysml line : 131 column : 44)\nERROR:Couldn't resolve reference to Feature 'publish_target_event'. (9.sysml line : 132 column : 43)\nERROR:Couldn't resolve reference to Feature 'deliver_source_event'. (9.sysml line : 133 column : 43)\nERROR:Couldn't resolve reference to Feature 'subscribe_source_event'. (9.sysml line : 137 column : 44)\nERROR:Couldn't resolve reference to Feature 'deliver_target_event'. (9.sysml line : 138 column : 43)\nERROR:Couldn't resolve reference to Feature 'producer'. (9.sysml line : 141 column : 33)\nERROR:Couldn't resolve reference to Feature 'producerBehavior'. (9.sysml line : 141 column : 42)\nERROR:Couldn't resolve reference to Feature 'publish'. (9.sysml line : 141 column : 59)\nERROR:Couldn't resolve reference to Feature 'request'. (9.sysml line : 141 column : 67)\nERROR:Couldn't resolve reference to Feature 'server'. (9.sysml line : 141 column : 78)\nERROR:Couldn't resolve reference to Feature 'serverBehavior'. (9.sysml line : 141 column : 85)\nERROR:Couldn't resolve reference to Feature 'publishing'. (9.sysml line : 141 column : 100)\nERROR:Couldn't resolve reference to Feature 'request'. (9.sysml line : 141 column : 111)\nERROR:Couldn't resolve reference to Feature 'producer'. (9.sysml line : 142 column : 10)\nERROR:Couldn't resolve reference to Feature 'publish_request'. (9.sysml line : 142 column : 19)\nERROR:Couldn't resolve reference to Feature 'server'. (9.sysml line : 144 column : 15)\nERROR:Couldn't resolve reference to Feature 'publish_request'. (9.sysml line : 144 column : 22)\nERROR:Couldn't resolve reference to Feature 'consumer'. (9.sysml line : 147 column : 35)\nERROR:Couldn't resolve reference to Feature 'consumerBehavior'. (9.sysml line : 147 column : 44)\nERROR:Couldn't resolve reference to Feature 'subscribe'. (9.sysml line : 147 column : 61)\nERROR:Couldn't resolve reference to Feature 'request'. (9.sysml line : 147 column : 71)\nERROR:Couldn't resolve reference to Feature 'server'. (9.sysml line : 147 column : 82)\nERROR:Couldn't resolve reference to Feature 'serverBehavior'. (9.sysml line : 147 column : 89)\nERROR:Couldn't resolve reference to Feature 'subscribing'. (9.sysml line : 147 column : 104)\nERROR:Couldn't resolve reference to Feature 'request'. (9.sysml line : 147 column : 116)\nERROR:Couldn't resolve reference to Feature 'consumer'. (9.sysml line : 148 column : 10)\nERROR:Couldn't resolve reference to Feature 'subscribe_request'. (9.sysml line : 148 column : 19)\nERROR:Couldn't resolve reference to Feature 'server'. (9.sysml line : 150 column : 15)\nERROR:Couldn't resolve reference to Feature 'subscribe_request'. (9.sysml line : 150 column : 22)\nERROR:Couldn't resolve reference to Feature 'server'. (9.sysml line : 153 column : 33)\nERROR:Couldn't resolve reference to Feature 'serverBehavior'. (9.sysml line : 153 column : 40)\nERROR:Couldn't resolve reference to Feature 'delivering'. (9.sysml line : 153 column : 55)\nERROR:Couldn't resolve reference to Feature 'response'. (9.sysml line : 153 column : 66)\nERROR:Couldn't resolve reference to Feature 'consumer'. (9.sysml line : 153 column : 78)\nERROR:Couldn't resolve reference to Feature 'consumerBehavior'. (9.sysml line : 153 column : 87)\nERROR:Couldn't resolve reference to Feature 'delivery'. (9.sysml line : 153 column : 104)\nERROR:Couldn't resolve reference to Feature 'response'. (9.sysml line : 153 column : 113)\nERROR:Couldn't resolve reference to Feature 'server'. (9.sysml line : 154 column : 10)\nERROR:Couldn't resolve reference to Feature 'deliver_response'. (9.sysml line : 154 column : 17)\nERROR:Couldn't resolve reference to Feature 'consumer'. (9.sysml line : 156 column : 15)\nERROR:Couldn't resolve reference to Feature 'deliver_response'. (9.sysml line : 156 column : 24)\nERROR:A usage must be typed by definitions. (9.sysml line : 9 column : 4)\nERROR:A usage must be typed by definitions. (9.sysml line : 13 column : 4)\nERROR:A usage must be typed by definitions. (9.sysml line : 14 column : 4)\nERROR:A usage must be typed by definitions. (9.sysml line : 32 column : 5)\nERROR:A usage must be typed by definitions. (9.sysml line : 37 column : 6)\nERROR:Must invoke a behavior or a behavioral feature (9.sysml line : 37 column : 37)\nERROR:A usage must be typed by definitions. (9.sysml line : 43 column : 55)\nERROR:A usage must be typed by definitions. (9.sysml line : 43 column : 82)\nERROR:A usage must be typed by definitions. (9.sysml line : 48 column : 59)\nERROR:A usage must be typed by definitions. (9.sysml line : 48 column : 99)\nERROR:A usage must be typed by definitions. (9.sysml line : 53 column : 5)\nERROR:A usage must be typed by definitions. (9.sysml line : 56 column : 5)\nERROR:A usage must be typed by definitions. (9.sysml line : 57 column : 5)\nERROR:A usage must be typed by definitions. (9.sysml line : 60 column : 49)\nERROR:A usage must be typed by definitions. (9.sysml line : 60 column : 89)\nERROR:A usage must be typed by definitions. (9.sysml line : 62 column : 46)\nERROR:A usage must be typed by definitions. (9.sysml line : 62 column : 83)\nERROR:A usage must be typed by definitions. (9.sysml line : 64 column : 57)\nERROR:A usage must be typed by definitions. (9.sysml line : 64 column : 86)\nERROR:A usage must be typed by definitions. (9.sysml line : 70 column : 6)\nERROR:A usage must be typed by definitions. (9.sysml line : 76 column : 6)\nERROR:A usage must be typed by definitions. (9.sysml line : 88 column : 6)\nERROR:Must invoke a behavior or a behavioral feature (9.sysml line : 88 column : 35)\nERROR:A usage must be typed by definitions. (9.sysml line : 96 column : 62)\nERROR:A usage must be typed by definitions. (9.sysml line : 96 column : 105)\nERROR:A usage must be typed by definitions. (9.sysml line : 97 column : 61)\nERROR:A usage must be typed by definitions. (9.sysml line : 97 column : 102)\nERROR:A usage must be typed by definitions. (9.sysml line : 104 column : 5)\nERROR:A usage must be typed by definitions. (9.sysml line : 105 column : 5)\nERROR:A usage must be typed by definitions. (9.sysml line : 108 column : 59)\nERROR:A usage must be typed by definitions. (9.sysml line : 108 column : 87)\nERROR:A usage must be typed by definitions. (9.sysml line : 110 column : 48)\nERROR:A usage must be typed by definitions. (9.sysml line : 110 column : 85)\nERROR:A usage must be typed by definitions. (9.sysml line : 115 column : 6)\nERROR:Must invoke a behavior or a behavioral feature (9.sysml line : 115 column : 36)\nERROR:A usage must be typed by definitions. (9.sysml line : 118 column : 6)\nERROR:An occurrence, item or part must be typed by occurrence definitions. (9.sysml line : 125 column : 2)\nERROR:Must reference an occurrence. (9.sysml line : 142 column : 10)\nERROR:Must reference an occurrence. (9.sysml line : 144 column : 15)\nERROR:Must reference an occurrence. (9.sysml line : 148 column : 10)\nERROR:Must reference an occurrence. (9.sysml line : 150 column : 15)\nERROR:Must reference an occurrence. (9.sysml line : 154 column : 10)\nERROR:Must reference an occurrence. (9.sysml line : 156 column : 15)\n",
+      "project_errors": true,
+      "project_error_count": 3,
+      "project_issues": [
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 37
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 88
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 115
+        }
+      ]
+    },
+    {
+      "source": "ServerSequenceRealization-2.sysml",
+      "sha256": "85df3b3a0c511f3c1255fb4ba2ac07e2cfe32dfebb1af9879c9c2260707161ac",
+      "isolated_errors": true,
+      "isolated_error_count": 52,
+      "isolated_issues": "ERROR:Couldn't resolve reference to Namespace 'ServerSequenceModel'. (10.sysml line : 3 column : 17)\nERROR:Couldn't resolve reference to Element 'Publish'. (10.sysml line : 19 column : 25)\nERROR:Couldn't resolve reference to Type 'Subscribe'. (10.sysml line : 37 column : 19)\nERROR:Couldn't resolve reference to Type 'Publish'. (10.sysml line : 43 column : 19)\nERROR:Couldn't resolve reference to Element 'topic'. (10.sysml line : 44 column : 13)\nERROR:Couldn't resolve reference to Element 'Deliver'. (10.sysml line : 45 column : 14)\nERROR:Couldn't resolve reference to Element 'publication'. (10.sysml line : 45 column : 26)\nERROR:Couldn't resolve reference to Element 'Subscribe'. (10.sysml line : 60 column : 27)\nERROR:Couldn't resolve reference to Type 'Deliver'. (10.sysml line : 61 column : 33)\nERROR:Couldn't resolve reference to Type 'PubSubSequence'. (10.sysml line : 67 column : 23)\nERROR:Couldn't resolve reference to Feature 'producer'. (10.sysml line : 68 column : 12)\nERROR:Couldn't resolve reference to Feature 'server'. (10.sysml line : 72 column : 12)\nERROR:Couldn't resolve reference to Feature 'consumer'. (10.sysml line : 78 column : 12)\nERROR:Couldn't resolve reference to Feature 'publish_message'. (10.sysml line : 83 column : 15)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (10.sysml line : 87 column : 15)\nERROR:Couldn't resolve reference to Feature 'deliver_message'. (10.sysml line : 91 column : 15)\nERROR:Couldn't resolve reference to Feature 'publish_source_event'. (10.sysml line : 69 column : 42)\nERROR:Couldn't resolve reference to Feature 'subscribe_target_event'. (10.sysml line : 73 column : 53)\nERROR:Couldn't resolve reference to Feature 'publish_target_event'. (10.sysml line : 74 column : 52)\nERROR:Couldn't resolve reference to Feature 'deliver_source_event'. (10.sysml line : 75 column : 50)\nERROR:Couldn't resolve reference to Feature 'subscribe_source_event'. (10.sysml line : 79 column : 44)\nERROR:Couldn't resolve reference to Feature 'deliver_target_event'. (10.sysml line : 80 column : 43)\nERROR:Couldn't resolve reference to Element 'producer'. (10.sysml line : 84 column : 22)\nERROR:Couldn't resolve reference to Element 'publicationPort'. (10.sysml line : 84 column : 31)\nERROR:Couldn't resolve reference to Element 'server'. (10.sysml line : 85 column : 22)\nERROR:Couldn't resolve reference to Element 'publicationPort'. (10.sysml line : 85 column : 29)\nERROR:Couldn't resolve reference to Element 'consumer'. (10.sysml line : 88 column : 22)\nERROR:Couldn't resolve reference to Element 'subscriptionPort'. (10.sysml line : 88 column : 31)\nERROR:Couldn't resolve reference to Element 'server'. (10.sysml line : 89 column : 22)\nERROR:Couldn't resolve reference to Element 'subscriptionPort'. (10.sysml line : 89 column : 29)\nERROR:Couldn't resolve reference to Element 'server'. (10.sysml line : 92 column : 22)\nERROR:Couldn't resolve reference to Element 'consumer'. (10.sysml line : 93 column : 22)\nERROR:Couldn't resolve reference to Feature 'publish_message'. (10.sysml line : 98 column : 59)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (10.sysml line : 99 column : 61)\nERROR:Couldn't resolve reference to Feature 'deliver_message'. (10.sysml line : 100 column : 65)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (10.sysml line : 102 column : 64)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (10.sysml line : 103 column : 72)\nERROR:Couldn't resolve reference to Feature 'publish_message'. (10.sysml line : 104 column : 71)\nERROR:Couldn't resolve reference to Feature 'topic'. (10.sysml line : 44 column : 38)\nERROR:Couldn't resolve reference to Feature 'subscriber'. (10.sysml line : 45 column : 58)\nERROR:Must invoke a behavior or a behavioral feature (10.sysml line : 19 column : 25)\nERROR:A usage must be typed by definitions. (10.sysml line : 36 column : 31)\nERROR:A usage must be typed by definitions. (10.sysml line : 37 column : 13)\nERROR:A usage must be typed by definitions. (10.sysml line : 42 column : 30)\nERROR:A usage must be typed by definitions. (10.sysml line : 43 column : 13)\nERROR:Must invoke a behavior or a behavioral feature (10.sysml line : 45 column : 14)\nERROR:Must invoke a behavior or a behavioral feature (10.sysml line : 60 column : 27)\nERROR:A usage must be typed by definitions. (10.sysml line : 61 column : 33)\nERROR:An occurrence, item or part must be typed by occurrence definitions. (10.sysml line : 67 column : 2)\nERROR:Must have at least two related elements (10.sysml line : 83 column : 3)\nWARNING:Bound features should have conforming types (10.sysml line : 84 column : 22)\nWARNING:Bound features should have conforming types (10.sysml line : 85 column : 22)\nERROR:Must have at least two related elements (10.sysml line : 87 column : 3)\nWARNING:Bound features should have conforming types (10.sysml line : 88 column : 22)\nWARNING:Bound features should have conforming types (10.sysml line : 89 column : 22)\nERROR:Must have at least two related elements (10.sysml line : 91 column : 3)\nWARNING:Bound features should have conforming types (10.sysml line : 92 column : 22)\nWARNING:Bound features should have conforming types (10.sysml line : 93 column : 22)\nWARNING:Bound features should have conforming types (10.sysml line : 98 column : 4)\nWARNING:Bound features should have conforming types (10.sysml line : 99 column : 4)\nWARNING:Bound features should have conforming types (10.sysml line : 100 column : 4)\nWARNING:Bound features should have conforming types (10.sysml line : 102 column : 4)\nWARNING:Bound features should have conforming types (10.sysml line : 103 column : 4)\nWARNING:Bound features should have conforming types (10.sysml line : 104 column : 4)\n",
+      "project_errors": true,
+      "project_error_count": 6,
+      "project_issues": [
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 19
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 45
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 60
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must have at least two related elements",
+          "code": "validateConnectorRelatedFeatures",
+          "line": 83
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must have at least two related elements",
+          "code": "validateConnectorRelatedFeatures",
+          "line": 87
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must have at least two related elements",
+          "code": "validateConnectorRelatedFeatures",
+          "line": 91
+        }
+      ]
+    },
+    {
+      "source": "ServerSequenceRealization-3.sysml",
+      "sha256": "3ca380b504968469be1fb946510e41c4961d48399237afdcff7985a55d46fa41",
+      "isolated_errors": true,
+      "isolated_error_count": 108,
+      "isolated_issues": "ERROR:Couldn't resolve reference to Namespace 'ServerSequenceModel'. (11.sysml line : 3 column : 17)\nERROR:Couldn't resolve reference to Type 'Publish'. (11.sysml line : 9 column : 21)\nERROR:Couldn't resolve reference to Type 'Subscribe'. (11.sysml line : 13 column : 23)\nERROR:Couldn't resolve reference to Type 'Deliver'. (11.sysml line : 14 column : 22)\nERROR:Couldn't resolve reference to Type 'Publish'. (11.sysml line : 37 column : 24)\nERROR:Couldn't resolve reference to Element 'Publish'. (11.sysml line : 37 column : 37)\nERROR:Couldn't resolve reference to Type 'Subscribe'. (11.sysml line : 64 column : 23)\nERROR:Couldn't resolve reference to Type 'Publish'. (11.sysml line : 70 column : 23)\nERROR:Couldn't resolve reference to Type 'Deliver'. (11.sysml line : 82 column : 25)\nERROR:Couldn't resolve reference to Element 'Deliver'. (11.sysml line : 82 column : 35)\nERROR:Couldn't resolve reference to Element 'topic'. (11.sysml line : 65 column : 48)\nERROR:Couldn't resolve reference to Element 'topic'. (11.sysml line : 71 column : 39)\nERROR:Couldn't resolve reference to Element 'publication'. (11.sysml line : 72 column : 39)\nERROR:Couldn't resolve reference to Type 'Subscribe'. (11.sysml line : 107 column : 24)\nERROR:Couldn't resolve reference to Element 'Subscribe'. (11.sysml line : 107 column : 36)\nERROR:Couldn't resolve reference to Type 'Deliver'. (11.sysml line : 110 column : 24)\nERROR:Couldn't resolve reference to Type 'PubSubSequence'. (11.sysml line : 117 column : 23)\nERROR:Couldn't resolve reference to Feature 'producer'. (11.sysml line : 118 column : 12)\nERROR:Couldn't resolve reference to Feature 'server'. (11.sysml line : 122 column : 12)\nERROR:Couldn't resolve reference to Feature 'consumer'. (11.sysml line : 128 column : 12)\nERROR:Couldn't resolve reference to Feature 'publish_message'. (11.sysml line : 133 column : 12)\nERROR:Couldn't resolve reference to Feature 'subscribe_message'. (11.sysml line : 139 column : 12)\nERROR:Couldn't resolve reference to Feature 'deliver_message'. (11.sysml line : 145 column : 12)\nERROR:Couldn't resolve reference to Feature 'publish_source_event'. (11.sysml line : 119 column : 42)\nERROR:Couldn't resolve reference to Feature 'subscribe_target_event'. (11.sysml line : 123 column : 44)\nERROR:Couldn't resolve reference to Feature 'publish_target_event'. (11.sysml line : 124 column : 43)\nERROR:Couldn't resolve reference to Feature 'deliver_source_event'. (11.sysml line : 125 column : 43)\nERROR:Couldn't resolve reference to Feature 'subscribe_source_event'. (11.sysml line : 129 column : 44)\nERROR:Couldn't resolve reference to Feature 'deliver_target_event'. (11.sysml line : 130 column : 43)\nERROR:Couldn't resolve reference to Feature 'producer'. (11.sysml line : 133 column : 33)\nERROR:Couldn't resolve reference to Feature 'producerBehavior'. (11.sysml line : 133 column : 42)\nERROR:Couldn't resolve reference to Feature 'publish'. (11.sysml line : 133 column : 59)\nERROR:Couldn't resolve reference to Feature 'request'. (11.sysml line : 133 column : 67)\nERROR:Couldn't resolve reference to Feature 'server'. (11.sysml line : 133 column : 78)\nERROR:Couldn't resolve reference to Feature 'serverBehavior'. (11.sysml line : 133 column : 85)\nERROR:Couldn't resolve reference to Feature 'publishing'. (11.sysml line : 133 column : 100)\nERROR:Couldn't resolve reference to Feature 'request'. (11.sysml line : 133 column : 111)\nERROR:Couldn't resolve reference to Feature 'producer'. (11.sysml line : 134 column : 10)\nERROR:Couldn't resolve reference to Feature 'publish_request'. (11.sysml line : 134 column : 19)\nERROR:Couldn't resolve reference to Feature 'server'. (11.sysml line : 136 column : 15)\nERROR:Couldn't resolve reference to Feature 'publish_request'. (11.sysml line : 136 column : 22)\nERROR:Couldn't resolve reference to Feature 'consumer'. (11.sysml line : 139 column : 35)\nERROR:Couldn't resolve reference to Feature 'consumerBehavior'. (11.sysml line : 139 column : 44)\nERROR:Couldn't resolve reference to Feature 'subscribe'. (11.sysml line : 139 column : 61)\nERROR:Couldn't resolve reference to Feature 'request'. (11.sysml line : 139 column : 71)\nERROR:Couldn't resolve reference to Feature 'server'. (11.sysml line : 139 column : 82)\nERROR:Couldn't resolve reference to Feature 'serverBehavior'. (11.sysml line : 139 column : 89)\nERROR:Couldn't resolve reference to Feature 'subscribing'. (11.sysml line : 139 column : 104)\nERROR:Couldn't resolve reference to Feature 'request'. (11.sysml line : 139 column : 116)\nERROR:Couldn't resolve reference to Feature 'consumer'. (11.sysml line : 140 column : 10)\nERROR:Couldn't resolve reference to Feature 'subscribe_request'. (11.sysml line : 140 column : 19)\nERROR:Couldn't resolve reference to Feature 'server'. (11.sysml line : 142 column : 15)\nERROR:Couldn't resolve reference to Feature 'subscribe_request'. (11.sysml line : 142 column : 22)\nERROR:Couldn't resolve reference to Feature 'server'. (11.sysml line : 145 column : 33)\nERROR:Couldn't resolve reference to Feature 'serverBehavior'. (11.sysml line : 145 column : 40)\nERROR:Couldn't resolve reference to Feature 'delivering'. (11.sysml line : 145 column : 55)\nERROR:Couldn't resolve reference to Feature 'response'. (11.sysml line : 145 column : 66)\nERROR:Couldn't resolve reference to Feature 'consumer'. (11.sysml line : 145 column : 78)\nERROR:Couldn't resolve reference to Feature 'consumerBehavior'. (11.sysml line : 145 column : 87)\nERROR:Couldn't resolve reference to Feature 'delivery'. (11.sysml line : 145 column : 104)\nERROR:Couldn't resolve reference to Feature 'response'. (11.sysml line : 145 column : 113)\nERROR:Couldn't resolve reference to Feature 'server'. (11.sysml line : 146 column : 10)\nERROR:Couldn't resolve reference to Feature 'deliver_response'. (11.sysml line : 146 column : 17)\nERROR:Couldn't resolve reference to Feature 'consumer'. (11.sysml line : 148 column : 15)\nERROR:Couldn't resolve reference to Feature 'deliver_response'. (11.sysml line : 148 column : 24)\nERROR:A usage must be typed by definitions. (11.sysml line : 9 column : 4)\nERROR:A usage must be typed by definitions. (11.sysml line : 13 column : 4)\nERROR:A usage must be typed by definitions. (11.sysml line : 14 column : 4)\nERROR:A usage must be typed by definitions. (11.sysml line : 32 column : 5)\nERROR:A usage must be typed by definitions. (11.sysml line : 37 column : 6)\nERROR:Must invoke a behavior or a behavioral feature (11.sysml line : 37 column : 37)\nERROR:A usage must be typed by definitions. (11.sysml line : 41 column : 55)\nERROR:A usage must be typed by definitions. (11.sysml line : 41 column : 82)\nERROR:A usage must be typed by definitions. (11.sysml line : 45 column : 59)\nERROR:A usage must be typed by definitions. (11.sysml line : 45 column : 99)\nERROR:A usage must be typed by definitions. (11.sysml line : 50 column : 5)\nERROR:A usage must be typed by definitions. (11.sysml line : 53 column : 5)\nERROR:A usage must be typed by definitions. (11.sysml line : 54 column : 5)\nERROR:A usage must be typed by definitions. (11.sysml line : 57 column : 49)\nERROR:A usage must be typed by definitions. (11.sysml line : 57 column : 89)\nERROR:A usage must be typed by definitions. (11.sysml line : 58 column : 46)\nERROR:A usage must be typed by definitions. (11.sysml line : 58 column : 83)\nERROR:A usage must be typed by definitions. (11.sysml line : 59 column : 57)\nERROR:A usage must be typed by definitions. (11.sysml line : 59 column : 86)\nERROR:A usage must be typed by definitions. (11.sysml line : 64 column : 6)\nERROR:A usage must be typed by definitions. (11.sysml line : 70 column : 6)\nERROR:A usage must be typed by definitions. (11.sysml line : 82 column : 6)\nERROR:Must invoke a behavior or a behavioral feature (11.sysml line : 82 column : 35)\nERROR:A usage must be typed by definitions. (11.sysml line : 90 column : 62)\nERROR:A usage must be typed by definitions. (11.sysml line : 90 column : 105)\nERROR:A usage must be typed by definitions. (11.sysml line : 91 column : 61)\nERROR:A usage must be typed by definitions. (11.sysml line : 91 column : 102)\nERROR:A usage must be typed by definitions. (11.sysml line : 98 column : 5)\nERROR:A usage must be typed by definitions. (11.sysml line : 99 column : 5)\nERROR:A usage must be typed by definitions. (11.sysml line : 102 column : 59)\nERROR:A usage must be typed by definitions. (11.sysml line : 102 column : 87)\nERROR:A usage must be typed by definitions. (11.sysml line : 103 column : 48)\nERROR:A usage must be typed by definitions. (11.sysml line : 103 column : 85)\nERROR:A usage must be typed by definitions. (11.sysml line : 107 column : 6)\nERROR:Must invoke a behavior or a behavioral feature (11.sysml line : 107 column : 36)\nERROR:A usage must be typed by definitions. (11.sysml line : 110 column : 6)\nERROR:An occurrence, item or part must be typed by occurrence definitions. (11.sysml line : 117 column : 2)\nERROR:Must reference an occurrence. (11.sysml line : 134 column : 10)\nERROR:Must reference an occurrence. (11.sysml line : 136 column : 15)\nERROR:Must reference an occurrence. (11.sysml line : 140 column : 10)\nERROR:Must reference an occurrence. (11.sysml line : 142 column : 15)\nERROR:Must reference an occurrence. (11.sysml line : 146 column : 10)\nERROR:Must reference an occurrence. (11.sysml line : 148 column : 15)\n",
+      "project_errors": true,
+      "project_error_count": 3,
+      "project_issues": [
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 37
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 82
+        },
+        {
+          "severity": "ERROR",
+          "message": "Must invoke a behavior or a behavioral feature",
+          "code": "validateInvocationExpressionInstantiatedType",
+          "line": 107
+        }
+      ]
+    }
+  ],
+  "environment": {
+    "java": "21",
+    "python": "3.10",
+    "pyfcstm": "0.6.0",
+    "pilot_commit": "801c6a881954987a9707d396d5767db1ec51d8cb",
+    "jar_sha256": "1bb02b3865e6830687f4c4f80afbfe8d670f6fb6df305f6844833543320fa989"
+  },
+  "source_revisions": {
+    "gfse": "ebbb0c39f4813b059e0bf14270ec58618aa012ca",
+    "systemp": "dd41357921f23020aacdaaa063e0a4b31fc0b2b4",
+    "refinement": "96c0e104f82a8da7a5edccca9b67040785b53bd3"
+  },
+  "cases_sha256": {
+    "types.sysml": "97e16dcde7c4fd359de8875cdaa399dd10f0f2507212eadc3752a0dbe2bb227c",
+    "app.sysml": "fb9c36a7a8b80d69f6f3957ef7771da6838269fa855712871403501765712aa2"
+  }
+}

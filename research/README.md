@@ -4,6 +4,10 @@ This local, executable probe reuses the official Pilot workspace API already
 bundled by [sysml-v2-pilot-gt](https://github.com/HansBug/sysml-v2-pilot-gt).
 The probe does not change that repository. The independent importer and corpus results are documented in [import-findings.zh.md](import-findings.zh.md).
 
+The later [frontend audit](frontend-audit.zh.md) distinguishes official linked
+facts from the current corpus exporter's narrower behavior and corrects the
+state-file count using syntax ASTs before full validation.
+
 Observed on OpenJDK 21, wrapper commit
 `f4ae9fe96de5c27bb6d2088e245762562b7006f8`, official Pilot
 `801c6a881954987a9707d396d5767db1ec51d8cb` (2026-07).
