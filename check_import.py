@@ -49,4 +49,17 @@ for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_act
         raise AssertionError('Unsupported source silently accepted: ' + filename)
 for filename in ('invalid-type.sysml', 'invalid-target.sysml'):
     assert cases[filename]['status'] == 'source_validation_error', cases[filename]
+
+family = next(item for item in source['models']
+              if item['dataset'] == 'gfse' and item['source'] == 'example_family/family.sysml')
+assert family['status'] == 'extracted', family
+try:
+    lower(next(item for item in family['states'] if item['states']))
+except Unsupported as error:
+    # Base::Anything is the official typed fallback for the source time trigger;
+    # it must not be turned into an FCSTM event with different semantics.
+    assert error.code == 'time_trigger', error.code
+else:
+    raise AssertionError('Temporal trigger silently accepted as an event')
+
 print('PASS: official source elements -> FCSTM AST -> model -> diagnostics -> two-cycle assignment trace; rejection checks')

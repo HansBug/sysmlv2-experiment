@@ -31,7 +31,7 @@
 
 当前接受 exclusive hierarchy、同层转移、单一默认入口、基本 scalar 数值及显式初始化、简单表达式、entry/exit 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。被 accept 引用的 `ActionDefinition` 仅作为事件声明处理，不再把声明本身当作状态机成员；同一源状态存在多个未定义优先级的 outgoing 仍拒绝。没有显式 multiplicity 时，在本控制器 profile 下解释为一个实例；显式数组拒绝。带 payload/receiver 的消息、时间触发、并行、数组、缺失默认入口、无法处理的成员类型明确拒绝。
 
-生命周期中有名字的 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会转换成 pyfcstm abstract hook；无名字或带空格的调用会依据 typed 声明名和源位置生成稳定的合法 hook 名，并保留 receiver/payload/sender 以及动作参数的 typed 引用。对于 `PerformActionUsage`，官方 typed succession 图会被导出为结构化的 `sequence`，并记录每个动作的定义和源位置；当前目标把整个 sequence 作为一个 hook 调用，因此保留调用点和扩展接口，但不宣称保留内部 action 的时序或副作用。带赋值的 `do` action、分支或不完整 succession 仍拒绝，不能通过删除行为伪造等价。名字为 `initial` 且无自身行为的 state usage 会按 typed 端点映射为默认入口；标准库 `done` 映射为 FCSTM 的 `[*]`。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
+生命周期中有名字的 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会转换成 pyfcstm abstract hook；无名字或带空格的调用会依据 typed 声明名和源位置生成稳定的合法 hook 名，并保留 receiver/payload/sender 以及动作参数的 typed 引用。对于 `PerformActionUsage`，官方 typed succession 图会被导出为结构化的 `sequence`，并记录每个动作的定义和源位置；当前目标把整个 sequence 作为一个 hook 调用，因此保留调用点和扩展接口，但不宣称保留内部 action 的时序或副作用。线性、分支或不完整 succession 都保留为一个 opaque hook，结构化诊断仍登记在 mapping 中；带赋值的 `do` action 仍拒绝，不能通过删除行为伪造等价。名字为 `initial` 且无自身行为的 state usage 会按 typed 端点映射为默认入口；标准库 `done` 映射为 FCSTM 的 `[*]`。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
 
 状态定义中未被任何 typed guard、effect 或 action 表达式引用的 `ReferenceUsage`、`PartUsage`、`PortUsage` 会登记到 `ignored_structural`，因为当前 FCSTM profile 只表达控制状态和数据动作；一旦这些结构成员参与控制表达式，抽取器仍保留为拒绝。这条规则避免把与控制行为无关的结构树误报为状态机失败，同时不会静默丢掉可达控制依赖。
 

@@ -188,8 +188,10 @@ def lower(root):
         name = action_identifier(body)
         if not name:
             raise Unsupported('action_name', str(body.get('id')))
-        if isinstance(body.get('sequence'), dict):
-            raise Unsupported('action_sequence_shape', str(body['sequence'].get('error')))
+        # Keep a non-linear or incomplete typed succession as one opaque hook.
+        # The structured sequence diagnostic remains in mapping metadata; no
+        # source action is deleted, while FCSTM deliberately makes no claim
+        # about the inner execution order.
         # The source action remains discoverable through the mapping and can be
         # implemented by the generated model's abstract hook.
         return f'{role} abstract {name};', name
@@ -238,6 +240,12 @@ def lower(root):
             triggers = edge.get('triggers', [])
             if edge['trigger_count'] and not triggers:
                 raise Unsupported('trigger_event', edge['id'])
+            # The official Pilot resolves time/change accepts to the generic
+            # Base::Anything classifier. FCSTM events require a concrete typed
+            # signal; treating this classifier as an event would change the
+            # source trigger semantics.
+            if any(item.get('kind') == 'Classifier' for item in edge.get('trigger_elements', [])):
+                raise Unsupported('time_trigger', edge['id'])
             target_element = edge.get('target_element') or {}
             terminal_target = (target_element.get('kind') == 'StateUsage'
                                and target_element.get('declared_name') == 'done'
@@ -316,6 +324,7 @@ def run(source, output):
                     'assumptions': ['Explicit periodic controller interpretation; no general SysML execution equivalence claim.',
                                     'Single active path, mathematical numeric domain, no asynchronous messages.',
                                     'Abstract action arguments remain typed mapping metadata; hook execution is not synthesized.',
+                                    'Non-linear or incomplete typed action succession is kept as one opaque hook; inner order is not synthesized.',
                                     'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')
             except Unsupported as error:
                 # Unsupported: lower() reports source features outside the implemented periodic subset.
