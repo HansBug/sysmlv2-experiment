@@ -14,7 +14,8 @@ from pyfcstm.diagnostics import inspect_model
 
 def convert(input_dir, output):
     rows = []
-    for path in sorted(input_dir.glob('*.json')):
+    paths = [input_dir] if input_dir.is_file() else sorted(input_dir.glob('*.json'))
+    for path in paths:
         if path.name == 'summary.json':
             continue
         project = json.loads(path.read_text(encoding='utf-8'))
