@@ -38,7 +38,7 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 随后将 `ActionDefinition` 作为事件声明处理的 [Actions 34711931066](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711931066) 也已通过；总数保持 12/71 与 10/74，因为 StopWatch 随后触发了未定义出口优先级拒绝。
 
-最新的全上下文扫描 [Actions 34725067445](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34725067445) 对 78 个上下文、309 个上下文内文件执行了项目级加载，得到 96 个状态根，其中 50 个控制状态候选，15 个 converted、81 个明确 unsupported。独立文件批次包含 1,665 个文件、52 个控制状态候选，其中 19 个 converted（含 7 个自建 fixture）。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)；本轮还保留了动作参数引用的结构化记录。
+最新的全上下文扫描 [Actions 34725784142](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34725784142) 对 78 个上下文、309 个上下文内文件执行了项目级加载，得到 96 个状态根，其中 50 个控制状态候选，17 个 converted、79 个明确 unsupported。独立文件批次包含 1,665 个文件、52 个控制状态候选，其中 21 个 converted（含 7 个自建 fixture）。汇总见 [`research/project-context-ci-observed.json`](research/project-context-ci-observed.json)；本轮还保留了动作参数引用的结构化记录。
 
 ## 转换范围
 
