@@ -34,7 +34,7 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 最新 CI 已在 [Actions 34708595195](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34708595195) 复现 JAR 下载、语料抽取、语法清点、项目上下文步骤和 pyfcstm 检查，并上传全部中间产物。
 
-接入官方 Pilot 255 个示例后的 [Actions 34709690957](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34709690957) 也已通过：总计 1,587 个文件、71 个源状态根、6 个 converted。启用 typed `accept`→FCSTM event 后，[Actions 34711113632](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711113632) 将独立批次提升到 12 个 converted、项目级批次提升到 10 个 converted；完整对照见 [`research/events-observed.json`](research/events-observed.json)。
+接入官方 Pilot 255 个示例后的 [Actions 34709690957](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34709690957) 也已通过：总计 1,659 个文件、71 个独立文件批次状态根、6 个 converted。启用 typed `accept`→FCSTM event 后，[Actions 34711113632](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711113632) 将独立批次提升到 12 个 converted、项目级批次提升到 10 个 converted；完整对照见 [`research/events-observed.json`](research/events-observed.json)。
 
 随后将 `ActionDefinition` 作为事件声明处理的 [Actions 34711931066](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34711931066) 也已通过；总数保持 12/71 与 10/74，因为 StopWatch 随后触发了未定义出口优先级拒绝。
 

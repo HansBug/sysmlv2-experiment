@@ -50,7 +50,7 @@
 
 [SysTemp 论文](https://arxiv.org/abs/2506.21608) 直接链接前两者；[Refinement 论文](https://arxiv.org/abs/2607.14162) 链接第三者。Refinement 仓库还含 151 个 SysMBench prompts 和 trajectory corpus，本批次没有把 trajectory 中同一模型的副本再重复加入。正负标签来自作者的合规评价，不等于当前 Pilot 独立文件加载会给出相同结论。[SysMBench 论文](https://arxiv.org/abs/2508.03215) 本身不能替代实际可下载模型证据。
 
-这些集合多用于语言建模、生成或 conformance；不都是可执行控制器，更不是等量独立系统。文件级 SHA256 用于复查重复，当前 1,332 文件包含 1,329 种内容。
+这些集合多用于语言建模、生成或 conformance；不都是可执行控制器，更不是等量独立系统。文件级 SHA256 用于复查重复，当前 1,659 文件包含 1,492 种内容；新增 Advent 教学仓库和 Apollo 11 工程均按固定提交记录。
 
 ## 实际覆盖
 
