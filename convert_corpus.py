@@ -112,11 +112,16 @@ def lower(root):
             lines.extend(emit(child, target + '.', indent + '    '))
         initial = 0
         outgoing = Counter()
+        outgoing_events = {}
         for index, edge in enumerate(node['transitions']):
             triggers = edge.get('triggers', [])
             if edge['trigger_count'] and not triggers:
                 raise Unsupported('trigger_event', edge['id'])
-            if edge['target'] not in child_ids:
+            target_element = edge.get('target_element') or {}
+            terminal_target = (target_element.get('kind') == 'StateUsage'
+                               and target_element.get('declared_name') == 'done'
+                               and target_element.get('library') is True)
+            if edge['target'] not in child_ids and not terminal_target:
                 raise Unsupported('transition_target', str(edge['target']))
             if edge['source'] in entry_ids or edge['source'] == 'States::StateAction::start':
                 src = '[*]'
@@ -124,8 +129,14 @@ def lower(root):
             elif edge['source'] in child_ids:
                 src = names[edge['source']]
                 outgoing[src] += 1
-                if outgoing[src] > 1:
+                # Distinct single typed events are mutually exclusive. Repeated
+                # events, guards, and compound triggers still need an explicit
+                # priority model and remain outside this profile.
+                signature = tuple(triggers)
+                previous = outgoing_events.setdefault(src, set())
+                if outgoing[src] > 1 and (edge['guards'] or len(signature) != 1 or signature in previous):
                     raise Unsupported('transition_priority_unspecified', edge['source'])
+                previous.add(signature)
             else:
                 raise Unsupported('transition_source', str(edge['source']))
             terms = [events[event] for event in triggers]
@@ -134,7 +145,8 @@ def lower(root):
             trigger = '' if not terms else ' : ' + ' + '.join(terms)
             effects = ' '.join(action(a) for a in edge['effects'])
             effect = ' effect { ' + effects + ' }' if effects else ''
-            lines.append(indent + f'    {src} -> {names[edge["target"]]}{trigger}{effect};')
+            destination = '[*]' if terminal_target else names[edge['target']]
+            lines.append(indent + f'    {src} -> {destination}{trigger}{effect};')
             mapping.append({'kind': 'transition', 'source_id': edge['id'], 'span': edge['span'],
                             'target_owner': target, 'target_declaration_index': index})
         if child_ids and initial != 1:

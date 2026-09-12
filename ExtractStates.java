@@ -49,6 +49,11 @@ public class ExtractStates {
         }
         return out;
     }
+    static Object elementReference(Element e) {
+        if (e == null) return null;
+        return object("id", id(e), "kind", e.eClass().getName(),
+            "declared_name", e.getDeclaredName(), "library", e.isLibraryElement());
+    }
     static Object action(ActionUsage a) {
         if (a instanceof AssignmentActionUsage v)
             return object("kind", "assign", "target", id(v.getReferent()), "value", expression(v.getValueExpression()), "span", span(a));
@@ -80,16 +85,26 @@ public class ExtractStates {
                     "action", action(a)));
             }
             else if (e instanceof TransitionUsage t) {
-                var triggers = t.getTriggerAction().stream().flatMap(a -> a.getPayloadParameter().getType().stream())
-                    .map(ExtractStates::id).filter(Objects::nonNull).toList();
+                var triggerElements = t.getTriggerAction().stream()
+                    .map(a -> a.getPayloadParameter() == null ? List.<Type>of() : a.getPayloadParameter().getType())
+                    .flatMap(Collection::stream)
+                    .map(ExtractStates::elementReference).filter(Objects::nonNull).toList();
+                var triggers = triggerElements.stream().map(v -> ((Map<?, ?>)v).get("id"))
+                    .filter(Objects::nonNull).toList();
+                var target = t.getTarget();
                 transitions.add(object("id", id(t), "source", id(t.getSource()), "target", id(t.getTarget()),
                     "guards", t.getGuardExpression().stream().map(ExtractStates::expression).toList(),
                     "effects", t.getEffectAction().stream().map(ExtractStates::action).toList(),
-                    "triggers", triggers, "trigger_count", t.getTriggerAction().size(), "span", span(t)));
+                    "triggers", triggers, "trigger_elements", triggerElements,
+                    "trigger_count", t.getTriggerAction().size(), "target_element", elementReference(target),
+                    "span", span(t)));
             } else if (e instanceof SuccessionAsUsage t) {
                 transitions.add(object("id", id(t), "source", id(t.getSourceFeature()),
                     "target", t.getTargetFeature().size() == 1 ? id(t.getTargetFeature().get(0)) : null,
-                    "guards", List.of(), "effects", List.of(), "trigger_count", 0, "span", span(t)));
+                    "guards", List.of(), "effects", List.of(), "trigger_count", 0,
+                    "target_element", t.getTargetFeature().size() == 1
+                        ? elementReference(t.getTargetFeature().get(0)) : null,
+                    "span", span(t)));
             } else if (e instanceof AttributeUsage v) {
                 var values = new ArrayList<Object>();
                 for (var relation : v.getOwnedRelationship())

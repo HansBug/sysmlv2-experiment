@@ -9,6 +9,6 @@ java -Xmx3g -cp /path/to/sysml-v2-pilot-gt-0.1.0-all.jar \
   research/LinkedStateProbe.java /path/to/sysml.library
 ```
 
-这些探针证明前端路径可复用，但不证明 SysML runtime 与 FCSTM 等价，也不覆盖所有继承、重定义、消息和约束语义。每次运行应保存 JAR 哈希、标准库 commit、源文件哈希、上下文目录和诊断。
+这些探针证明前端路径可复用，但不证明 SysML runtime 与 FCSTM 等价，也不覆盖所有继承、重定义、消息和约束语义。转换器只根据 typed 事件和目标元素类型判断互斥出口与标准库 `done` 终止端点，不用源文本匹配。每次运行应保存 JAR 哈希、标准库 commit、源文件哈希、上下文目录和诊断。
 
 [状态资产逐文件登记](state-assets.zh.md) · [学术公开资产盘点](academic-assets.zh.md) · [失败归因复核](frontend-audit.zh.md)
