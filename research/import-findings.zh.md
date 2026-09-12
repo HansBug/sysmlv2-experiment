@@ -33,6 +33,8 @@
 
 生命周期中有名字的 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会转换成 pyfcstm abstract hook；无名字的 typed `SendActionUsage` 依据源位置生成稳定 hook 名，并保留 receiver/payload/sender。对于 `PerformActionUsage`，官方 typed succession 图会被导出为结构化的 `sequence`，并记录每个动作的定义和源位置；当前目标把整个 sequence 作为一个 hook 调用，因此保留调用点和扩展接口，但不宣称保留内部 action 的时序或副作用。带赋值的 `do` action、分支或不完整 succession 仍拒绝，不能通过删除行为伪造等价。名字为 `initial` 且无自身行为的 state usage 会按 typed 端点映射为默认入口；标准库 `done` 映射为 FCSTM 的 `[*]`。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
 
+状态定义中未被任何 typed guard、effect 或 action 表达式引用的 `ReferenceUsage`、`PartUsage`、`PortUsage` 会登记到 `ignored_structural`，因为当前 FCSTM profile 只表达控制状态和数据动作；一旦这些结构成员参与控制表达式，抽取器仍保留为拒绝。这条规则避免把与控制行为无关的结构树误报为状态机失败，同时不会静默丢掉可达控制依赖。
+
 现在对优先级规则做了更细的 typed 映射：同一状态发出的多个转移，只有在每条转移恰好有一个由官方 `AcceptActionUsage.payloadParameter.type` 链接得到的事件、且事件互不相同、且没有 guard 时才视为互斥并接受；重复事件、复合事件或带 guard 的多出口仍拒绝。官方 States library 中 typed 的 `done` 状态动作被映射为 FCSTM 的 `[*]` 终止端点。抽取结果同时保留触发元素和目标元素的 eClass、限定名、声明名、library 标记，转换器不通过源文本匹配判断这些情况。
 
 对于数量值，若官方 typed 类型是 library `AttributeDefinition`，初值是带 library 单位元素的 `OperatorExpression`，则保留数值幅值并将单位擦除到 FCSTM 的数学数值域；单位表达式中出现变量或未链接元素时仍拒绝。映射报告会记录这一假设，不宣称带单位 SysML runtime 的维度分析已经被保留。

@@ -10,7 +10,7 @@ from pyfcstm.simulate import SimulationRuntime
 
 source = json.loads(Path(sys.argv[1]).read_text())
 cases = {m['source']: m for m in source['models'] if m['dataset'] == 'synthetic'}
-for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'quantity-events.sysml', 'perform-sequence.sysml', 'send-action.sysml'):
+for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'quantity-events.sysml', 'perform-sequence.sysml', 'send-action.sysml', 'structural-context.sysml'):
     assert cases[filename]['status'] == 'extracted', cases[filename]
     roots = cases[filename]['states']
     root = next((item for item in roots if item['states']), roots[0])
@@ -35,6 +35,8 @@ for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'qu
         assert any(item.get('representation') == 'abstract_hook' and item.get('sequence_length') == 2 for item in mapping)
     if filename == 'send-action.sysml':
         assert 'enter abstract send_action_' in dsl
+    if filename == 'structural-context.sysml':
+        assert any(item['element']['kind'] == 'PartUsage' for item in root['ignored_structural'])
 for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_action_execution'),
                        ('array.sysml', 'data_multiplicity')]:
     assert cases[filename]['status'] == 'extracted', cases[filename]

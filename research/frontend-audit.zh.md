@@ -57,6 +57,8 @@
 
 工程上下文补全已经覆盖登记的公开项目；当前 `PerformActionUsage`/`SendActionUsage` 的有名字调用已能保留为 abstract hook，`initial` usage 也能映射为默认入口。Apollo 11 的完整项目上下文因此从 18 个全部拒绝变为 1 个控制状态根通过目标 AST/语义检查；这只是结构化 hook 表示，不是 action 内部执行等价。剩余拒绝主要是带赋值的 do action、并行、结构成员、时间/消息语义、分支 succession 和未定义优先级。带 library 单位的数量值和可证明互斥的简单 guard 已加入受限映射。下一步仍应逐类建立 typed 最小复现，不通过删除行为来提高数字。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 
+当前对未参与控制表达式的 `ReferenceUsage`、`PartUsage`、`PortUsage` 采用显式 `ignored_structural` 登记；一旦 typed 引用可达 guard、effect 或 action，就继续拒绝，避免把结构成员的行为依赖误当成可忽略元数据。
+
 ## 复现
 
 先按主 README 准备 requirements、固定语料、v0.1.0 JAR 和匹配标准库。使用历史完整批次或重新抽取的 `artifacts/corpus-source.json` 交叉检查状态清点：

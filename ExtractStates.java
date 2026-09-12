@@ -127,6 +127,20 @@ public class ExtractStates {
         }
         return out;
     }
+    static Set<String> referencedFeatures(Collection<? extends Membership> memberships) {
+        var references = new HashSet<String>();
+        for (var membership : memberships) {
+            var element = membership.getMemberElement();
+            if (element == null) continue;
+            var tree = element.eAllContents();
+            while (tree.hasNext()) {
+                var child = tree.next();
+                if (child instanceof FeatureReferenceExpression reference && reference.getReferent() != null)
+                    references.add(id(reference.getReferent()));
+            }
+        }
+        return references;
+    }
     static Map<String, Object> state(Type s, Set<Type> ancestors) {
         if (!ancestors.add(s)) return object("id", id(s), "unsupported", List.of("recursive_state_typing"));
         var children = new ArrayList<Object>();
@@ -134,9 +148,11 @@ public class ExtractStates {
         var actions = new ArrayList<Object>();
         var data = new ArrayList<Object>();
         var unsupported = new ArrayList<String>();
+        var ignoredStructural = new ArrayList<Object>();
         if (!scalar(s)) unsupported.add("state_multiplicity");
         var memberships = new LinkedHashSet<Membership>(s.getOwnedMembership());
         memberships.addAll(s.getInheritedMembership());
+        var references = referencedFeatures(memberships);
         for (Membership member : memberships) {
             // Library feature inheritance is not a user control-state declaration.
             // Project mode keeps inherited members from every input resource.
@@ -178,13 +194,20 @@ public class ExtractStates {
                     "type_elements", v.getAttributeDefinition().stream().map(ExtractStates::elementReference).toList(),
                     "values", values, "constant", v.isConstant(), "scalar", scalar(v), "span", span(v)));
             } else if (!(e instanceof Comment) && !(e instanceof Documentation)) {
-                unsupported.add(e.eClass().getName());
+                var kind = e.eClass().getName();
+                if (Set.of("ReferenceUsage", "PartUsage", "PortUsage").contains(kind)
+                    && !references.contains(id(e))) {
+                    ignoredStructural.add(object("element", elementReference(e), "reason", "unreferenced_structural_member"));
+                } else {
+                    unsupported.add(kind);
+                }
             }
         }
         boolean parallel = s instanceof StateDefinition d ? d.isParallel() : ((StateUsage)s).isParallel();
         return object("id", id(s), "kind", s.eClass().getName(), "declared_name", s.getDeclaredName(),
             "parallel", parallel, "span", span(s), "states", children,
-            "transitions", transitions, "actions", actions, "data", data, "unsupported", unsupported);
+            "transitions", transitions, "actions", actions, "data", data,
+            "ignored_structural", ignoredStructural, "unsupported", unsupported);
     }
     static boolean scalar(Type type) {
         var multiplicity = type.getMultiplicity();
