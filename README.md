@@ -30,7 +30,7 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 项目级入口见 [`ExtractProject.java`](ExtractProject.java)：它会先索引整个工程目录，再按资源校验和抽取 typed 状态事实。`research/state-assets.json` 对每个状态候选保留源哈希、相对路径、上下文目录、状态节点数和基线状态。
 
-已对 64 个候选上下文目录完成一次项目级扫描：162 个源文件、18 个状态根、4 个零错误目录；逐目录诊断见 [`research/project-context-observed.json`](research/project-context-observed.json)。
+已对 64 个候选上下文目录完成一次项目级扫描：162 个源文件、18 个状态根、4 个零错误目录；逐目录诊断见 [`research/project-context-observed.json`](research/project-context-observed.json)。将这 18 个已校验状态根接入目标检查后，得到 2 个 converted、16 个 unsupported，见 [`research/project-conversion-observed.json`](research/project-conversion-observed.json)。
 
 ## 转换范围
 

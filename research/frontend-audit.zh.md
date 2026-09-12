@@ -39,7 +39,7 @@
 
 最后一项使用同一批原文件、同一解析器/标准库，无源文本修补。`ServerSequenceModelOutside.sysml` 从 24 条错误变成完全通过；两个含状态的 `*-2.sysml` 分别从 46、52 条错误降到各 6 条，仍未通过。剩余 18 条是 12 条构造调用相关约束、6 条 connector related features 约束，不能把这 4 个文件算作已恢复的有效模型。
 
-随后对登记表中的 64 个上下文目录逐一运行 [`ExtractProject.java`](../ExtractProject.java)。64 个目录、162 个源文件均完成项目级读取，得到 18 个状态根；4 个目录零校验错误，其余目录共 1,500 条错误。机器可读汇总见 [`project-context-observed.json`](project-context-observed.json)。这说明“补全上下文”是必要条件，但对当前语料仍不足以带来全面通过；剩余错误必须按构造调用、connector、旧版本写法等类型继续处理。
+随后对登记表中的 64 个上下文目录逐一运行 [`ExtractProject.java`](../ExtractProject.java)。64 个目录、162 个源文件均完成项目级读取，得到 18 个状态根；4 个目录零校验错误，其余目录共 1,500 条错误。机器可读汇总见 [`project-context-observed.json`](project-context-observed.json)。再经过 pyfcstm 目标检查，18 个项目级状态根中 2 个 converted、16 个因目标 profile 特性拒绝，结果见 [`project-conversion-observed.json`](project-conversion-observed.json)。这说明“补全上下文”是必要条件，但对当前语料仍不足以带来全面通过；剩余错误必须按构造调用、connector、旧版本写法等类型继续处理。
 
 公开旧例 `training/24. Transitions/Transition Actions.sysml` 与当前官方 Pilot `sysml/src/training/25. Transitions/Transition Actions.sysml` 还实际展示了 `send ControllerStartSignal()` → `send new ControllerStartSignal()`、`entry; then off` → `first start then off` 的变化。核心 state grammar 相同，不代表共享动作规则和标准库没变化。不能承诺 2024 前端无条件覆盖 2026 状态模型。
 

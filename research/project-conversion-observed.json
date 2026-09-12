@@ -1,0 +1,379 @@
+{
+  "environment": {
+    "pyfcstm": "0.6.0",
+    "pilot_commit": "801c6a881954987a9707d396d5767db1ec51d8cb"
+  },
+  "summary": {
+    "state_roots": 18,
+    "results": {
+      "unsupported": 16,
+      "converted": 2
+    }
+  },
+  "records": [
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/gfse/models/SE_Models",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/gfse/models/SE_Models/StopWatchStates.sysml",
+      "state": "StopWatchStates::StopWatch",
+      "status": "unsupported",
+      "code": "member_kind",
+      "detail": "ActionDefinition,ActionDefinition,ActionDefinition"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/gfse/models/example_family",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/gfse/models/example_family/family.sysml",
+      "state": "Family::Person::personStates",
+      "status": "unsupported",
+      "code": "action_kind",
+      "detail": "PerformActionUsage"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/examples/Simple Tests",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/examples/Simple Tests/AssignmentTest.sysml",
+      "state": "AssignmentTest::Counting",
+      "status": "unsupported",
+      "code": "member_kind",
+      "detail": "PartUsage"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/examples/Simple Tests",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/examples/Simple Tests/AssignmentTest.sysml",
+      "state": "AssignmentTest::a::counting",
+      "status": "unsupported",
+      "code": "member_kind",
+      "detail": "PartUsage"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/22. State Definitions",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/22. State Definitions/State Definition Example-1.sysml",
+      "state": "'State Definition Example-1'::VehicleStates",
+      "status": "unsupported",
+      "code": "trigger_event",
+      "detail": "'State Definition Example-1'::VehicleStates::off_to_starting"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/22. State Definitions",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/22. State Definitions/State Definition Example-2.sysml",
+      "state": "'State Definition Example-2'::VehicleStates",
+      "status": "unsupported",
+      "code": "trigger_event",
+      "detail": "@208"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States/State Decomposition-1.sysml",
+      "state": "'State Decomposition-1'::VehicleStates",
+      "status": "unsupported",
+      "code": "no_control_states",
+      "detail": "'State Decomposition-1'::VehicleStates"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States/State Decomposition-1.sysml",
+      "state": "'State Decomposition-1'::vehicleStates",
+      "status": "unsupported",
+      "code": "trigger_event",
+      "detail": "@243"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States/State Decomposition-2.sysml",
+      "state": "'State Decomposition-1'::VehicleStates",
+      "status": "unsupported",
+      "code": "no_control_states",
+      "detail": "'State Decomposition-1'::VehicleStates"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States/State Decomposition-2.sysml",
+      "state": "'State Decomposition-1'::vehicleStates",
+      "status": "unsupported",
+      "code": "parallel",
+      "detail": "'State Decomposition-1'::vehicleStates"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States/State Actions.sysml",
+      "state": "'State Actions'::VehicleStates",
+      "status": "unsupported",
+      "code": "member_kind",
+      "detail": "ReferenceUsage"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/23. States/State Actions.sysml",
+      "state": "'State Actions'::vehicleStates",
+      "status": "unsupported",
+      "code": "member_kind",
+      "detail": "ReferenceUsage"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/30. Constraints",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/training/30. Constraints/Time Constraints.sysml",
+      "state": "'Time Constraints'::healthStates",
+      "status": "unsupported",
+      "code": "member_kind",
+      "detail": "ReferenceUsage,ConstraintUsage"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/06-Individual and Snapshots",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/06-Individual and Snapshots/6-Individual and Snapshots.sysml",
+      "state": "'6-Individual and Snapshots'::'Part Definitions'::VehicleA::vehicleStates",
+      "status": "converted",
+      "diagnostics": [
+        {
+          "code": "W_DEADLOCK_LEAF",
+          "severity": "warning",
+          "message": "Leaf state 'S0.S2' has no outgoing transition.",
+          "span": {
+            "line": 4,
+            "column": 5,
+            "end_line": 5,
+            "end_column": 6
+          },
+          "refs": {
+            "state_path": "S0.S2",
+            "reason": "no_outgoing_transition",
+            "parent_path": "S0",
+            "suggested_fix": {
+              "kind": "insert",
+              "target": "deadlock_leaf_exit_transition",
+              "anchor": {
+                "type": "ref",
+                "ref": "refs.parent_path"
+              },
+              "text": "S2 -> [*];\n",
+              "rationale": "Add an exit transition so the leaf can finish its parent state."
+            }
+          }
+        },
+        {
+          "code": "I_TRANSITION_NEVER_EVENT_TRIGGERED",
+          "severity": "info",
+          "message": "Transition 'S0.S1' -> 'S0.S2' has no event or guard.",
+          "span": {
+            "line": 7,
+            "column": 5,
+            "end_line": 7,
+            "end_column": 14
+          },
+          "refs": {
+            "from_path": "S0.S1",
+            "to_path": "S0.S2",
+            "transition_span": {
+              "line": 7,
+              "column": 5,
+              "end_line": 7,
+              "end_column": 14
+            },
+            "transition_index": 1
+          }
+        },
+        {
+          "code": "W_TOPOLOGICAL_NOEXIT",
+          "severity": "warning",
+          "message": "A root-reachable leaf or cycle has no guard-agnostic route to the root exit sink.",
+          "span": {
+            "line": 4,
+            "column": 5,
+            "end_line": 5,
+            "end_column": 6
+          },
+          "refs": {
+            "algorithm_name": "topological_finite",
+            "verification_scope": "topological_only",
+            "representative_state_path": "S0.S2",
+            "counterexample_kind": "deadlock",
+            "scc": [
+              "S0.S2"
+            ]
+          }
+        },
+        {
+          "code": "I_TOPOLOGICAL_NON_TERMINATING",
+          "severity": "info",
+          "message": "The topology does not force all root-reachable executions to eventually reach the root terminator.",
+          "span": {
+            "line": 4,
+            "column": 5,
+            "end_line": 5,
+            "end_column": 6
+          },
+          "refs": {
+            "algorithm_name": "topological_inevitable_terminator",
+            "verification_scope": "topological_only",
+            "representative_state_path": "S0.S2",
+            "counterexample_path": [
+              "S0.S2"
+            ]
+          }
+        }
+      ],
+      "mapping_count": 5
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/06-Individual and Snapshots",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/06-Individual and Snapshots/6-Individual and Snapshots.sysml",
+      "state": "'6-Individual and Snapshots'::'Individuals and Snapshots'::reference::context_t0::vehicle_ID1_t0::on",
+      "status": "unsupported",
+      "code": "no_control_states",
+      "detail": "'6-Individual and Snapshots'::'Individuals and Snapshots'::reference::context_t0::vehicle_ID1_t0::on"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/06-Individual and Snapshots",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/06-Individual and Snapshots/6-Individual and Snapshots.sysml",
+      "state": "'6-Individual and Snapshots'::'Individuals and Snapshots'::reference::context_t1::vehicle_ID1_t1::on",
+      "status": "unsupported",
+      "code": "no_control_states",
+      "detail": "'6-Individual and Snapshots'::'Individuals and Snapshots'::reference::context_t1::vehicle_ID1_t1::on"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/06-Individual and Snapshots",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/06-Individual and Snapshots/6-Individual and Snapshots.sysml",
+      "state": "'6-Individual and Snapshots'::'Individuals and Snapshots'::reference::context_tn::vehicle_ID1_tn::off",
+      "status": "unsupported",
+      "code": "no_control_states",
+      "detail": "'6-Individual and Snapshots'::'Individuals and Snapshots'::reference::context_tn::vehicle_ID1_tn::off"
+    },
+    {
+      "project": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/10-Analysis and Trades",
+      "source": "/home/zhangshaoang/oo-projects/sysmlv2-experiment/_external/benchmark/data/validation/10-Analysis and Trades/10c-Fuel Economy Analysis.sysml",
+      "state": "'10c-Fuel Economy Analysis'::VehicleDesignModel::vehicle1_c1::transmission::transmissionState",
+      "status": "converted",
+      "diagnostics": [
+        {
+          "code": "W_DEADLOCK_LEAF",
+          "severity": "warning",
+          "message": "Leaf state 'S0.S4' has no outgoing transition.",
+          "span": {
+            "line": 8,
+            "column": 5,
+            "end_line": 9,
+            "end_column": 6
+          },
+          "refs": {
+            "state_path": "S0.S4",
+            "reason": "no_outgoing_transition",
+            "parent_path": "S0",
+            "suggested_fix": {
+              "kind": "insert",
+              "target": "deadlock_leaf_exit_transition",
+              "anchor": {
+                "type": "ref",
+                "ref": "refs.parent_path"
+              },
+              "text": "S4 -> [*];\n",
+              "rationale": "Add an exit transition so the leaf can finish its parent state."
+            }
+          }
+        },
+        {
+          "code": "I_TRANSITION_NEVER_EVENT_TRIGGERED",
+          "severity": "info",
+          "message": "Transition 'S0.S1' -> 'S0.S2' has no event or guard.",
+          "span": {
+            "line": 11,
+            "column": 5,
+            "end_line": 11,
+            "end_column": 14
+          },
+          "refs": {
+            "from_path": "S0.S1",
+            "to_path": "S0.S2",
+            "transition_span": {
+              "line": 11,
+              "column": 5,
+              "end_line": 11,
+              "end_column": 14
+            },
+            "transition_index": 1
+          }
+        },
+        {
+          "code": "I_TRANSITION_NEVER_EVENT_TRIGGERED",
+          "severity": "info",
+          "message": "Transition 'S0.S2' -> 'S0.S3' has no event or guard.",
+          "span": {
+            "line": 12,
+            "column": 5,
+            "end_line": 12,
+            "end_column": 14
+          },
+          "refs": {
+            "from_path": "S0.S2",
+            "to_path": "S0.S3",
+            "transition_span": {
+              "line": 12,
+              "column": 5,
+              "end_line": 12,
+              "end_column": 14
+            },
+            "transition_index": 2
+          }
+        },
+        {
+          "code": "I_TRANSITION_NEVER_EVENT_TRIGGERED",
+          "severity": "info",
+          "message": "Transition 'S0.S3' -> 'S0.S4' has no event or guard.",
+          "span": {
+            "line": 13,
+            "column": 5,
+            "end_line": 13,
+            "end_column": 14
+          },
+          "refs": {
+            "from_path": "S0.S3",
+            "to_path": "S0.S4",
+            "transition_span": {
+              "line": 13,
+              "column": 5,
+              "end_line": 13,
+              "end_column": 14
+            },
+            "transition_index": 3
+          }
+        },
+        {
+          "code": "W_TOPOLOGICAL_NOEXIT",
+          "severity": "warning",
+          "message": "A root-reachable leaf or cycle has no guard-agnostic route to the root exit sink.",
+          "span": {
+            "line": 8,
+            "column": 5,
+            "end_line": 9,
+            "end_column": 6
+          },
+          "refs": {
+            "algorithm_name": "topological_finite",
+            "verification_scope": "topological_only",
+            "representative_state_path": "S0.S4",
+            "counterexample_kind": "deadlock",
+            "scc": [
+              "S0.S4"
+            ]
+          }
+        },
+        {
+          "code": "I_TOPOLOGICAL_NON_TERMINATING",
+          "severity": "info",
+          "message": "The topology does not force all root-reachable executions to eventually reach the root terminator.",
+          "span": {
+            "line": 8,
+            "column": 5,
+            "end_line": 9,
+            "end_column": 6
+          },
+          "refs": {
+            "algorithm_name": "topological_inevitable_terminator",
+            "verification_scope": "topological_only",
+            "representative_state_path": "S0.S4",
+            "counterexample_path": [
+              "S0.S4"
+            ]
+          }
+        }
+      ],
+      "mapping_count": 9
+    }
+  ]
+}
