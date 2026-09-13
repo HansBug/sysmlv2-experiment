@@ -1,11 +1,18 @@
 # SysML v2 状态资产逐文件登记
 
-本表由官方 Pilot 的 typed AST 生成，不通过字符串搜索。每一行保留数据集、相对路径、SHA-256、语法状态节点数、完整校验状态和建议的项目上下文目录。`validated_independent_file` 只表示单文件加标准库通过，`needs_project_index` 表示应在其工程目录整体索引后复核；Apollo 11 使用完整仓库根目录作为项目上下文。
+本表由官方 Pilot 的 typed AST 生成，不通过字符串搜索。每一行保留数据集、相对路径、SHA-256、语法状态节点数、完整校验状态和建议的项目上下文目录。`validated_independent_file` 只表示单文件加标准库通过，`needs_project_index` 表示应在其工程目录整体索引后复核。
 
 共登记 **122** 个公开状态候选文件。它们不是可执行控制器清单；一个文件可包含多个状态根，状态 usage 也可能是 snapshot 或语义不完整。
 
 | 数据集 | 文件 | SHA-256（前 12 位） | 定义/使用/根 | 语法 | 基线校验 | 上下文目录 |
 |---|---|---|---:|---|---|---|
+| advent | `lesson18/models/L18_SantaSleighCruiseControl_Challenge.sysml` | `2da5fa9040df` | 1/0/1 | 有效 | extracted | `lesson18/models` |
+| advent | `lesson18/models/L18_SantaSleighCruiseControl_Solution.sysml` | `f0d24263dd10` | 1/13/1 | 有效 | extracted | `lesson18/models` |
+| advent | `lesson18/models/L18_States.sysml` | `e020b385e6d9` | 1/10/1 | 有效 | extracted | `lesson18/models` |
+| advent | `lesson19/models/L19_State_Simulation.sysml` | `ef8be64c076c` | 1/7/1 | 有效 | extracted | `lesson19/models` |
+| apollo11 | `CoSMA/CoSMAPackage.sysml` | `0a6bf83aa68d` | 1/1/2 | 有效 | source_validation_error | `CoSMA` |
+| apollo11 | `Purpose/MissionPackage.sysml` | `f537a72469a6` | 0/16/1 | 有效 | source_validation_error | `Purpose` |
+| apollo11 | `Purpose/MissionPhasesPackage.sysml` | `c1e78c28194b` | 15/0/15 | 有效 | source_validation_error | `Purpose` |
 | gfse | `SE_Models/DroneModelLogical.sysml` | `dd8d3e39da78` | 0/6/1 | 错误 | source_validation_error | `SE_Models` |
 | gfse | `SE_Models/StopWatchStates.sysml` | `5108f03a4c6c` | 1/4/1 | 有效 | extracted | `SE_Models` |
 | gfse | `SE_Models/VehicleModel.sysml` | `edc46afb5e67` | 2/2/4 | 错误 | source_validation_error | `SE_Models` |
@@ -122,11 +129,4 @@
 | systemp | `validation/06-Individual and Snapshots/6-Individual and Snapshots.sysml` | `31efc993fd2e` | 0/6/4 | 有效 | extracted | `validation/06-Individual and Snapshots` |
 | systemp | `validation/10-Analysis and Trades/10c-Fuel Economy Analysis.sysml` | `3bea4bbe7b04` | 0/5/1 | 有效 | extracted | `validation/10-Analysis and Trades` |
 
-| apollo11 | `CoSMA/CoSMAPackage.sysml` | `0a6bf83aa68d` | 1/1/2 | 有效 | extracted | `CoSMA` |
-| apollo11 | `Purpose/MissionPackage.sysml` | `f537a72469a6` | 0/16/1 | 有效 | extracted | `Purpose` |
-| apollo11 | `Purpose/MissionPhasesPackage.sysml` | `c1e78c28194b` | 15/0/15 | 有效 | extracted | `Purpose` |
-| advent | `lesson18/models/L18_SantaSleighCruiseControl_Challenge.sysml` | `2da5fa9040df` | 1/0/1 | 有效 | extracted | `lesson18/models` |
-| advent | `lesson18/models/L18_SantaSleighCruiseControl_Solution.sysml` | `f0d24263dd10` | 1/13/1 | 有效 | extracted | `lesson18/models` |
-| advent | `lesson18/models/L18_States.sysml` | `e020b385e6d9` | 1/10/1 | 有效 | extracted | `lesson18/models` |
-| advent | `lesson19/models/L19_State_Simulation.sysml` | `ef8be64c076c` | 1/7/1 | 有效 | extracted | `lesson19/models` |
 机器可读版本：[state-assets.json](state-assets.json)。重新生成：`python research/register_state_assets.py artifacts/syntax-state-inventory.json research/state-assets.json research/state-assets.zh.md`。

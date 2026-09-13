@@ -1,5 +1,5 @@
 {
-  "description": "逐个登记语法树中含 StateDefinition/StateUsage 的公开文件；不是可执行控制器清单。",
+  "description": "\u9010\u4e2a\u767b\u8bb0\u8bed\u6cd5\u6811\u4e2d\u542b StateDefinition/StateUsage \u7684\u516c\u5f00\u6587\u4ef6\uff1b\u4e0d\u662f\u53ef\u6267\u884c\u63a7\u5236\u5668\u6e05\u5355\u3002",
   "count": 122,
   "assets": [
     {
@@ -10,9 +10,10 @@
       "state_definitions": 1,
       "state_usages": 0,
       "state_roots": 1,
+      "validation_status": "extracted",
       "context_directory": "lesson18/models",
-      "context_status": "validated_project",
-      "conversion_status": "strict_profile_unsupported"
+      "context_status": "validated_independent_file",
+      "conversion_status": "baseline_extracted"
     },
     {
       "dataset": "advent",
@@ -22,9 +23,10 @@
       "state_definitions": 1,
       "state_usages": 13,
       "state_roots": 1,
+      "validation_status": "extracted",
       "context_directory": "lesson18/models",
-      "context_status": "validated_project",
-      "conversion_status": "strict_profile_unsupported"
+      "context_status": "validated_independent_file",
+      "conversion_status": "baseline_extracted"
     },
     {
       "dataset": "advent",
@@ -34,9 +36,10 @@
       "state_definitions": 1,
       "state_usages": 10,
       "state_roots": 1,
+      "validation_status": "extracted",
       "context_directory": "lesson18/models",
-      "context_status": "validated_project",
-      "conversion_status": "strict_profile_unsupported"
+      "context_status": "validated_independent_file",
+      "conversion_status": "baseline_extracted"
     },
     {
       "dataset": "advent",
@@ -46,9 +49,10 @@
       "state_definitions": 1,
       "state_usages": 7,
       "state_roots": 1,
+      "validation_status": "extracted",
       "context_directory": "lesson19/models",
-      "context_status": "validated_project",
-      "conversion_status": "strict_profile_unsupported"
+      "context_status": "validated_independent_file",
+      "conversion_status": "baseline_extracted"
     },
     {
       "dataset": "apollo11",
@@ -58,9 +62,10 @@
       "state_definitions": 1,
       "state_usages": 1,
       "state_roots": 2,
+      "validation_status": "source_validation_error",
       "context_directory": "CoSMA",
-      "context_status": "validated_project",
-      "conversion_status": "strict_profile_unsupported"
+      "context_status": "needs_project_index",
+      "conversion_status": "not_reached"
     },
     {
       "dataset": "apollo11",
@@ -70,9 +75,10 @@
       "state_definitions": 0,
       "state_usages": 16,
       "state_roots": 1,
+      "validation_status": "source_validation_error",
       "context_directory": "Purpose",
-      "context_status": "validated_project",
-      "conversion_status": "strict_profile_unsupported"
+      "context_status": "needs_project_index",
+      "conversion_status": "not_reached"
     },
     {
       "dataset": "apollo11",
@@ -82,9 +88,10 @@
       "state_definitions": 15,
       "state_usages": 0,
       "state_roots": 15,
+      "validation_status": "source_validation_error",
       "context_directory": "Purpose",
-      "context_status": "validated_project",
-      "conversion_status": "strict_profile_unsupported"
+      "context_status": "needs_project_index",
+      "conversion_status": "not_reached"
     },
     {
       "dataset": "gfse",

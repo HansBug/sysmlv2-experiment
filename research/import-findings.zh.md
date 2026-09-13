@@ -58,7 +58,7 @@
 
 [SysTemp 论文](https://arxiv.org/abs/2506.21608) 直接链接前两者；[Refinement 论文](https://arxiv.org/abs/2607.14162) 链接第三者。Refinement 仓库还含 151 个 SysMBench prompts 和 trajectory corpus，本批次没有把 trajectory 中同一模型的副本再重复加入。正负标签来自作者的合规评价，不等于当前 Pilot 独立文件加载会给出相同结论。[SysMBench 论文](https://arxiv.org/abs/2508.03215) 本身不能替代实际可下载模型证据。
 
-这些集合多用于语言建模、生成或 conformance；不都是可执行控制器，更不是等量独立系统。文件级 SHA256 用于复查重复，当前 1,665 文件包含 1,498 种内容；新增 Advent、Apollo 11 和 SysML v2 Book 示例均按固定提交记录。Book 示例在当前 Pilot 下有完整源文件校验错误，因此未进入 typed 状态根转换分母。
+这些集合多用于语言建模、生成或 conformance；不都是可执行控制器，更不是等量独立系统。文件级 SHA256 用于复查重复，当前 1,668 文件包含 1,501 种内容；新增 Advent、Apollo 11 和 SysML v2 Book 示例均按固定提交记录。Book 示例在当前 Pilot 下有完整源文件校验错误，因此未进入 typed 状态根转换分母。
 
 ## 实际覆盖
 
@@ -76,7 +76,7 @@
 
 状态根与文件不在同一个计数层级，不能横向简单相加。总计 24 个成功解析的状态根中通过 4 个；去掉自建例，公开数据的 18 个候选通过 2 个。**本轮不能声称大部分公开模型可转换。** 也不能把 624 个没有状态机的文件算成转换失败，或把 691 个源校验失败全部说成原数据错误：包括旧语法、工具约束差异及我们尚未加载的跨文件工程上下文。
 
-公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34726784027](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34726784027) 的独立批次包含 1,665 个文件、52 个控制状态候选，其中 20 个 converted（含 7 个自建 fixture）；项目级批次为 96 个状态根、50 个控制状态候选，其中 16 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行、时间触发和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
+公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34730734470](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34730734470) 的独立批次包含 1,668 个文件、55 个控制状态候选，其中 22 个 converted（含 9 个自建 fixture）；项目级批次为 96 个状态根、50 个控制状态候选，其中 16 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行、时间触发和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
 
 Apollo 11 的完整工程上下文已在 [Actions 34720946017](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34720946017) 中验证：28 个文件、0 条官方校验错误、18 个状态根。若按 `CoSMA`/`Purpose` 子目录分别加载会产生 842 条错误，这已由 `--project-root apollo11=_external/apollo11` 修复；这项差异说明上下文边界本身必须作为实验变量记录。严格转换仍拒绝 18 个根，其中任务阶段控制根的首因是继承的 `PerformActionUsage`。
 
