@@ -110,7 +110,9 @@ public class ExtractStates {
     }
     static Object action(ActionUsage a) {
         if (a instanceof AssignmentActionUsage v)
-            return object("kind", "assign", "target", id(v.getReferent()), "value", expression(v.getValueExpression()), "span", span(a));
+            return object("kind", "assign", "target", id(v.getReferent()),
+                "target_expression", expression(v.getTargetArgument()),
+                "value", expression(v.getValueExpression()), "span", span(a));
         var node = NodeModelUtils.getNode(a);
         // The official parser represents an empty subaction with a zero-length
         // ActionUsage node. Named/typed/performed actions remain unsupported.
@@ -132,6 +134,26 @@ public class ExtractStates {
         }
         return out;
     }
+    /** Export scalar attributes of a single scalar part for safe one-level chains. */
+    static List<Object> structuralData(PartUsage usage) {
+        if (!scalar(usage) || usage.getPartDefinition().size() != 1) return List.of();
+        var definition = usage.getPartDefinition().get(0);
+        var result = new ArrayList<Object>();
+        for (var membership : definition.getFeatureMembership()) {
+            var feature = membership.getMemberElement();
+            if (!(feature instanceof AttributeUsage attribute) || !inputResources.contains(attribute.eResource())) continue;
+            var values = new ArrayList<Object>();
+            for (var relation : attribute.getOwnedRelationship())
+                if (relation instanceof FeatureValue value) values.add(expression(value.getValue()));
+            result.add(object("id", id(usage) + "." + attribute.getDeclaredName(),
+                "structural_base", id(usage), "structural_target", id(attribute),
+                "types", attribute.getAttributeDefinition().stream().map(ExtractStates::id).toList(),
+                "type_elements", attribute.getAttributeDefinition().stream().map(ExtractStates::elementReference).toList(),
+                "values", values, "constant", attribute.isConstant(), "scalar", scalar(attribute),
+                "span", span(attribute)));
+        }
+        return result;
+    }
     static List<Object> actionArgumentReferences(ActionUsage action) {
         var result = new ArrayList<Object>();
         var seen = new HashSet<String>();
@@ -152,6 +174,10 @@ public class ExtractStates {
             // exported action record; they are not structural dependencies of the
             // state topology and must not block the surrounding state.
             if (element instanceof PerformActionUsage || element instanceof SendActionUsage) continue;
+            // Constraints describe verification properties, not control topology.
+            // Their internal references must not make the constraint membership
+            // itself look like a required structural control member.
+            if (element instanceof ConstraintUsage) continue;
             // A child state owns its own behavior references. Walking its complete
             // subtree here would incorrectly make an ancestor's structural alias
             // look behaviorally referenced.
@@ -217,11 +243,25 @@ public class ExtractStates {
                 data.add(object("id", id(v), "types", v.getAttributeDefinition().stream().map(ExtractStates::id).toList(),
                     "type_elements", v.getAttributeDefinition().stream().map(ExtractStates::elementReference).toList(),
                     "values", values, "constant", v.isConstant(), "scalar", scalar(v), "span", span(v)));
+            } else if (e instanceof PartUsage part) {
+                var structural = structuralData(part);
+                if (!structural.isEmpty()) data.addAll(structural);
+                else if (!references.contains(id(e)))
+                    ignoredStructural.add(object("element", elementReference(e), "reason", "unreferenced_structural_member"));
+                else unsupported.add(e.eClass().getName());
             } else if (!(e instanceof Comment) && !(e instanceof Documentation)) {
                 var kind = e.eClass().getName();
-                if (Set.of("ReferenceUsage", "PartUsage", "PortUsage").contains(kind)
+                if (e instanceof ActionUsage && !(member instanceof StateSubactionMembership)
                     && !references.contains(id(e))) {
-                    ignoredStructural.add(object("element", elementReference(e), "reason", "unreferenced_structural_member"));
+                    ignoredStructural.add(object("element", elementReference(e),
+                        "reason", "action_declaration_outside_control_profile"));
+                } else if ((e instanceof ConstraintUsage
+                     || Set.of("ReferenceUsage", "PartUsage", "PortUsage").contains(kind))
+                    && !references.contains(id(e))) {
+                    String reason = e instanceof ConstraintUsage
+                        ? "verification_constraint_outside_control_profile"
+                        : "unreferenced_structural_member";
+                    ignoredStructural.add(object("element", elementReference(e), "reason", reason));
                 } else {
                     unsupported.add(kind);
                 }

@@ -46,7 +46,8 @@ def action_identifier(body):
     return None
 
 
-def expression(expr, variables):
+def expression(expr, variables, structural_variables=None):
+    structural_variables = {} if structural_variables is None else structural_variables
     kind = expr['kind']
     if kind in ('LiteralBoolean', 'LiteralInteger', 'LiteralRational'):
         return json.dumps(expr['value'])
@@ -54,6 +55,14 @@ def expression(expr, variables):
         if expr['referent'] not in variables:
             raise Unsupported('external_variable', str(expr['referent']))
         return variables[expr['referent']]
+    if kind == 'FeatureChainExpression':
+        operands = expr.get('operands', [])
+        target = expr.get('target_feature') or {}
+        if len(operands) == 1 and operands[0].get('kind') == 'FeatureReferenceExpression':
+            key = (operands[0].get('referent'), target.get('id'))
+            if key in structural_variables:
+                return structural_variables[key]
+        raise Unsupported('feature_chain', str(expr.get('target_feature') or expr.get('span')))
     if kind == 'OperatorExpression':
         if expr['operator'] == '[':
             operands = expr.get('operands', [])
@@ -62,16 +71,14 @@ def expression(expr, variables):
                 raise Unsupported('quantity_unit', str(expr.get('span')))
             # FCSTM has no quantity type in this profile. The linked unit is
             # checked structurally, then the magnitude is kept as a real value.
-            return expression(operands[0], variables)
+            return expression(operands[0], variables, structural_variables)
         operator = {'=': '==', '<>': '!=', '&': 'and', '|': 'or'}.get(expr['operator'], expr['operator'])
-        operands = [expression(e, variables) for e in expr['operands']]
+        operands = [expression(e, variables, structural_variables) for e in expr['operands']]
         if operator in ('+', '-', 'not') and len(operands) == 1:
             return '(' + operator + ' ' + operands[0] + ')'
         if operator in ('+', '-', '*', '/', '<', '<=', '>', '>=', '==', '!=', 'and', 'or') and len(operands) == 2:
             return '(' + operands[0] + ' ' + operator + ' ' + operands[1] + ')'
         raise Unsupported('operator', expr['operator'])
-    if kind == 'FeatureChainExpression':
-        raise Unsupported('feature_chain', str(expr.get('target_feature') or expr.get('span')))
     raise Unsupported('expression_kind', kind)
 
 
@@ -140,6 +147,7 @@ def lower(root):
     if not root['states']:
         raise Unsupported('no_control_states', root['id'])
     variables, declarations, mapping, constants = {}, [], [], set()
+    structural_variables = {}
     event_ids = []
     for node in nodes:
         for edge in node['transitions']:
@@ -152,6 +160,8 @@ def lower(root):
             if data['id'] in variables:
                 raise Unsupported('reused_data_context', data['id'])
             variables[data['id']] = 'v' + str(len(variables))
+            if data.get('structural_base') and data.get('structural_target'):
+                structural_variables[(data['structural_base'], data['structural_target'])] = variables[data['id']]
             if data['constant']:
                 constants.add(data['id'])
     for node in nodes:
@@ -169,7 +179,7 @@ def lower(root):
                 raise Unsupported('data_type', str(data['types']))
             if len(data['values']) != 1:
                 raise Unsupported('data_initializer', data['id'])
-            value = expression(data['values'][0], variables)
+            value = expression(data['values'][0], variables, structural_variables)
             if 'ScalarValues::Boolean' in types:
                 value = {'true': '1', 'false': '0'}.get(value, value)
             target_type = 'float' if quantity_type or 'ScalarValues::Real' in types else 'int'
@@ -180,9 +190,15 @@ def lower(root):
             return ''
         if body['kind'] != 'assign':
             raise Unsupported('action_kind', body['kind'])
-        if body['target'] not in variables or body['target'] in constants:
-            raise Unsupported('assignment_target', str(body['target']))
-        return variables[body['target']] + ' = ' + expression(body['value'], variables) + ';'
+        target = variables.get(body.get('target'))
+        target_expression = body.get('target_expression') or {}
+        if target is None and target_expression.get('kind') == 'FeatureReferenceExpression':
+            target = structural_variables.get((target_expression.get('referent'), body.get('target')))
+        if target is None and body.get('target_expression'):
+            target = expression(body['target_expression'], variables, structural_variables)
+        if target is None or body.get('target') in constants:
+            raise Unsupported('assignment_target', str(body.get('target')))
+        return target + ' = ' + expression(body['value'], variables, structural_variables) + ';'
     def abstract_action(body, role):
         """Keep a typed action invocation as a pyfcstm abstract hook."""
         if body.get('kind') not in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
@@ -280,7 +296,7 @@ def lower(root):
                 raise Unsupported('transition_source', str(edge['source']))
             terms = [events[event] for event in triggers]
             if edge['guards']:
-                terms.append('[' + ' and '.join(expression(g, variables) for g in edge['guards']) + ']')
+                terms.append('[' + ' and '.join(expression(g, variables, structural_variables) for g in edge['guards']) + ']')
             trigger = '' if not terms else ' : ' + ' + '.join(terms)
             effects = ' '.join(action(a) for a in edge['effects'])
             effect = ' effect { ' + effects + ' }' if effects else ''

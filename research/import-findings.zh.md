@@ -33,7 +33,7 @@
 
 生命周期中有名字的 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会转换成 pyfcstm abstract hook；无名字或带空格的调用会依据 typed 声明名和源位置生成稳定的合法 hook 名，并保留 receiver/payload/sender 以及动作参数的 typed 引用。对于 `PerformActionUsage`，官方 typed succession 图会被导出为结构化的 `sequence`，并记录每个动作的定义和源位置；当前目标把整个 sequence 作为一个 hook 调用，因此保留调用点和扩展接口，但不宣称保留内部 action 的时序或副作用。线性、分支或不完整 succession 都保留为一个 opaque hook，结构化诊断仍登记在 mapping 中；带赋值的 `do` action 仍拒绝，不能通过删除行为伪造等价。名字为 `initial` 且无自身行为的 state usage 会按 typed 端点映射为默认入口；标准库 `done` 映射为 FCSTM 的 `[*]`。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
 
-状态定义中未被任何 typed guard、effect 或 action 表达式引用的 `ReferenceUsage`、`PartUsage`、`PortUsage` 会登记到 `ignored_structural`，因为当前 FCSTM profile 只表达控制状态和数据动作；一旦这些结构成员参与控制表达式，抽取器仍保留为拒绝。这条规则避免把与控制行为无关的结构树误报为状态机失败，同时不会静默丢掉可达控制依赖。
+状态定义中未被任何 typed guard、effect 或 action 表达式引用的 `ReferenceUsage`、`PartUsage`、`PortUsage` 会登记到 `ignored_structural`，因为当前 FCSTM profile 只表达控制状态和数据动作。现在还接受一个严格子集：单实例 `PartUsage` 指向单一 `PartDefinition`，且链末端是标量数值 `AttributeUsage` 时，将 `part.attribute` 映射为带结构来源记录的 FCSTM 变量；变量初始化、赋值和 guard 都必须来自同一条 typed 链。多实例、数组、跨对象或更深层 FeatureChain 仍保留为拒绝，避免把结构成员错误压平成标量。
 
 现在对优先级规则做了更细的 typed 映射：同一状态发出的多个转移，只有在每条转移恰好有一个由官方 `AcceptActionUsage.payloadParameter.type` 链接得到的事件、且事件互不相同、且没有 guard 时才视为互斥并接受；重复事件、复合事件或带 guard 的多出口仍拒绝。官方 States library 中 typed 的 `done` 状态动作被映射为 FCSTM 的 `[*]` 终止端点。抽取结果同时保留触发元素和目标元素的 eClass、限定名、声明名、library 标记，转换器不通过源文本匹配判断这些情况。
 
@@ -85,3 +85,6 @@ Sensmetry Advent 仓库的 44 个文件中有 4 个含状态元素；完整仓�
 ## 对后续学术工作的含义
 
 该入口足以建立源定位、环境假设与 FCSTM 诊断之间的映射实验。现有通用 SysML 语料中控制状态机密度低，继续扩大下载量的收益可能低于先恢复工程依赖、按 typed state 元素筛选、以及收集专门的行为模型。论文应分别报告语料可加载性、状态机候选数、规则覆盖率、目标有效性、与源语义的一致性证据；其中最后一项还需要进一步建立，不能用“能 parse”替代。
+
+
+状态定义中的 `ConstraintUsage` 现在在不参与控制拓扑时登记为 `ignored_structural`，原因是 `verification_constraint_outside_control_profile`。这只表示当前 FCSTM profile 不执行 SysML 约束；约束元素、源位置和哈希仍保留在映射中，不会把断言静默当成已转换。若约束参与 guard、effect 或状态出口，抽取器仍保留引用并拒绝该根。没有被状态行为引用的声明式 `ActionUsage` 也会保留为 `action_declaration_outside_control_profile`，不会被误当作 lifecycle action。
