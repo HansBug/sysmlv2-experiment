@@ -359,6 +359,8 @@ def run(source, output):
                'extracted_state_roots': len(extracted_roots),
                'control_candidates': len(control_candidates),
                'files_with_converted_root': len({(r['dataset'], r['source']) for r in rows if r['status'] == 'converted'}),
+               'converted_unique_source_hashes': len({r['sha256'] for r in rows if r['status'] == 'converted'}),
+               'converted_unique_control_source_hashes': len({r['sha256'] for r in control_candidates if r['status'] == 'converted'}),
                'results': dict(Counter(r['status'] for r in rows)),
                'converted_control_candidates': sum(r['status'] == 'converted' for r in control_candidates),
                'unsupported_first_reason': dict(Counter(r['code'] for r in rows if r['status'] == 'unsupported')),
