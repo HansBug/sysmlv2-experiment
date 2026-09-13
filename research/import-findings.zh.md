@@ -43,8 +43,8 @@
 
 ### 当前明确不支持的 SysML 执行语义
 
-- **并行 state / region**：进入父状态时同时激活每个 region；事件可能被多个 region 分发，父状态通常要等所有 region 完成后才完成。FCSTM 当前只有单一活动路径，压平成串行子状态会改变同时执行、事件广播和完成条件，因此保留 `parallel` 拒绝。
-- **时间与变化触发**：`accept after`、`accept at` 和 `accept when` 依赖时钟或连续值变化，在状态机调度中由时间到达、值变化和采样时机触发。FCSTM 事件是外部离散事件，没有时钟队列或变化监测器；伪造普通 event 会改变触发时刻，所以保留 `time_trigger` 拒绝。
+- **并行 state / region**：SysML 的 `state ... parallel { ... }` 中，每个直接子 state 是一个同时活动的 region；进入父状态会为所有 region 选择各自的初态，外部事件可被多个 region 分发，父状态通常要等所有 region 完成后才完成并退出。FCSTM 当前只有单一活动路径，压平成串行子状态会改变同时执行、事件广播和联合完成条件，因此保留 `parallel` 拒绝。
+- **时间与变化触发**：`accept after d` 以进入相关状态或动作时刻为基准排入相对时钟事件，`accept at t` 等待时间点，`accept when expr` 则依赖值变化/采样产生的触发；这些触发还受状态退出、时间推进和采样顺序影响。FCSTM 事件是外部离散事件，没有时钟队列、变化监测器或采样调度器；伪造普通 event 会改变触发时刻和重入行为，所以保留 `time_trigger` 拒绝。
 - **消息 payload/receiver**：`send` 具有关联的接收对象、payload 和发送时机，可能进入接收者的事件队列。当前 profile 将消息保留为 abstract hook（transition effect 放在源状态 exit），因此能保留调用点，但不能表达队列投递、receiver 实例和 payload 类型的完整执行语义。
 - **跨层级 transition target**：SysML 可以在父级行为中声明从深层状态跳到兄弟或外层状态的转移。当前 profile 对“进入深层目标前只有一条 typed 默认路径、离开深层源也只有一条活动路径”的情况，把边提升到直接子状态；完整端点路径和提升理由写入 mapping。存在多个可能活动子状态、目标在作用域外或需要显式退出/进入动作时仍拒绝 `transition_target`，因为 FCSTM 没有同一套层级退出/进入调度规则。
 - **结构 ReferenceUsage / PortUsage**：这些元素代表对象、端口或引用特征，可能有多重性和实例选择。当前把未参与控制表达式的成员登记到 `ignored_structural`，把可证明的单实例标量属性链映射为 FCSTM 变量；用于 typed action 参数、消息 receiver 或端口通道的引用保留为 opaque action channel，由 abstract hook 承载源引用。外部标量链使用显式零值输入近似并保留 typed 来源。多个实例、数组、对象选择和未初始化的复杂引用仍不猜测，保留 `member_kind` 或 `feature_chain` 拒绝。
