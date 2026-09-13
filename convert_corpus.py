@@ -104,33 +104,6 @@ def numeric_literal(expr):
     return None
 
 
-def simple_guard(guard):
-    """Extract a scalar comparison whose left side is one typed variable."""
-    if guard.get('kind') != 'OperatorExpression' or guard.get('operator') not in {'<', '<=', '>', '>='}:
-        return None
-    operands = guard.get('operands', [])
-    if len(operands) != 2 or operands[0].get('kind') != 'FeatureReferenceExpression':
-        return None
-    value = numeric_literal(operands[1])
-    if value is None:
-        return None
-    return operands[0].get('referent'), guard['operator'], value
-
-
-def guards_disjoint(left, right):
-    """Prove disjointness for two one-variable interval comparisons."""
-    a, b = simple_guard(left), simple_guard(right)
-    if a is None or b is None or a[0] != b[0]:
-        return False
-    _, op_a, value_a = a
-    _, op_b, value_b = b
-    if op_a in {'<', '<='} and op_b in {'>', '>='}:
-        return value_a <= value_b if op_a == '<' or op_b == '>' else value_a < value_b
-    if op_b in {'<', '<='} and op_a in {'>', '>='}:
-        return value_b <= value_a if op_b == '<' or op_a == '>' else value_b < value_a
-    return False
-
-
 def lower(root):
     nodes = []
     def collect(state):
@@ -250,8 +223,6 @@ def lower(root):
                 continue
             lines.extend(emit(child, target + '.', indent + '    '))
         initial = 0
-        outgoing = Counter()
-        outgoing_events = {}
         for index, edge in enumerate(node['transitions']):
             triggers = edge.get('triggers', [])
             if edge['trigger_count'] and not triggers:
@@ -276,20 +247,6 @@ def lower(root):
                 initial += 1
             elif edge['source'] in child_ids:
                 src = names[edge['source']]
-                outgoing[src] += 1
-                # Distinct single typed events are mutually exclusive. Repeated
-                # events, guards, and compound triggers still need an explicit
-                # priority model and remain outside this profile unless two
-                # simple typed interval guards are provably disjoint.
-                signature = tuple(triggers)
-                previous = outgoing_events.setdefault(src, [])
-                conflict = any(old_signature == signature and not (
-                    len(edge['guards']) == len(old_guards) == 1
-                    and guards_disjoint(edge['guards'][0], old_guards[0]))
-                    for old_signature, old_guards in previous)
-                if outgoing[src] > 1 and (len(signature) != 1 or conflict):
-                    raise Unsupported('transition_priority_unspecified', edge['source'])
-                previous.append((signature, edge['guards']))
             else:
                 raise Unsupported('transition_source', str(edge['source']))
             terms = [events[event] for event in triggers]
@@ -351,6 +308,7 @@ def run(source, output):
                                     'Abstract action arguments remain typed mapping metadata; hook execution is not synthesized.',
                                     'Assignment do-actions execute as FCSTM during operations once per active cycle; this is a periodic profile approximation.',
                                     'Multiple initial transitions preserve source order; FCSTM runtime selects the first enabled edge.',
+                                    'When SysML leaves same-source transition priority unspecified, FCSTM uses declaration order.',
                                     'Behavior declared inside a scalar part is retained in ignored_structural mapping; its execution is not synthesized.',
                                     'Non-linear or incomplete typed action succession is kept as one opaque hook; inner order is not synthesized.',
                                     'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')

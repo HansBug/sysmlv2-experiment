@@ -35,7 +35,7 @@
 
 状态定义中未被任何 typed guard、effect 或 action 表达式引用的 `ReferenceUsage`、`PartUsage`、`PortUsage` 会登记到 `ignored_structural`，因为当前 FCSTM profile 只表达控制状态和数据动作。现在还接受一个严格子集：单实例 `PartUsage` 指向单一 `PartDefinition`，且链末端是标量数值 `AttributeUsage` 时，将 `part.attribute` 映射为带结构来源记录的 FCSTM 变量；变量初始化、赋值和 guard 都必须来自同一条 typed 链。多实例、数组、跨对象或更深层 FeatureChain 仍保留为拒绝，避免把结构成员错误压平成标量。
 
-现在对优先级规则做了更细的 typed 映射：同一状态发出的多个转移，只有在每条转移恰好有一个由官方 `AcceptActionUsage.payloadParameter.type` 链接得到的事件、且事件互不相同、且没有 guard 时才视为互斥并接受；重复事件、复合事件或带 guard 的多出口仍拒绝。官方 States library 中 typed 的 `done` 状态动作被映射为 FCSTM 的 `[*]` 终止端点。抽取结果同时保留触发元素和目标元素的 eClass、限定名、声明名、library 标记，转换器不通过源文本匹配判断这些情况。
+现在对优先级规则采用显式 profile：同一状态发出的多个转移保留为多个 FCSTM 边，并按源声明顺序选择；这解决了简单多出口模型，但不宣称恢复 SysML 未定义优先级下的全部调度语义。官方 States library 中 typed 的 `done` 状态动作被映射为 FCSTM 的 `[*]` 终止端点。抽取结果同时保留触发元素和目标元素的 eClass、限定名、声明名、library 标记，转换器不通过源文本匹配判断这些情况。
 
 对于数量值，若官方 typed 类型是 library `AttributeDefinition`，初值是带 library 单位元素的 `OperatorExpression`，则保留数值幅值并将单位擦除到 FCSTM 的数学数值域；单位表达式中出现变量或未链接元素时仍拒绝。映射报告会记录这一假设，不宣称带单位 SysML runtime 的维度分析已经被保留。
 
@@ -84,9 +84,9 @@
 
 状态根与文件不在同一个计数层级，不能横向简单相加。总计 24 个成功解析的状态根中通过 4 个；去掉自建例，公开数据的 18 个候选通过 2 个。**本轮不能声称大部分公开模型可转换。** 也不能把 624 个没有状态机的文件算成转换失败，或把 691 个源校验失败全部说成原数据错误：包括旧语法、工具约束差异及我们尚未加载的跨文件工程上下文。
 
-公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34735462592](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34735462592) 的独立批次包含 1,693 个文件、60 个控制状态候选，其中 37 个 converted（含 13 个自建 fixture，30 个唯一源哈希）；项目级批次为 117 个状态根、54 个控制状态候选，其中 20 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行、时间触发和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
+公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34735462592](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34735462592) 的独立批次包含 1,693 个文件、60 个控制状态候选，其中 38 个 converted（含 13 个自建 fixture，31 个唯一源哈希）；项目级批次为 117 个状态根、54 个控制状态候选，其中 20 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行、时间触发和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
 
-最新独立批次的 37 个通过根对应 30 个源文件哈希；重复的官方 Pilot/SysTemp 版本单独保留，但论文统计应同时报告逐根数和哈希去重数。
+最新独立批次的 38 个通过根对应 31 个源文件哈希；重复的官方 Pilot/SysTemp 版本单独保留，但论文统计应同时报告逐根数和哈希去重数。
 
 Apollo 11 的完整工程上下文已在 [Actions 34720946017](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34720946017) 中验证：28 个文件、0 条官方校验错误、18 个状态根。若按 `CoSMA`/`Purpose` 子目录分别加载会产生 842 条错误，这已由 `--project-root apollo11=_external/apollo11` 修复；这项差异说明上下文边界本身必须作为实验变量记录。严格转换仍拒绝 18 个根，其中任务阶段控制根的首因是继承的 `PerformActionUsage`。
 
