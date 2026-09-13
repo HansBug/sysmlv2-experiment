@@ -46,6 +46,8 @@
 - **并行 state / region**：进入父状态时同时激活每个 region；事件可能被多个 region 分发，父状态通常要等所有 region 完成后才完成。FCSTM 当前只有单一活动路径，压平成串行子状态会改变同时执行、事件广播和完成条件，因此保留 `parallel` 拒绝。
 - **时间与变化触发**：`accept after`、`accept at` 和 `accept when` 依赖时钟或连续值变化，在状态机调度中由时间到达、值变化和采样时机触发。FCSTM 事件是外部离散事件，没有时钟队列或变化监测器；伪造普通 event 会改变触发时刻，所以保留 `time_trigger` 拒绝。
 - **消息 payload/receiver**：`send` 具有关联的接收对象、payload 和发送时机，可能进入接收者的事件队列。当前 profile 将消息保留为 abstract hook（transition effect 放在源状态 exit），因此能保留调用点，但不能表达队列投递、receiver 实例和 payload 类型的完整执行语义。
+- **跨层级 transition target**：SysML 可以在父级行为中声明从深层状态跳到兄弟或外层状态的转移；FCSTM 的转移声明按当前 state 的局部名字解析，直接搬运会改变退出/进入路径，因此当前保留 `transition_target` 拒绝。只有同一组合状态下的直接子状态转移进入支持集。
+- **结构 ReferenceUsage / PortUsage**：这些元素代表对象、端口或引用特征，可能有多重性和实例选择。当前只把一层、单实例、标量属性链映射为 FCSTM 变量；其余引用不猜测实例或默认值，保留 `member_kind` 拒绝。
 
 这些拒绝描述的是当前目标 profile 的边界，不是官方 Pilot 无法解析这些语义。若以后扩展 FCSTM，应先为 region 调度、时钟事件和消息队列定义目标语义，再增加映射规则。
 
