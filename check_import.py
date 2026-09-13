@@ -50,7 +50,7 @@ for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'qu
                    for item in root['data'])
         assert 'v0 = 1' in dsl and '(v0 > 0)' in dsl
 for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_action_execution'),
-                       ('array.sysml', 'data_multiplicity')]:
+                       ('array.sysml', 'data_multiplicity'), ('structural-unsafe.sysml', 'member_kind')]:
     assert cases[filename]['status'] == 'extracted', cases[filename]
     try:
         lower(cases[filename]['states'][0])

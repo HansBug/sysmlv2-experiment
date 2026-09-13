@@ -164,6 +164,8 @@ def lower(root):
                 structural_variables[(data['structural_base'], data['structural_target'])] = variables[data['id']]
             if data['constant']:
                 constants.add(data['id'])
+                if data.get('structural_target'):
+                    constants.add(data['structural_target'])
     for node in nodes:
         for data in node['data']:
             if not data['scalar']:
@@ -194,8 +196,6 @@ def lower(root):
         target_expression = body.get('target_expression') or {}
         if target is None and target_expression.get('kind') == 'FeatureReferenceExpression':
             target = structural_variables.get((target_expression.get('referent'), body.get('target')))
-        if target is None and body.get('target_expression'):
-            target = expression(body['target_expression'], variables, structural_variables)
         if target is None or body.get('target') in constants:
             raise Unsupported('assignment_target', str(body.get('target')))
         return target + ' = ' + expression(body['value'], variables, structural_variables) + ';'

@@ -61,7 +61,7 @@ public class ExtractStates {
     static Object elementReference(Element e) {
         if (e == null) return null;
         return object("id", id(e), "kind", e.eClass().getName(),
-            "declared_name", e.getDeclaredName(), "library", e.isLibraryElement());
+            "declared_name", e.getDeclaredName(), "library", e.isLibraryElement(), "span", span(e));
     }
     /** Export a linear typed action succession; branching remains explicit as an error. */
     static Object actionSequence(ActionUsage action) {
@@ -141,6 +141,9 @@ public class ExtractStates {
         var result = new ArrayList<Object>();
         for (var membership : definition.getFeatureMembership()) {
             var feature = membership.getMemberElement();
+            if (feature != null && inputResources.contains(feature.eResource())
+                && !(feature instanceof AttributeUsage)
+                && !(feature instanceof Comment) && !(feature instanceof Documentation)) return null;
             if (!(feature instanceof AttributeUsage attribute) || !inputResources.contains(attribute.eResource())) continue;
             var values = new ArrayList<Object>();
             for (var relation : attribute.getOwnedRelationship())
@@ -245,7 +248,8 @@ public class ExtractStates {
                     "values", values, "constant", v.isConstant(), "scalar", scalar(v), "span", span(v)));
             } else if (e instanceof PartUsage part) {
                 var structural = structuralData(part);
-                if (!structural.isEmpty()) data.addAll(structural);
+                if (structural == null) unsupported.add(e.eClass().getName());
+                else if (!structural.isEmpty()) data.addAll(structural);
                 else if (!references.contains(id(e)))
                     ignoredStructural.add(object("element", elementReference(e), "reason", "unreferenced_structural_member"));
                 else unsupported.add(e.eClass().getName());
