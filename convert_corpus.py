@@ -186,6 +186,12 @@ def lower(root):
         # The source action remains discoverable through the mapping and can be
         # implemented by the generated model's abstract hook.
         return f'{role} abstract {name};', name
+    transition_hooks = {}
+    for owner in nodes:
+        for edge in owner['transitions']:
+            for body in edge.get('effects', []):
+                if body.get('kind') in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
+                    transition_hooks.setdefault(edge.get('source'), []).append((edge, body))
     names = {node['id']: 'S' + str(index) for index, node in enumerate(nodes)}
     def emit(node, prefix, indent):
         target = prefix + names[node['id']]
@@ -215,6 +221,14 @@ def lower(root):
                 lines.append(indent + '    ' + role + ' { ' + body_text + ' }')
                 mapping.append({'kind': 'state_action', 'source_id': subaction['id'],
                                 'span': body['span'], 'target_owner': target, 'target_role': role})
+        for edge, body in transition_hooks.get(node['id'], []):
+            abstract_line, target_action = abstract_action(body, 'exit')
+            lines.append(indent + '    ' + abstract_line)
+            mapping.append({'kind': 'transition_effect_hook', 'source_id': body.get('id'),
+                            'span': body.get('span'), 'target_owner': target,
+                            'target_role': 'exit', 'representation': 'abstract_hook',
+                            'target_action': target_action, 'transition_id': edge.get('id'),
+                            'argument_references': body.get('argument_references', [])})
         child_ids = {c['id'] for c in node['states']}
         for child in node['states']:
             if child['id'] in pseudo_initial_ids:
@@ -253,7 +267,8 @@ def lower(root):
             if edge['guards']:
                 terms.append('[' + ' and '.join(expression(g, variables, structural_variables) for g in edge['guards']) + ']')
             trigger = '' if not terms else ' : ' + ' + '.join(terms)
-            effects = ' '.join(action(a) for a in edge['effects'])
+            effects = ' '.join(action(a) for a in edge['effects']
+                               if a.get('kind') not in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'})
             effect = ' effect { ' + effects + ' }' if effects else ''
             destination = '[*]' if terminal_target else names[edge['target']]
             lines.append(indent + f'    {src} -> {destination}{trigger}{effect};')
@@ -309,6 +324,7 @@ def run(source, output):
                                     'Assignment do-actions execute as FCSTM during operations once per active cycle; this is a periodic profile approximation.',
                                     'Multiple initial transitions preserve source order; FCSTM runtime selects the first enabled edge.',
                                     'When SysML leaves same-source transition priority unspecified, FCSTM uses declaration order.',
+                                    'Typed transition action effects are represented as exit hooks on the source state; receiver and payload stay in mapping metadata.',
                                     'Behavior declared inside a scalar part is retained in ignored_structural mapping; its execution is not synthesized.',
                                     'Non-linear or incomplete typed action succession is kept as one opaque hook; inner order is not synthesized.',
                                     'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')
