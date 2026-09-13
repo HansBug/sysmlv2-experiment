@@ -50,7 +50,7 @@ for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'qu
                    for item in root['data'])
         assert 'v0 = 1' in dsl and '(v0 > 0)' in dsl
 for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_action_execution'),
-                       ('array.sysml', 'data_multiplicity'), ('structural-unsafe.sysml', 'member_kind')]:
+                       ('array.sysml', 'data_multiplicity')]:
     assert cases[filename]['status'] == 'extracted', cases[filename]
     try:
         lower(cases[filename]['states'][0])
@@ -102,5 +102,12 @@ except Unsupported as error:
     assert error.code == 'feature_chain', error.code
 else:
     raise AssertionError('Feature chain silently flattened into FCSTM data')
+
+unsafe = cases['structural-unsafe.sysml']
+assert unsafe['status'] == 'extracted', unsafe
+dsl, mapping = lower(unsafe['states'][0])
+assert any(item['reason'] == 'structural_behavior_outside_control_profile'
+           and item['action'].get('owned_behavior') for item in unsafe['states'][0]['ignored_structural'])
+assert 'owned_behavior' in json.dumps(unsafe['states'][0])
 
 print('PASS: official source elements -> FCSTM AST -> model -> diagnostics -> two-cycle assignment trace; rejection checks')

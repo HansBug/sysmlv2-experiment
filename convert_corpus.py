@@ -342,6 +342,7 @@ def run(source, output):
                     'assumptions': ['Explicit periodic controller interpretation; no general SysML execution equivalence claim.',
                                     'Single active path, mathematical numeric domain, no asynchronous messages.',
                                     'Abstract action arguments remain typed mapping metadata; hook execution is not synthesized.',
+                                    'Behavior declared inside a scalar part is retained in ignored_structural mapping; its execution is not synthesized.',
                                     'Non-linear or incomplete typed action succession is kept as one opaque hook; inner order is not synthesized.',
                                     'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')
             except Unsupported as error:

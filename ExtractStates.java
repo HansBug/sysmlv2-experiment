@@ -132,6 +132,13 @@ public class ExtractStates {
             out.put("payload", expression(send.getPayloadArgument()));
             out.put("sender", expression(send.getSenderArgument()));
         }
+        var behavior = new ArrayList<Object>();
+        var tree = a.eAllContents();
+        while (tree.hasNext()) {
+            if (tree.next() instanceof ActionUsage child)
+                behavior.add(action(child));
+        }
+        if (!behavior.isEmpty()) out.put("owned_behavior", behavior);
         return out;
     }
     /** Export scalar attributes of a single scalar part for safe one-level chains. */
@@ -143,6 +150,8 @@ public class ExtractStates {
             var feature = membership.getMemberElement();
             if (feature != null && inputResources.contains(feature.eResource())
                 && !(feature instanceof AttributeUsage)
+                && !(feature instanceof ActionUsage)
+                && !(feature instanceof ConstraintUsage)
                 && !(feature instanceof Comment) && !(feature instanceof Documentation)) return null;
             if (!(feature instanceof AttributeUsage attribute) || !inputResources.contains(attribute.eResource())) continue;
             var values = new ArrayList<Object>();
@@ -154,6 +163,23 @@ public class ExtractStates {
                 "type_elements", attribute.getAttributeDefinition().stream().map(ExtractStates::elementReference).toList(),
                 "values", values, "constant", attribute.isConstant(), "scalar", scalar(attribute),
                 "span", span(attribute)));
+        }
+        return result;
+    }
+    /** Keep typed behavior declared by a scalar part visible in the mapping. */
+    static List<Object> structuralBehavior(PartUsage usage) {
+        if (usage.getPartDefinition().size() != 1) return List.of();
+        var definition = usage.getPartDefinition().get(0);
+        var result = new ArrayList<Object>();
+        for (var membership : definition.getFeatureMembership()) {
+            var feature = membership.getMemberElement();
+            if (feature == null || !inputResources.contains(feature.eResource())) continue;
+            if (feature instanceof ActionUsage action)
+                result.add(object("element", elementReference(feature), "action", action(action),
+                    "reason", "structural_behavior_outside_control_profile"));
+            else if (feature instanceof ConstraintUsage)
+                result.add(object("element", elementReference(feature),
+                    "reason", "structural_constraint_outside_control_profile"));
         }
         return result;
     }
@@ -249,7 +275,10 @@ public class ExtractStates {
             } else if (e instanceof PartUsage part) {
                 var structural = structuralData(part);
                 if (structural == null) unsupported.add(e.eClass().getName());
-                else if (!structural.isEmpty()) data.addAll(structural);
+                else if (!structural.isEmpty()) {
+                    data.addAll(structural);
+                    ignoredStructural.addAll(structuralBehavior(part));
+                }
                 else if (!references.contains(id(e)))
                     ignoredStructural.add(object("element", elementReference(e), "reason", "unreferenced_structural_member"));
                 else unsupported.add(e.eClass().getName());
