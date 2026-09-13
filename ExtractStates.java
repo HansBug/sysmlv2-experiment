@@ -49,6 +49,10 @@ public class ExtractStates {
         else if (e instanceof OperatorExpression v) {
             out.put("operator", v.getOperator());
             out.put("operands", v.getArgument().stream().map(ExtractStates::expression).toList());
+            if (e instanceof FeatureChainExpression chain) {
+                out.put("target_feature", elementReference(chain.getTargetFeature()));
+                out.put("source_target_feature", elementReference(chain.sourceTargetFeature()));
+            }
             if ("[".equals(v.getOperator()) && v.getArgument().size() == 2)
                 out.put("unit", expression(v.getArgument().get(1)));
         }

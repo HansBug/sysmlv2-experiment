@@ -70,6 +70,8 @@ def expression(expr, variables):
         if operator in ('+', '-', '*', '/', '<', '<=', '>', '>=', '==', '!=', 'and', 'or') and len(operands) == 2:
             return '(' + operands[0] + ' ' + operator + ' ' + operands[1] + ')'
         raise Unsupported('operator', expr['operator'])
+    if kind == 'FeatureChainExpression':
+        raise Unsupported('feature_chain', str(expr.get('target_feature') or expr.get('span')))
     raise Unsupported('expression_kind', kind)
 
 
