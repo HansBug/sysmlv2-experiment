@@ -51,7 +51,7 @@
 
 这些拒绝描述的是当前目标 profile 的边界，不是官方 Pilot 无法解析这些语义。若以后扩展 FCSTM，应先为 region 调度、时钟事件和消息队列定义目标语义，再增加映射规则。
 
-[后续审计](frontend-audit.zh.md) 进一步限定上述入口支持：项目模式已索引用户工程文件并保留跨文件继承；转换器也已映射官方接受的 `first start then A` 默认入口。最新完整转换统计见 [Actions 34736419170](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34736419170)。
+[后续审计](frontend-audit.zh.md) 进一步限定上述入口支持：项目模式已索引用户工程文件并保留跨文件继承；转换器也已映射官方接受的 `first start then A` 默认入口。最新完整转换统计见 [Actions 34740701332](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34740701332)。
 
 `check_import.py` 验证官方源元素经过这条完整链路后的层次与赋值行为：Idle entry 将 x 置 1，下一拍 guard 成立、effect 将 x 置 4 并到 Active；另检查并行、数组、do action 周期映射和无效引用拒绝。这个 FCSTM 轨迹检查是映射 profile 的回归门，不是独立 SysML execution oracle。
 
@@ -86,9 +86,9 @@
 
 状态根与文件不在同一个计数层级，不能横向简单相加。总计 24 个成功解析的状态根中通过 4 个；去掉自建例，公开数据的 18 个候选通过 2 个。**本轮不能声称大部分公开模型可转换。** 也不能把 624 个没有状态机的文件算成转换失败，或把 691 个源校验失败全部说成原数据错误：包括旧语法、工具约束差异及我们尚未加载的跨文件工程上下文。
 
-公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34736419170](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34736419170) 的独立批次包含 1,693 个文件、60 个控制状态候选，其中 39 个 converted（含 13 个自建 fixture，31 个唯一源哈希）；项目级批次为 117 个状态根、54 个控制状态候选，其中 20 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、空状态定义、并行、时间触发、转换目标层级和复杂 feature chain。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
+公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34740701332](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34740701332) 的独立批次包含 1,693 个文件、60 个控制状态候选，其中 42 个 converted（含 13 个自建 fixture，33 个唯一源哈希）；项目级批次为 117 个状态根、54 个控制状态候选，其中 34 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括并行、时间触发、复杂枚举 FeatureChain、未初始化时间值、多重性和对象调度边界。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
 
-最新独立批次的 39 个通过根对应 31 个源文件哈希；重复的官方 Pilot/SysTemp 版本单独保留，但论文统计应同时报告逐根数和哈希去重数。
+最新独立批次的 42 个通过根对应 33 个源文件哈希；重复的官方 Pilot/SysTemp 版本单独保留，但论文统计应同时报告逐根数和哈希去重数。
 
 Apollo 11 的完整工程上下文已在 [Actions 34720946017](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34720946017) 中验证：28 个文件、0 条官方校验错误、18 个状态根。若按 `CoSMA`/`Purpose` 子目录分别加载会产生 842 条错误，这已由 `--project-root apollo11=_external/apollo11` 修复；这项差异说明上下文边界本身必须作为实验变量记录。严格转换仍拒绝 18 个根，其中任务阶段控制根的首因是继承的 `PerformActionUsage`。
 

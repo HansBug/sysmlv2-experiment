@@ -63,7 +63,7 @@
 
 单独裸调 Xtext `IParser` 的早期诊断脚本曾缺少 EPackage/setting delegate 初始化，导致代理或 NPE 错误；换成官方完整 workspace 初始化后消失，这是我们的探针接法问题。已有 wrapper 的泛化 JSON 序列化异常也不能直接归到官方语法解析器，本导入路径不使用那个 serializer。
 
-最新独立文件转换结果为 **107 个抽取状态根中 39 个 converted**；最新项目级上下文扫描为 **117 个状态根中 54 个控制状态候选、20 个 converted**。[Actions 34736419170](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34736419170) 对 79 个上下文、333 个上下文内文件进行了扫描，进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点、带 library 单位的数量值、动作参数引用登记，将官方 `Base::Anything` 时间/变化触发拒绝为 `time_trigger`，并为 `FeatureChainExpression` 保留目标 feature 定位；总计独立文件批次为 1,693 个文件、60 个控制候选、39 个 converted（其中 13 个为自建 fixture）。member kind、消息 payload/receiver、no control states、parallel、时间触发、复杂 feature chain、任意 action 和转换目标层级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
+最新独立文件转换结果为 **107 个抽取状态根中 42 个 converted**；最新项目级上下文扫描为 **117 个状态根中 54 个控制状态候选、34 个 converted**。[Actions 34740701332](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34740701332) 对 79 个上下文、333 个上下文内文件进行了扫描，进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点、带 library 单位的数量值、动作参数引用登记，将官方 `Base::Anything` 时间/变化触发拒绝为 `time_trigger`，并为 FeatureChain、唯一默认路径上的跨层转移和复合状态 `do` action 建立了结构化近似；总计独立文件批次为 1,693 个文件、60 个控制候选、42 个 converted（其中 13 个为自建 fixture，33 个唯一源哈希）。并行、时间触发、复杂枚举 FeatureChain、未初始化时间值、多重性和无法表达的对象调度仍是 profile 边界，不是 parser failure。带 guard/赋值的目标轨迹验证仍来自自建例。
 
 在该基线之后，转换器增加了三项有明确上限的近似：单实例标量外部 FeatureChain 使用 typed 类型生成零值输入；唯一默认路径上的嵌套转移提升到直接子状态；复合状态的 `do` action 降为一次性 `enter` hook 以满足 FCSTM 的复合状态约束。三项都在 `mapping.json` 中保留源角色、完整端点或结构路径和假设，不能解释为恢复 SysML 的并行、时钟或对象调度语义；新的统计以包含该改动的 workflow artifact 为准。
 
