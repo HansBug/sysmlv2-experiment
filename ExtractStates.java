@@ -142,9 +142,19 @@ public class ExtractStates {
         return out;
     }
     /** Export scalar attributes of a single scalar part for safe one-level chains. */
-    static List<Object> structuralData(PartUsage usage) {
-        if (!scalar(usage) || usage.getPartDefinition().size() != 1) return List.of();
-        var definition = usage.getPartDefinition().get(0);
+    static Type structuralDefinition(Feature usage) {
+        if (!scalar(usage)) return null;
+        if (usage instanceof PartUsage part && part.getPartDefinition().size() == 1)
+            return part.getPartDefinition().get(0);
+        if (usage instanceof ReferenceUsage reference) {
+            var definitions = reference.getDefinition().stream().filter(e -> e instanceof PartDefinition).toList();
+            if (definitions.size() == 1) return definitions.get(0);
+        }
+        return null;
+    }
+    static List<Object> structuralData(Feature usage) {
+        var definition = structuralDefinition(usage);
+        if (definition == null) return List.of();
         var result = new ArrayList<Object>();
         for (var membership : definition.getFeatureMembership()) {
             var feature = membership.getMemberElement();
@@ -167,9 +177,9 @@ public class ExtractStates {
         return result;
     }
     /** Keep typed behavior declared by a scalar part visible in the mapping. */
-    static List<Object> structuralBehavior(PartUsage usage) {
-        if (usage.getPartDefinition().size() != 1) return List.of();
-        var definition = usage.getPartDefinition().get(0);
+    static List<Object> structuralBehavior(Feature usage) {
+        var definition = structuralDefinition(usage);
+        if (definition == null) return List.of();
         var result = new ArrayList<Object>();
         for (var membership : definition.getFeatureMembership()) {
             var feature = membership.getMemberElement();
@@ -272,12 +282,13 @@ public class ExtractStates {
                 data.add(object("id", id(v), "types", v.getAttributeDefinition().stream().map(ExtractStates::id).toList(),
                     "type_elements", v.getAttributeDefinition().stream().map(ExtractStates::elementReference).toList(),
                     "values", values, "constant", v.isConstant(), "scalar", scalar(v), "span", span(v)));
-            } else if (e instanceof PartUsage part) {
-                var structural = structuralData(part);
+            } else if (e instanceof PartUsage || e instanceof ReferenceUsage) {
+                var structuralUsage = (Feature)e;
+                var structural = structuralData(structuralUsage);
                 if (structural == null) unsupported.add(e.eClass().getName());
                 else if (!structural.isEmpty()) {
                     data.addAll(structural);
-                    ignoredStructural.addAll(structuralBehavior(part));
+                    ignoredStructural.addAll(structuralBehavior(structuralUsage));
                 }
                 else if (!references.contains(id(e)))
                     ignoredStructural.add(object("element", elementReference(e), "reason", "unreferenced_structural_member"));

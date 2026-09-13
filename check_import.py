@@ -10,7 +10,7 @@ from pyfcstm.simulate import SimulationRuntime
 
 source = json.loads(Path(sys.argv[1]).read_text())
 cases = {m['source']: m for m in source['models'] if m['dataset'] == 'synthetic'}
-for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'quantity-events.sysml', 'perform-sequence.sysml', 'send-action.sysml', 'structural-context.sysml', 'constraint-ignored.sysml', 'feature-chain-scalar.sysml'):
+for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'quantity-events.sysml', 'perform-sequence.sysml', 'send-action.sysml', 'structural-context.sysml', 'constraint-ignored.sysml', 'feature-chain-scalar.sysml', 'reference-chain-scalar.sysml'):
     assert cases[filename]['status'] == 'extracted', cases[filename]
     roots = cases[filename]['states']
     root = next((item for item in roots if item['states']), roots[0])
@@ -47,6 +47,11 @@ for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'qu
     if filename == 'feature-chain-scalar.sysml':
         assert any(item.get('structural_base') == 'FeatureChainScalarProbe::Controller::counter'
                    and item.get('structural_target') == 'FeatureChainScalarProbe::Counter::count'
+                   for item in root['data'])
+        assert 'v0 = 1' in dsl and '(v0 > 0)' in dsl
+    if filename == 'reference-chain-scalar.sysml':
+        assert any(item.get('structural_base') == 'ReferenceChainScalarProbe::Controller::counter'
+                   and item.get('structural_target') == 'ReferenceChainScalarProbe::Counter::count'
                    for item in root['data'])
         assert 'v0 = 1' in dsl and '(v0 > 0)' in dsl
 for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_action_execution'),
