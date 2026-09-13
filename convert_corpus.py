@@ -46,8 +46,10 @@ def action_identifier(body):
     return None
 
 
-def expression(expr, variables, structural_variables=None):
+def expression(expr, variables, structural_variables=None, external_variables=None,
+               declarations=None, external_mappings=None):
     structural_variables = {} if structural_variables is None else structural_variables
+    external_variables = {} if external_variables is None else external_variables
     kind = expr['kind']
     if kind in ('LiteralBoolean', 'LiteralInteger', 'LiteralRational'):
         return json.dumps(expr['value'])
@@ -62,6 +64,29 @@ def expression(expr, variables, structural_variables=None):
             key = (operands[0].get('referent'), target.get('id'))
             if key in structural_variables:
                 return structural_variables[key]
+            if key in external_variables:
+                return external_variables[key]
+            scalar_types = {'ScalarValues::Integer', 'ScalarValues::Real',
+                            'ScalarValues::Boolean', 'ScalarValues::Natural'}
+            target_types = set(target.get('types', []))
+            if target.get('kind') in {'AttributeUsage', 'ReferenceUsage'} and target.get('scalar') and target_types & scalar_types:
+                name = 'v' + str(len(variables) + len(external_variables))
+                external_variables[key] = name
+                target_type = 'float' if 'ScalarValues::Real' in target_types else 'int'
+                default = '0.0' if target_type == 'float' else '0'
+                if declarations is not None:
+                    declarations.append(f'def {target_type} {name} = {default};')
+                if external_mappings is not None:
+                    external_mappings.append({'kind': 'external_feature',
+                                              'source_id': target.get('id'),
+                                              'source_span': target.get('span'),
+                                              'referent': operands[0].get('referent'),
+                                              'target': name,
+                                              'representation': 'scalar_input_default',
+                                              'default': default})
+                # A bare identifier is not a FCSTM condition.  Boolean
+                # feature chains therefore become an explicit numeric test.
+                return '(' + name + ' == 1)' if 'ScalarValues::Boolean' in target_types else name
         raise Unsupported('feature_chain', str(expr.get('target_feature') or expr.get('span')))
     if kind == 'OperatorExpression':
         if expr['operator'] == '[':
@@ -71,9 +96,11 @@ def expression(expr, variables, structural_variables=None):
                 raise Unsupported('quantity_unit', str(expr.get('span')))
             # FCSTM has no quantity type in this profile. The linked unit is
             # checked structurally, then the magnitude is kept as a real value.
-            return expression(operands[0], variables, structural_variables)
+            return expression(operands[0], variables, structural_variables, external_variables,
+                              declarations, external_mappings)
         operator = {'=': '==', '<>': '!=', '&': 'and', '|': 'or'}.get(expr['operator'], expr['operator'])
-        operands = [expression(e, variables, structural_variables) for e in expr['operands']]
+        operands = [expression(e, variables, structural_variables, external_variables,
+                                declarations, external_mappings) for e in expr['operands']]
         if operator in ('+', '-', 'not') and len(operands) == 1:
             return '(' + operator + ' ' + operands[0] + ')'
         if operator in ('+', '-', '*', '/', '<', '<=', '>', '>=', '==', '!=', 'and', 'or') and len(operands) == 2:
@@ -106,6 +133,8 @@ def numeric_literal(expr):
 
 def lower(root):
     nodes = []
+    parent_by_id = {}
+    node_by_id = {}
     def collect(state):
         declaration_only = {'ActionDefinition'}
         unsupported = [kind for kind in state['unsupported'] if kind not in declaration_only]
@@ -114,13 +143,17 @@ def lower(root):
         if state['parallel']:
             raise Unsupported('parallel', state['id'])
         nodes.append(state)
+        node_by_id[state['id']] = state
         for child in state['states']:
+            parent_by_id[child['id']] = state['id']
             collect(child)
     collect(root)
     if not root['states']:
         raise Unsupported('no_control_states', root['id'])
     variables, declarations, mapping, constants = {}, [], [], set()
     structural_variables = {}
+    external_variables = {}
+    external_mappings = []
     event_ids = []
     for node in nodes:
         for edge in node['transitions']:
@@ -154,7 +187,8 @@ def lower(root):
                 raise Unsupported('data_type', str(data['types']))
             if len(data['values']) != 1:
                 raise Unsupported('data_initializer', data['id'])
-            value = expression(data['values'][0], variables, structural_variables)
+            value = expression(data['values'][0], variables, structural_variables,
+                               external_variables, declarations, external_mappings)
             if 'ScalarValues::Boolean' in types:
                 value = {'true': '1', 'false': '0'}.get(value, value)
             target_type = 'float' if quantity_type or 'ScalarValues::Real' in types else 'int'
@@ -171,14 +205,22 @@ def lower(root):
             target = structural_variables.get((target_expression.get('referent'), body.get('target')))
         if target is None or body.get('target') in constants:
             raise Unsupported('assignment_target', str(body.get('target')))
-        return target + ' = ' + expression(body['value'], variables, structural_variables) + ';'
-    def abstract_action(body, role):
+        return target + ' = ' + expression(body['value'], variables, structural_variables,
+                                           external_variables, declarations, external_mappings) + ';'
+    def abstract_action(body, role, used_names=None):
         """Keep a typed action invocation as a pyfcstm abstract hook."""
         if body.get('kind') not in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
             raise Unsupported('action_kind', body.get('kind'))
         name = action_identifier(body)
         if not name:
             raise Unsupported('action_name', str(body.get('id')))
+        if used_names is not None:
+            base = name
+            suffix = 2
+            while name in used_names:
+                name = base + '_' + str(suffix)
+                suffix += 1
+            used_names.add(name)
         # Keep a non-linear or incomplete typed succession as one opaque hook.
         # The structured sequence diagnostic remains in mapping metadata; no
         # source action is deleted, while FCSTM deliberately makes no claim
@@ -193,6 +235,57 @@ def lower(root):
                 if body.get('kind') in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
                     transition_hooks.setdefault(edge.get('source'), []).append((edge, body))
     names = {node['id']: 'S' + str(index) for index, node in enumerate(nodes)}
+
+    def pseudo_ids_for(state):
+        return {child['id'] for child in state['states']
+                if child.get('declared_name') == 'initial'
+                and not child['states'] and not child['transitions']}
+
+    def deterministic_initial_child(state):
+        """Return a unique typed child reached on state entry, when known."""
+        pseudo_ids = pseudo_ids_for(state)
+        effective = [child for child in state['states'] if child['id'] not in pseudo_ids]
+        entry_ids = {a['id'] for a in state['actions'] if a['role'] == 'entry'}
+        targets = []
+        for edge in state['transitions']:
+            if edge['source'] in pseudo_ids or edge['source'] in entry_ids or edge['source'] == 'States::StateAction::start':
+                if edge['target'] in {child['id'] for child in effective}:
+                    targets.append(edge['target'])
+        unique_targets = list(dict.fromkeys(targets))
+        if len(unique_targets) == 1:
+            return unique_targets[0]
+        if not unique_targets and len(effective) == 1:
+            # This is the same profile default emitted below for a missing
+            # explicit initial succession.
+            return effective[0]['id']
+        return None
+
+    def direct_child_for(endpoint, owner):
+        """Map a nested endpoint to its direct child only on a deterministic path."""
+        direct_ids = {child['id'] for child in owner['states']}
+        if endpoint in direct_ids:
+            return endpoint, None
+        if endpoint not in node_by_id:
+            return None, None
+        path = []
+        current = endpoint
+        while current != owner['id']:
+            parent = parent_by_id.get(current)
+            if parent is None:
+                return None, None
+            path.append(current)
+            current = parent
+        path.reverse()
+        if not path:
+            return None, None
+        selected = path[0]
+        cursor = node_by_id[selected]
+        for expected in path[1:]:
+            if deterministic_initial_child(cursor) != expected:
+                return None, None
+            cursor = node_by_id[expected]
+        return selected, path
+
     def emit(node, prefix, indent):
         target = prefix + names[node['id']]
         mapping.append({'kind': 'state', 'source_id': node['id'], 'span': node['span'], 'target': target})
@@ -200,17 +293,21 @@ def lower(root):
         if prefix == '':
             lines.extend(indent + '    event ' + events[event] + ';' for event in event_ids)
         entry_ids = {a['id'] for a in node['actions'] if a['role'] == 'entry'}
-        pseudo_initial_ids = {child['id'] for child in node['states']
-                              if child.get('declared_name') == 'initial'
-                              and not child['states'] and not child['transitions']}
+        used_action_names = set()
+        pseudo_initial_ids = pseudo_ids_for(node)
         for subaction in node['actions']:
             role = {'entry': 'enter', 'do': 'during', 'exit': 'exit'}[subaction['role']]
+            # pyfcstm does not permit a ``during`` operation on a composite
+            # state.  Keep a typed do-action as a single entry hook in that
+            # case; the mapping records the profile role below.
+            emitted_role = 'enter' if role == 'during' and node['states'] else role
             body = subaction['action']
             if body.get('kind') in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'}:
-                abstract_line, target_action = abstract_action(body, role)
+                abstract_line, target_action = abstract_action(body, emitted_role, used_action_names)
                 lines.append(indent + '    ' + abstract_line)
                 mapping.append({'kind': 'state_action', 'source_id': subaction['id'],
-                                'span': body['span'], 'target_owner': target, 'target_role': role,
+                                'span': body['span'], 'target_owner': target, 'target_role': emitted_role,
+                                'source_role': role,
                                 'representation': 'abstract_hook',
                                 'target_action': target_action,
                                 'argument_references': body.get('argument_references', []),
@@ -218,11 +315,12 @@ def lower(root):
                 continue
             body_text = action(body)
             if body_text:
-                lines.append(indent + '    ' + role + ' { ' + body_text + ' }')
+                lines.append(indent + '    ' + emitted_role + ' { ' + body_text + ' }')
                 mapping.append({'kind': 'state_action', 'source_id': subaction['id'],
-                                'span': body['span'], 'target_owner': target, 'target_role': role})
+                                'span': body['span'], 'target_owner': target, 'target_role': emitted_role,
+                                'source_role': role})
         for edge, body in transition_hooks.get(node['id'], []):
-            abstract_line, target_action = abstract_action(body, 'exit')
+            abstract_line, target_action = abstract_action(body, 'exit', used_action_names)
             lines.append(indent + '    ' + abstract_line)
             mapping.append({'kind': 'transition_effect_hook', 'source_id': body.get('id'),
                             'span': body.get('span'), 'target_owner': target,
@@ -251,7 +349,9 @@ def lower(root):
             terminal_target = (target_element.get('kind') == 'StateUsage'
                                and target_element.get('declared_name') == 'done'
                                and target_element.get('library') is True)
-            if edge['target'] not in child_ids and not terminal_target:
+            mapped_source, source_path = direct_child_for(edge['source'], node)
+            mapped_target, target_path = direct_child_for(edge['target'], node)
+            if mapped_target is None and not terminal_target:
                 raise Unsupported('transition_target', str(edge['target']))
             if edge['source'] in pseudo_initial_ids:
                 src = '[*]'
@@ -259,21 +359,36 @@ def lower(root):
             elif edge['source'] in entry_ids or edge['source'] == 'States::StateAction::start':
                 src = '[*]'
                 initial += 1
-            elif edge['source'] in child_ids:
-                src = names[edge['source']]
+            elif mapped_source is not None:
+                src = names[mapped_source]
             else:
                 raise Unsupported('transition_source', str(edge['source']))
             terms = [events[event] for event in triggers]
             if edge['guards']:
-                terms.append('[' + ' and '.join(expression(g, variables, structural_variables) for g in edge['guards']) + ']')
-            trigger = '' if not terms else ' : ' + ' + '.join(terms)
+                terms.append('[' + ' and '.join(expression(g, variables, structural_variables,
+                                                        external_variables, declarations,
+                                                        external_mappings) for g in edge['guards']) + ']')
+            if not terms:
+                trigger = ''
+            elif triggers:
+                trigger = ' : ' + ' + '.join(terms)
+            else:
+                # FCSTM spells a guard-only transition ``: if [expr]``.
+                trigger = ' : if ' + terms[0]
             effects = ' '.join(action(a) for a in edge['effects']
                                if a.get('kind') not in {'ActionUsage', 'PerformActionUsage', 'SendActionUsage'})
             effect = ' effect { ' + effects + ' }' if effects else ''
-            destination = '[*]' if terminal_target else names[edge['target']]
+            destination = '[*]' if terminal_target else names[mapped_target]
             lines.append(indent + f'    {src} -> {destination}{trigger}{effect};')
-            mapping.append({'kind': 'transition', 'source_id': edge['id'], 'span': edge['span'],
-                            'target_owner': target, 'target_declaration_index': index})
+            transition_mapping = {'kind': 'transition', 'source_id': edge['id'], 'span': edge['span'],
+                                  'target_owner': target, 'target_declaration_index': index}
+            if source_path:
+                transition_mapping['source_endpoint_path'] = source_path
+                transition_mapping['source_endpoint_target'] = names[mapped_source]
+            if target_path:
+                transition_mapping['target_endpoint_path'] = target_path
+                transition_mapping['target_endpoint_target'] = names[mapped_target]
+            mapping.append(transition_mapping)
         effective_child_ids = child_ids - pseudo_initial_ids
         if effective_child_ids and initial == 0:
             # Some SysML examples define a composite state without an explicit
@@ -288,7 +403,9 @@ def lower(root):
         # source order; this profile uses that order when SysML has no priority.
         lines.append(indent + '}')
         return lines
-    return '\n'.join(declarations + emit(root, '', '')) + '\n', mapping
+    emitted = emit(root, '', '')
+    mapping.extend(external_mappings)
+    return '\n'.join(declarations + emitted) + '\n', mapping
 
 
 def run(source, output):
@@ -326,8 +443,12 @@ def run(source, output):
                                     'When SysML leaves same-source transition priority unspecified, FCSTM uses declaration order.',
                                     'Typed transition action effects are represented as exit hooks on the source state; receiver and payload stay in mapping metadata.',
                                     'Behavior declared inside a scalar part is retained in ignored_structural mapping; its execution is not synthesized.',
+                                    'Reference and port usages used as typed action channels are retained as opaque hook metadata; object identity, port routing, and message queues are not synthesized.',
                                     'Non-linear or incomplete typed action succession is kept as one opaque hook; inner order is not synthesized.',
-                                    'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')
+                                    'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.',
+                                    'A scalar feature chain outside the control state is represented by a generated numeric input with default zero; the source path and typed target remain in mapping.',
+                                    'A do-action on a composite state is emitted as an entry hook because FCSTM has no composite during operation; the source role remains in mapping.',
+                                    'A nested transition endpoint is lifted to its direct child only when typed entry follows one deterministic descent path; the full endpoint path remains in mapping.']}, indent=2) + '\n')
             except Unsupported as error:
                 # Unsupported: lower() reports source features outside the implemented periodic subset.
                 row.update(status='unsupported', code=error.code, detail=str(error))

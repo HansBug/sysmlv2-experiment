@@ -65,9 +65,11 @@
 
 最新独立文件转换结果为 **107 个抽取状态根中 39 个 converted**；最新项目级上下文扫描为 **117 个状态根中 54 个控制状态候选、20 个 converted**。[Actions 34736419170](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34736419170) 对 79 个上下文、333 个上下文内文件进行了扫描，进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点、带 library 单位的数量值、动作参数引用登记，将官方 `Base::Anything` 时间/变化触发拒绝为 `time_trigger`，并为 `FeatureChainExpression` 保留目标 feature 定位；总计独立文件批次为 1,693 个文件、60 个控制候选、39 个 converted（其中 13 个为自建 fixture）。member kind、消息 payload/receiver、no control states、parallel、时间触发、复杂 feature chain、任意 action 和转换目标层级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
 
+在该基线之后，转换器增加了三项有明确上限的近似：单实例标量外部 FeatureChain 使用 typed 类型生成零值输入；唯一默认路径上的嵌套转移提升到直接子状态；复合状态的 `do` action 降为一次性 `enter` hook 以满足 FCSTM 的复合状态约束。三项都在 `mapping.json` 中保留源角色、完整端点或结构路径和假设，不能解释为恢复 SysML 的并行、时钟或对象调度语义；新的统计以包含该改动的 workflow artifact 为准。
+
 工程上下文补全已经覆盖登记的公开项目；当前 `PerformActionUsage`/`SendActionUsage` 的有名字调用已能保留为 abstract hook，`initial` usage 也能映射为默认入口。Apollo 11 的完整项目上下文因此从 18 个全部拒绝变为 1 个控制状态根通过目标 AST/语义检查；这只是结构化 hook 表示，不是 action 内部执行等价。当前剩余拒绝主要是并行、结构成员、时间/消息语义、数据初始化和复杂目标路径。带赋值的 do action 已按周期 `during` 近似映射，多入口、缺省入口和同源多出口优先级也按源顺序处理。带 library 单位的数量值和带结构化诊断的非线性 action succession 已加入受限映射。后续仍应逐类建立 typed 最小复现，不通过删除行为来提高数字。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 
-当前对未参与控制表达式的 `ReferenceUsage`、`PartUsage`、`PortUsage` 采用显式 `ignored_structural` 登记。已增加一个严格的 typed FeatureChain 子集：单实例 part 到标量数值 attribute 的一层链可映射为带结构来源的 FCSTM 变量，并验证初始化、赋值和 guard 使用同一链；多实例、数组、跨对象和更深链仍拒绝，避免把结构成员的行为依赖误当成可忽略元数据。
+当前对未参与控制拓扑的 `ReferenceUsage`、`PartUsage`、`PortUsage` 采用显式 `ignored_structural` 登记；用于 action 参数、消息 receiver 或端口通道的引用保留为 opaque action channel 元数据。已增加一个严格的 typed FeatureChain 子集：单实例 part/reference 到标量数值 feature 的一层链可映射为带结构来源的 FCSTM 变量，外部链使用零值输入近似，并验证初始化、赋值和 guard 使用同一链；多实例、数组、跨对象和更深链仍拒绝，避免把结构成员的行为依赖误当成可忽略元数据。
 
 本轮还复现并修复了一个纯转换器问题：父状态的引用收集曾递归扫描子状态整棵子树，子状态动作参数因此被错误地报告为父状态的 `member_kind` 缺口。提交 [`4d3f8af`](https://github.com/HansBug/sysmlv2-experiment/commit/4d3f8af) 将引用范围限制在当前状态的直接行为；官方 Pilot 训练项目 `23. States` 的本地对照从 1/3 个控制候选转换成功提升到 2/3，剩余失败分别是并行语义和无状态子根。这一变化属于我们自己的抽取器修正，不是官方前端修复。
 

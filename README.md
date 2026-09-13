@@ -42,10 +42,10 @@ gh run download RUN_ID --repo HansBug/sysmlv2-experiment --dir evidence
 
 ## 转换范围
 
-当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、已链接 library 单位的数量值、简单 guard、entry/exit 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。不同 typed 事件触发的多出口可以转换；重复事件、带 guard 的多出口、时间触发、带 payload/receiver 的消息、并行、数组和无法解析的成员会明确拒绝。
+当前目标是 exclusive hierarchy、单默认入口、基本 scalar 数据、已链接 library 单位的数量值、简单 guard、entry/exit/do 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。不同 typed 事件触发的多出口可以转换；重复事件、时间触发、带 payload/receiver 的消息、并行、数组和无法解析的成员会明确拒绝。能证明为唯一入口路径的嵌套转移会提升到直接子状态；复合状态的 `do` action 在 FCSTM 中采用一次性 entry hook 近似，并在 mapping 中保留源角色和假设。
 
-生命周期中的有名字 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会保留为 pyfcstm abstract hook；无名字或带空格的调用依据 typed 声明名和源位置生成稳定的合法 hook 名，同时保留 receiver/payload/sender 和动作参数引用。抽取器按 typed succession 图登记行为顺序、端点和源位置，转换器不会把动作静默删除。当前目标把整个行为调用作为一个 hook 表示；线性、分支或不完整 succession 的内部时序和副作用都不在 FCSTM 中合成，结构化诊断仍保存在 mapping 中。带赋值的 `do` action 仍拒绝。官方 States library 的 typed `done` 端点映射为 FCSTM 的 `[*]` 终止端点；名字为 `initial` 且没有自身行为的 state usage 映射为默认入口伪状态。数量单位在目标中擦除并记录假设；数值仍是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出、单位和调度语义。不参与控制拓扑的 `ConstraintUsage` 会以 `ignored_structural` 保留源定位和哈希；这不表示 FCSTM 执行了该约束，参与 guard、effect 或状态出口的约束仍会拒绝转换。
-标量 `PartUsage`/`ReferenceUsage` 的一层 attribute 链在定义中还包含 action 或 constraint 时，属性可以安全映射，但这些 typed 行为会连同其内部 assignment 记录到 `ignored_structural`；目标模型不执行它们，不能据此宣称行为等价。
+生命周期中的有名字 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会保留为 pyfcstm abstract hook；无名字或带空格的调用依据 typed 声明名和源位置生成稳定的合法 hook 名，同时保留 receiver/payload/sender 和动作参数引用。抽取器按 typed succession 图登记行为顺序、端点和源位置，转换器不会把动作静默删除。当前目标把整个行为调用作为一个 hook 表示；线性、分支或不完整 succession 的内部时序和副作用都不在 FCSTM 中合成，结构化诊断仍保存在 mapping 中。带赋值的 `do` action 在叶状态中映射为 `during`，复合状态因 FCSTM 约束改用 `enter` hook，均记录源角色和假设。官方 States library 的 typed `done` 端点映射为 FCSTM 的 `[*]` 终止端点；名字为 `initial` 且没有自身行为的 state usage 映射为默认入口伪状态。数量单位在目标中擦除并记录假设；数值仍是数学域抽象，不自动等价于 Stateflow 或 SysML runtime 的位宽、溢出、单位和调度语义。不参与控制拓扑的 `ConstraintUsage` 会以 `ignored_structural` 保留源定位和哈希；这不表示 FCSTM 执行了该约束，参与 guard、effect 或状态出口的约束仍会拒绝转换。
+标量 `PartUsage`/`ReferenceUsage` 的一层 attribute 链在定义中还包含 action 或 constraint 时，属性可以安全映射，但这些 typed 行为会连同其内部 assignment 记录到 `ignored_structural`；目标模型不执行它们，不能据此宣称行为等价。用于 typed action 参数、消息 receiver 或端口通道的 `ReferenceUsage`/`PortUsage` 会保留为 `opaque_action_channel_outside_control_profile`，由 abstract hook 承载其源引用。若链末端是已链接的标量 `AttributeUsage` 或标量 `ReferenceUsage` 且结构实例只有一个，外部链会生成默认为零的 FCSTM 数值输入；源路径、类型和这一近似会写入 `mapping.json`。多实例、数组、跨对象或无法证明唯一入口的链仍会拒绝。
 
 ## 公开资料与许可
 

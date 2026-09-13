@@ -29,11 +29,11 @@
 
 源元素依靠类型和链接映射；输出 DSL 是目标 AST 的规范序列化入口，不是用文本搜索改写源语言。依赖固定 `pyfcstm==0.6.0`，成功要求能构建 `StateMachineDSLProgram` 和 `StateMachine`，并且 inspect 无 error。warning/info 全部保留。
 
-当前接受 exclusive hierarchy、同层转移、基本 scalar 数值及显式初始化、简单表达式、entry/exit/do 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。被 accept 引用的 `ActionDefinition` 仅作为事件声明处理，不再把声明本身当作状态机成员。带 payload/receiver 的消息 action 映射为 abstract hook；transition 中的消息 effect 映射为源状态 exit hook，payload、receiver 和发送时机保留在 mapping，但不宣称实现接收者队列语义。时间触发、并行、复杂 feature chain、数组和无法处理的成员类型明确拒绝。缺失默认入口时，profile 按源顺序选择第一个 typed 子状态；多个默认入口保留为多个 FCSTM 初始边，由运行时按源顺序选择第一个可用边，并在 mapping 中记录该近似。
+当前接受 exclusive hierarchy、同层转移、基本 scalar 数值及显式初始化、简单表达式、entry/exit/do 赋值、transition effect，以及由官方 typed `accept` 元素映射的 FCSTM event。被 accept 引用的 `ActionDefinition` 仅作为事件声明处理，不再把声明本身当作状态机成员。带 payload/receiver 的消息 action 映射为 abstract hook；transition 中的消息 effect 映射为源状态 exit hook，payload、receiver 和发送时机保留在 mapping，但不宣称实现接收者队列语义。时间触发、并行、数组和无法处理的成员类型明确拒绝。单实例标量 FeatureChain 可以生成一个默认为零的 FCSTM 输入变量，变量类型来自 typed `AttributeUsage`，不依据名称猜测；无法证明类型或实例唯一性的链仍拒绝。缺失默认入口时，profile 按源顺序选择第一个 typed 子状态；多个默认入口保留为多个 FCSTM 初始边，由运行时按源顺序选择第一个可用边，并在 mapping 中记录该近似。
 
 生命周期中有名字的 `ActionUsage`、`PerformActionUsage` 和 `SendActionUsage` 会转换成 pyfcstm abstract hook；无名字或带空格的调用会依据 typed 声明名和源位置生成稳定的合法 hook 名，并保留 receiver/payload/sender 以及动作参数的 typed 引用。对于 `PerformActionUsage`，官方 typed succession 图会被导出为结构化的 `sequence`，并记录每个动作的定义和源位置；当前目标把整个 sequence 作为一个 hook 调用，因此保留调用点和扩展接口，但不宣称保留内部 action 的时序或副作用。线性、分支或不完整 succession 都保留为一个 opaque hook，结构化诊断仍登记在 mapping 中。带赋值的 `do` action 现在映射为 FCSTM `during` operation，解释为每个活动周期执行一次；这是周期控制 profile 的近似，不宣称等价于 SysML 的完整 do 执行语义。名字为 `initial` 且无自身行为的 state usage 会按 typed 端点映射为默认入口；标准库 `done` 映射为 FCSTM 的 `[*]`。数值是数学域抽象，变量类型的全部 SysML 不变量没有被编码进 FCSTM。
 
-状态定义中未被任何 typed guard、effect 或 action 表达式引用的 `ReferenceUsage`、`PartUsage`、`PortUsage` 会登记到 `ignored_structural`，因为当前 FCSTM profile 只表达控制状态和数据动作。现在还接受一个严格子集：单实例 `PartUsage` 指向单一 `PartDefinition`，且链末端是标量数值 `AttributeUsage` 时，将 `part.attribute` 映射为带结构来源记录的 FCSTM 变量；变量初始化、赋值和 guard 都必须来自同一条 typed 链。多实例、数组、跨对象或更深层 FeatureChain 仍保留为拒绝，避免把结构成员错误压平成标量。
+状态定义中未被控制拓扑直接执行的 `ReferenceUsage`、`PartUsage`、`PortUsage` 会登记到 `ignored_structural`，因为当前 FCSTM profile 只表达控制状态和数据动作。用于 action 参数、消息 receiver 或端口通道的引用会标记为 `opaque_action_channel_outside_control_profile`，由 abstract hook 保留调用点和 typed 引用。当前还接受一个严格子集：单实例 `PartUsage`/`ReferenceUsage` 指向单一结构定义，且链末端是标量数值 feature 时，将该链映射为带结构来源的 FCSTM 变量；外部链的默认值为零并明确记录，变量初始化、赋值和 guard 都必须来自同一条 typed 链。多实例、数组、跨对象或更深层 FeatureChain 仍保留为拒绝，避免把结构成员错误压平成标量。
 
 现在对优先级规则采用显式 profile：同一状态发出的多个转移保留为多个 FCSTM 边，并按源声明顺序选择；这解决了简单多出口模型，但不宣称恢复 SysML 未定义优先级下的全部调度语义。官方 States library 中 typed 的 `done` 状态动作被映射为 FCSTM 的 `[*]` 终止端点。抽取结果同时保留触发元素和目标元素的 eClass、限定名、声明名、library 标记，转换器不通过源文本匹配判断这些情况。
 
@@ -46,8 +46,8 @@
 - **并行 state / region**：进入父状态时同时激活每个 region；事件可能被多个 region 分发，父状态通常要等所有 region 完成后才完成。FCSTM 当前只有单一活动路径，压平成串行子状态会改变同时执行、事件广播和完成条件，因此保留 `parallel` 拒绝。
 - **时间与变化触发**：`accept after`、`accept at` 和 `accept when` 依赖时钟或连续值变化，在状态机调度中由时间到达、值变化和采样时机触发。FCSTM 事件是外部离散事件，没有时钟队列或变化监测器；伪造普通 event 会改变触发时刻，所以保留 `time_trigger` 拒绝。
 - **消息 payload/receiver**：`send` 具有关联的接收对象、payload 和发送时机，可能进入接收者的事件队列。当前 profile 将消息保留为 abstract hook（transition effect 放在源状态 exit），因此能保留调用点，但不能表达队列投递、receiver 实例和 payload 类型的完整执行语义。
-- **跨层级 transition target**：SysML 可以在父级行为中声明从深层状态跳到兄弟或外层状态的转移；FCSTM 的转移声明按当前 state 的局部名字解析，直接搬运会改变退出/进入路径，因此当前保留 `transition_target` 拒绝。只有同一组合状态下的直接子状态转移进入支持集。
-- **结构 ReferenceUsage / PortUsage**：这些元素代表对象、端口或引用特征，可能有多重性和实例选择。当前只把一层、单实例、标量属性链映射为 FCSTM 变量；其余引用不猜测实例或默认值，保留 `member_kind` 拒绝。
+- **跨层级 transition target**：SysML 可以在父级行为中声明从深层状态跳到兄弟或外层状态的转移。当前 profile 对“进入深层目标前只有一条 typed 默认路径、离开深层源也只有一条活动路径”的情况，把边提升到直接子状态；完整端点路径和提升理由写入 mapping。存在多个可能活动子状态、目标在作用域外或需要显式退出/进入动作时仍拒绝 `transition_target`，因为 FCSTM 没有同一套层级退出/进入调度规则。
+- **结构 ReferenceUsage / PortUsage**：这些元素代表对象、端口或引用特征，可能有多重性和实例选择。当前把未参与控制表达式的成员登记到 `ignored_structural`，把可证明的单实例标量属性链映射为 FCSTM 变量；用于 typed action 参数、消息 receiver 或端口通道的引用保留为 opaque action channel，由 abstract hook 承载源引用。外部标量链使用显式零值输入近似并保留 typed 来源。多个实例、数组、对象选择和未初始化的复杂引用仍不猜测，保留 `member_kind` 或 `feature_chain` 拒绝。
 
 这些拒绝描述的是当前目标 profile 的边界，不是官方 Pilot 无法解析这些语义。若以后扩展 FCSTM，应先为 region 调度、时钟事件和消息队列定义目标语义，再增加映射规则。
 

@@ -60,8 +60,18 @@ public class ExtractStates {
     }
     static Object elementReference(Element e) {
         if (e == null) return null;
-        return object("id", id(e), "kind", e.eClass().getName(),
+        var out = object("id", id(e), "kind", e.eClass().getName(),
             "declared_name", e.getDeclaredName(), "library", e.isLibraryElement(), "span", span(e));
+        // Keep the linked scalar type on attribute references so a feature
+        // chain can be lowered without guessing from its spelling.
+        if (e instanceof Feature feature) {
+            var types = feature.getType().stream().map(ExtractStates::id).toList();
+            if (e instanceof AttributeUsage attribute && types.isEmpty())
+                types = attribute.getAttributeDefinition().stream().map(ExtractStates::id).toList();
+            out.put("types", types);
+            out.put("scalar", scalar(feature));
+        }
+        return out;
     }
     /** Export a linear typed action succession; branching remains explicit as an error. */
     static Object actionSequence(ActionUsage action) {
@@ -282,7 +292,7 @@ public class ExtractStates {
                 data.add(object("id", id(v), "types", v.getAttributeDefinition().stream().map(ExtractStates::id).toList(),
                     "type_elements", v.getAttributeDefinition().stream().map(ExtractStates::elementReference).toList(),
                     "values", values, "constant", v.isConstant(), "scalar", scalar(v), "span", span(v)));
-            } else if (e instanceof PartUsage || e instanceof ReferenceUsage) {
+            } else if (e instanceof PartUsage) {
                 var structuralUsage = (Feature)e;
                 var structural = structuralData(structuralUsage);
                 if (structural == null) unsupported.add(e.eClass().getName());
@@ -293,6 +303,19 @@ public class ExtractStates {
                 else if (!references.contains(id(e)))
                     ignoredStructural.add(object("element", elementReference(e), "reason", "unreferenced_structural_member"));
                 else unsupported.add(e.eClass().getName());
+            } else if (e instanceof ReferenceUsage || e instanceof PortUsage) {
+                var structural = e instanceof ReferenceUsage
+                    ? structuralData((Feature)e) : List.<Object>of();
+                if (structural != null && !structural.isEmpty()) {
+                    data.addAll(structural);
+                    ignoredStructural.addAll(structuralBehavior((Feature)e));
+                } else {
+                    // A reference or port used only as a typed action channel
+                    // has no FCSTM object/queue counterpart. Keep the linked
+                    // element and let the abstract action hook retain it.
+                    ignoredStructural.add(object("element", elementReference(e),
+                        "reason", "opaque_action_channel_outside_control_profile"));
+                }
             } else if (!(e instanceof Comment) && !(e instanceof Documentation)) {
                 var kind = e.eClass().getName();
                 if (e instanceof ActionUsage && !(member instanceof StateSubactionMembership)

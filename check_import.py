@@ -88,30 +88,40 @@ feature_chain = next(item for item in source['models']
                      if item['dataset'] == 'official_pilot'
                      and item['source'] == 'validation/05-State-based Behavior/5-State-based Behavior-1a.sysml')
 assert feature_chain['status'] == 'extracted', feature_chain
-try:
-    def find_feature_chain_state(state):
-        if any(guard.get('kind') == 'FeatureChainExpression'
-               for entry in state['transitions'] for guard in entry.get('guards', [])):
-            return state
-        for child in state['states']:
-            found = find_feature_chain_state(child)
-            if found is not None:
-                return found
-        return None
+def find_feature_chain_state(state):
+    if any(guard.get('kind') == 'FeatureChainExpression'
+           for entry in state['transitions'] for guard in entry.get('guards', [])):
+        return state
+    for child in state['states']:
+        found = find_feature_chain_state(child)
+        if found is not None:
+            return found
+    return None
 
-    root = None
-    for item in feature_chain['states']:
-        root = find_feature_chain_state(item)
-        if root is not None:
-            break
-    assert root is not None, feature_chain
-    lower(root)
-except Unsupported as error:
-    # The typed chain keeps its target feature in the export; flattening an
-    # external structural path into a scalar FCSTM variable would be unsound.
-    assert error.code == 'feature_chain', error.code
-else:
-    raise AssertionError('Feature chain silently flattened into FCSTM data')
+root = None
+for item in feature_chain['states']:
+    root = find_feature_chain_state(item)
+    if root is not None:
+        break
+assert root is not None, feature_chain
+dsl, mapping = lower(root)
+assert '(v0 == 1)' in dsl
+assert any(item.get('kind') == 'external_feature'
+           and item.get('representation') == 'scalar_input_default'
+           for item in mapping)
+
+state_test = next(item for item in source['models']
+                  if item['dataset'] == 'official_pilot'
+                  and item['source'] == 'examples/Simple Tests/StateTest.sysml')
+state_test_root = next(item for item in state_test['states'] if item['id'] == 'StateTest::S')
+state_test_dsl, state_test_mapping = lower(state_test_root)
+state_test_ast = parse_with_grammar_entry(state_test_dsl, 'state_machine_dsl')
+state_test_model = parse_dsl_node_to_state_machine(state_test_ast)
+assert not [d for d in inspect_model(state_test_model, enable_verify=True).to_json()['diagnostics']
+            if d['severity'] == 'error']
+assert any(item.get('target_endpoint_path') for item in state_test_mapping)
+assert any(item.get('source_endpoint_path') for item in state_test_mapping)
+assert 'enter abstract send_action_' in state_test_dsl
 
 unsafe = cases['structural-unsafe.sysml']
 assert unsafe['status'] == 'extracted', unsafe
