@@ -78,6 +78,8 @@
 
 公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34731821109](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34731821109) 的独立批次包含 1,669 个文件、56 个控制状态候选，其中 24 个 converted（含 11 个自建 fixture）；项目级批次为 96 个状态根、50 个控制状态候选，其中 16 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行、时间触发和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
 
+最新独立批次的 24 个通过根对应 22 个源文件哈希；重复的官方 Pilot/SysTemp 版本单独保留，但论文统计应同时报告逐根数和哈希去重数。
+
 Apollo 11 的完整工程上下文已在 [Actions 34720946017](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34720946017) 中验证：28 个文件、0 条官方校验错误、18 个状态根。若按 `CoSMA`/`Purpose` 子目录分别加载会产生 842 条错误，这已由 `--project-root apollo11=_external/apollo11` 修复；这项差异说明上下文边界本身必须作为实验变量记录。严格转换仍拒绝 18 个根，其中任务阶段控制根的首因是继承的 `PerformActionUsage`。
 
 Sensmetry Advent 仓库的 44 个文件中有 4 个含状态元素；完整仓库上下文识别 4 个状态根，其中巡航控制解答模型为并行状态，状态定义和仿真模型分别触发结构成员/数据类型限制。该结果适合做教学级语义边界对照，不应与 Apollo 11 等真实工程复杂度混为一谈。
