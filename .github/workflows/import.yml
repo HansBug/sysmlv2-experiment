@@ -50,6 +50,12 @@ jobs:
           ref: 83ba1f692072c9dffd7cdf873e11ae1e4a4f833f
           path: _external/advent
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: elan8/sysml-examples
+          ref: fdedcc0d25f45ce0fc54b5650b5defaf3c64d719
+          path: _external/sysml_examples
+          persist-credentials: false
       - name: Download the released official frontend wrapper
         run: |
           curl --fail --location --retry 3 -o _external/pilot.jar https://github.com/HansBug/sysml-v2-pilot-gt/releases/download/v0.1.0/sysml-v2-pilot-gt-0.1.0-all.jar
@@ -86,9 +92,11 @@ jobs:
             --root apollo11=_external/apollo11 \
             --root advent=_external/advent \
             --root book_examples=_external/book_examples \
+            --root sysml_examples=_external/sysml_examples \
             --project-root advent=_external/advent \
             --project-root apollo11=_external/apollo11 \
             --project-root book_examples=_external/book_examples \
+            --project-root sysml_examples=_external/sysml_examples \
             --library _external/pilot/sysml.library --jar _external/pilot.jar \
             --output artifacts/project-contexts
           python research/convert_project_results.py artifacts/project-contexts artifacts/project-context-conversion.json

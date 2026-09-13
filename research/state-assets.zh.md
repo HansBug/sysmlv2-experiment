@@ -2,7 +2,7 @@
 
 本表由官方 Pilot 的 typed AST 生成，不通过字符串搜索。每一行保留数据集、相对路径、SHA-256、语法状态节点数、完整校验状态和建议的项目上下文目录。`validated_independent_file` 只表示单文件加标准库通过，`needs_project_index` 表示应在其工程目录整体索引后复核。
 
-共登记 **122** 个公开状态候选文件。它们不是可执行控制器清单；一个文件可包含多个状态根，状态 usage 也可能是 snapshot 或语义不完整。
+共登记 **131** 个公开状态候选文件。它们不是可执行控制器清单；一个文件可包含多个状态根，状态 usage 也可能是 snapshot 或语义不完整。
 
 | 数据集 | 文件 | SHA-256（前 12 位） | 定义/使用/根 | 语法 | 基线校验 | 上下文目录 |
 |---|---|---|---:|---|---|---|
@@ -107,6 +107,15 @@
 | refinement_negative | `openai/106/iteration_00.sysml` | `6e87e3d7cf30` | 0/1/1 | 错误 | source_validation_error | `openai/106` |
 | refinement_negative | `openai/113/iteration_00.sysml` | `50794b37f1bf` | 0/1/1 | 错误 | source_validation_error | `openai/113` |
 | refinement_positive | `mistral_large/035/iteration_01.sysml` | `1f731b9d25da` | 0/1/1 | 有效 | source_validation_error | `mistral_large/035` |
+| sysml_examples | `drone/SurveillanceDroneBehavior.sysml` | `d21a84c49071` | 9/8/9 | 有效 | extracted | `drone` |
+| sysml_examples | `drone/SurveillanceDroneStructure.sysml` | `18ff40a9c51f` | 0/1/1 | 错误 | source_validation_error | `drone` |
+| sysml_examples | `intersection/TrafficLightIntersectionBehavior.sysml` | `8e61ccade106` | 7/6/7 | 有效 | extracted | `intersection` |
+| sysml_examples | `intersection/TrafficLightIntersectionStructure.sysml` | `ce522897b0d1` | 0/1/1 | 错误 | source_validation_error | `intersection` |
+| sysml_examples | `office/office.sysml` | `cf09bfe02daf` | 4/4/5 | 有效 | source_validation_error | `office` |
+| sysml_examples | `timer/KitchenTimerBehavior.sysml` | `f84073bf8e5a` | 5/4/5 | 有效 | extracted | `timer` |
+| sysml_examples | `timer/KitchenTimerStructure.sysml` | `33da3e76b81a` | 0/1/1 | 错误 | source_validation_error | `timer` |
+| sysml_examples | `webshop/WebShopBehavior.sysml` | `02b99d23ac79` | 7/5/8 | 错误 | source_validation_error | `webshop` |
+| sysml_examples | `webshop/webshop.sysml` | `a970b7cd198a` | 0/1/1 | 错误 | source_validation_error | `webshop` |
 | systemp | `examples/Arrowhead Framework Example/AHFNorwayTopics.sysml` | `ffbda373d3f2` | 0/10/4 | 有效 | source_validation_error | `examples/Arrowhead Framework Example` |
 | systemp | `examples/Interaction Sequencing Examples/ServerSequenceOutsideRealization-2.sysml` | `2121a06f2ee7` | 0/3/1 | 有效 | source_validation_error | `examples/Interaction Sequencing Examples` |
 | systemp | `examples/Interaction Sequencing Examples/ServerSequenceRealization-2.sysml` | `85df3b3a0c51` | 0/3/1 | 有效 | source_validation_error | `examples/Interaction Sequencing Examples` |

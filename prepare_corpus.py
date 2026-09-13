@@ -12,6 +12,7 @@ REPOSITORIES = {
     'apollo11': 'airbus/apollo-11-sysml-v2',
     'advent': 'sensmetry/advent-of-sysml-v2',
     'book_examples': 'MBSE4U/the-sysmlv2-book-examples',
+    'sysml_examples': 'elan8/sysml-examples',
 }
 
 
@@ -37,6 +38,7 @@ def prepare(output, fixtures_only=False):
             'apollo11': Path('_external/apollo11'),
             'advent': Path('_external/advent'),
             'book_examples': Path('_external/book_examples'),
+            'sysml_examples': Path('_external/sysml_examples'),
         })
         if official.exists():
             roots['official_pilot'] = official
