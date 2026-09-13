@@ -239,8 +239,6 @@ def lower(root):
                 continue
             body_text = action(body)
             if body_text:
-                if role == 'during':
-                    raise Unsupported('do_action_execution', node['id'])
                 lines.append(indent + '    ' + role + ' { ' + body_text + ' }')
                 mapping.append({'kind': 'state_action', 'source_id': subaction['id'],
                                 'span': body['span'], 'target_owner': target, 'target_role': role})
@@ -305,8 +303,17 @@ def lower(root):
             mapping.append({'kind': 'transition', 'source_id': edge['id'], 'span': edge['span'],
                             'target_owner': target, 'target_declaration_index': index})
         effective_child_ids = child_ids - pseudo_initial_ids
-        if effective_child_ids and initial != 1:
-            raise Unsupported('initial_transition_count', node['id'])
+        if effective_child_ids and initial == 0:
+            # Some SysML examples define a composite state without an explicit
+            # initial succession. Choose its first typed child so FCSTM can
+            # execute the model; the choice is recorded as a profile default.
+            fallback = next(child for child in node['states'] if child['id'] in effective_child_ids)
+            lines.append(indent + f'    [*] -> {names[fallback["id"]]};')
+            mapping.append({'kind': 'implicit_initial', 'target': names[fallback['id']],
+                            'source_owner': target, 'reason': 'missing_initial_profile_default'})
+            initial = 1
+        # FCSTM permits multiple initial edges. The runtime evaluates them in
+        # source order; this profile uses that order when SysML has no priority.
         lines.append(indent + '}')
         return lines
     return '\n'.join(declarations + emit(root, '', '')) + '\n', mapping
@@ -342,6 +349,8 @@ def run(source, output):
                     'assumptions': ['Explicit periodic controller interpretation; no general SysML execution equivalence claim.',
                                     'Single active path, mathematical numeric domain, no asynchronous messages.',
                                     'Abstract action arguments remain typed mapping metadata; hook execution is not synthesized.',
+                                    'Assignment do-actions execute as FCSTM during operations once per active cycle; this is a periodic profile approximation.',
+                                    'Multiple initial transitions preserve source order; FCSTM runtime selects the first enabled edge.',
                                     'Behavior declared inside a scalar part is retained in ignored_structural mapping; its execution is not synthesized.',
                                     'Non-linear or incomplete typed action succession is kept as one opaque hook; inner order is not synthesized.',
                                     'Typed quantity literals keep their magnitude; linked library units are erased for the FCSTM numeric domain.']}, indent=2) + '\n')

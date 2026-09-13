@@ -54,8 +54,7 @@ for filename in ('types.sysml', 'assignment.sysml', 'terminal-events.sysml', 'qu
                    and item.get('structural_target') == 'ReferenceChainScalarProbe::Counter::count'
                    for item in root['data'])
         assert 'v0 = 1' in dsl and '(v0 > 0)' in dsl
-for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_action_execution'),
-                       ('array.sysml', 'data_multiplicity')]:
+for filename, code in [('parallel.sysml', 'parallel'), ('array.sysml', 'data_multiplicity')]:
     assert cases[filename]['status'] == 'extracted', cases[filename]
     try:
         lower(cases[filename]['states'][0])
@@ -64,6 +63,12 @@ for filename, code in [('parallel.sysml', 'parallel'), ('actions.sysml', 'do_act
         assert error.code == code, (filename, error.code)
     else:
         raise AssertionError('Unsupported source silently accepted: ' + filename)
+actions = cases['actions.sysml']
+assert actions['status'] == 'extracted', actions
+action_root = next(item for item in actions['states'] if item['states'])
+action_dsl, action_mapping = lower(action_root)
+assert 'during {' in action_dsl and '= 2;' in action_dsl
+assert any(item.get('target_role') == 'during' for item in action_mapping)
 for filename in ('invalid-type.sysml', 'invalid-target.sysml'):
     assert cases[filename]['status'] == 'source_validation_error', cases[filename]
 
