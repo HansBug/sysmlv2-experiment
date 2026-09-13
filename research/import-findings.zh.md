@@ -84,7 +84,7 @@
 
 状态根与文件不在同一个计数层级，不能横向简单相加。总计 24 个成功解析的状态根中通过 4 个；去掉自建例，公开数据的 18 个候选通过 2 个。**本轮不能声称大部分公开模型可转换。** 也不能把 624 个没有状态机的文件算成转换失败，或把 691 个源校验失败全部说成原数据错误：包括旧语法、工具约束差异及我们尚未加载的跨文件工程上下文。
 
-公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34733671026](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34733671026) 的独立批次包含 1,693 个文件、60 个控制状态候选，其中 37 个 converted（含 13 个自建 fixture，30 个唯一源哈希）；项目级批次为 117 个状态根、54 个控制状态候选，其中 20 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行、时间触发和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
+公开 accepted roots 仍包括 SysTemp 的 `6-Individual and Snapshots.sysml` 中 VehicleA::vehicleStates、`10c-Fuel Economy Analysis.sysml` 中 transmission::transmissionState，以及启用 typed `accept`→FCSTM event 后通过的公开事件状态链。最新 [Actions 34735462592](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34735462592) 的独立批次包含 1,693 个文件、60 个控制状态候选，其中 37 个 converted（含 13 个自建 fixture，30 个唯一源哈希）；项目级批次为 117 个状态根、54 个控制状态候选，其中 20 个 converted。逐项结果和假设保存在该次 workflow artifact；这不等于复杂公开行为模型已经获得执行等价证明。其他候选的 first-blocker 包括不支持的成员、消息 payload、空状态定义、并行、时间触发和未定义优先级。first-blocker 不是完整特征普查；同一个模型可能还有其他障碍。
 
 最新独立批次的 37 个通过根对应 30 个源文件哈希；重复的官方 Pilot/SysTemp 版本单独保留，但论文统计应同时报告逐根数和哈希去重数。
 
