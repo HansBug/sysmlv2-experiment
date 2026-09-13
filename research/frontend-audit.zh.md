@@ -63,7 +63,7 @@
 
 单独裸调 Xtext `IParser` 的早期诊断脚本曾缺少 EPackage/setting delegate 初始化，导致代理或 NPE 错误；换成官方完整 workspace 初始化后消失，这是我们的探针接法问题。已有 wrapper 的泛化 JSON 序列化异常也不能直接归到官方语法解析器，本导入路径不使用那个 serializer。
 
-最新独立文件转换结果为 **85 个抽取状态根中 22 个 converted**；最新项目级上下文扫描为 **96 个状态根中 50 个控制状态候选、16 个 converted**。[Actions 34730734470](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34730734470) 进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点、带 library 单位的数量值、动作参数引用登记，将官方 `Base::Anything` 时间/变化触发拒绝为 `time_trigger`，并为 `FeatureChainExpression` 保留目标 feature 定位；总计独立文件批次为 1,668 个文件、55 个控制候选、22 个 converted（其中 9 个为自建 fixture）。member kind、消息 payload/receiver、no control states、parallel、时间触发、复杂 feature chain、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
+最新独立文件转换结果为 **86 个抽取状态根中 24 个 converted**；最新项目级上下文扫描为 **96 个状态根中 50 个控制状态候选、16 个 converted**。[Actions 34731821109](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34731821109) 进一步验证了 typed 事件互斥出口、标准库 `done` 终止端点、带 library 单位的数量值、动作参数引用登记，将官方 `Base::Anything` 时间/变化触发拒绝为 `time_trigger`，并为 `FeatureChainExpression` 保留目标 feature 定位；总计独立文件批次为 1,669 个文件、56 个控制候选、24 个 converted（其中 11 个为自建 fixture）。member kind、消息 payload/receiver、no control states、parallel、时间触发、复杂 feature chain、任意 action 和未定义优先级仍是映射实现或 profile 的边界，不是 parser failure，也不是已经证明无法表示。带 guard/赋值的目标轨迹验证仍来自自建例。
 
 工程上下文补全已经覆盖登记的公开项目；当前 `PerformActionUsage`/`SendActionUsage` 的有名字调用已能保留为 abstract hook，`initial` usage 也能映射为默认入口。Apollo 11 的完整项目上下文因此从 18 个全部拒绝变为 1 个控制状态根通过目标 AST/语义检查；这只是结构化 hook 表示，不是 action 内部执行等价。剩余拒绝主要是带赋值的 do action、并行、结构成员、时间/消息语义和未定义优先级。带 library 单位的数量值、可证明互斥的简单 guard，以及带结构化诊断的非线性 action succession 已加入受限映射。下一步仍应逐类建立 typed 最小复现，不通过删除行为来提高数字。通用文件总数不宜再作为状态机覆盖率的分母；论文需要分别报告源语法/链接有效性、候选状态根、实际支持范围、目标语义检查及源行为对照。
 
