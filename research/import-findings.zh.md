@@ -49,9 +49,9 @@
 
 这些拒绝描述的是当前目标 profile 的边界，不是官方 Pilot 无法解析这些语义。若以后扩展 FCSTM，应先为 region 调度、时钟事件和消息队列定义目标语义，再增加映射规则。
 
-[后续审计](frontend-audit.zh.md) 进一步限定上述入口支持：项目模式已索引用户工程文件并保留跨文件继承；转换器也已映射官方接受的 `first start then A` 默认入口。独立文件批次仍不具备工程上下文，历史转换统计尚未重跑。
+[后续审计](frontend-audit.zh.md) 进一步限定上述入口支持：项目模式已索引用户工程文件并保留跨文件继承；转换器也已映射官方接受的 `first start then A` 默认入口。最新完整转换统计见 [Actions 34736419170](https://github.com/HansBug/sysmlv2-experiment/actions/runs/34736419170)。
 
-`check_import.py` 验证官方源元素经过这条完整链路后的层次与赋值行为：Idle entry 将 x 置 1，下一拍 guard 成立、effect 将 x 置 4 并到 Active；另检查并行、数组、do action、无效引用拒绝。这个 FCSTM 轨迹检查是映射 profile 的回归门，不是独立 SysML execution oracle。
+`check_import.py` 验证官方源元素经过这条完整链路后的层次与赋值行为：Idle entry 将 x 置 1，下一拍 guard 成立、effect 将 x 置 4 并到 Active；另检查并行、数组、do action 周期映射和无效引用拒绝。这个 FCSTM 轨迹检查是映射 profile 的回归门，不是独立 SysML execution oracle。
 
 ## 含模型文件的公开研究语料
 
